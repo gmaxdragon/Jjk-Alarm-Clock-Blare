@@ -1,6 +1,6 @@
 {
   "revision": "GGK Alarm Rev D — 2026-10-25",
-  "status": "PCB_DESIGN_NATIVE_ERC_DRC_PASS_PHYSICAL_HOLD",
+  "status": "DESIGN_HOLD_NOT_FOR_OVERNIGHT_USE",
   "pcb_copper_geometry": {
     "unrouted": 0,
     "min_0p2mm_clearance_violations": 0,
