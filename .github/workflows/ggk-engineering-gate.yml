@@ -53,8 +53,13 @@ jobs:
       - name: Install KiCad
         run: |
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kicad
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq software-properties-common
+          sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends kicad
           kicad-cli version
+          kicad-cli sch erc --help | grep -q "exit-code-violations"
+          kicad-cli pcb drc --help | grep -q "exit-code-violations"
       - name: Native KiCad schematic ERC
         run: |
           set -o pipefail
