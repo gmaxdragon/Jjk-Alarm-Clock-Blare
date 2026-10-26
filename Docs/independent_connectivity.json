@@ -1,0 +1,12 @@
+{
+  "source": "Native KiCad PCB generated from Rev C source; math connectivity check independent from router report",
+  "n_pads": 18,
+  "n_conductor_shapes": 482,
+  "trace_segments": 380,
+  "vias": 11,
+  "net_count": 18,
+  "unconnected_net_groups": {},
+  "zero_unrouted_pad_networks": true,
+  "native_kicad_drc_performed": false,
+  "manufacturing_approved": false
+}

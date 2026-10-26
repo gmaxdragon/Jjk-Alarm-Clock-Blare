@@ -1,0 +1,9 @@
+{
+  "revision":"GGK Alarm Rev C 2026-10-25",
+  "status":"DESIGN_HOLD_NOT_FOR_OVERNIGHT_USE",
+  "pcb_copper_geometry":{"unrouted":0,"min_0p2mm_clearance_violations":0,"native_kicad_drc":false,"native_kicad_erc":false,"zones_refilled":false},
+  "hardware":{"tft_actual_module_dimensions_verified":false,"tft_actual_pinout_verified":false,"buzzer_current_and_type_verified":false,"xiao_usb_orientation_physically_verified":false,"six_custom_keycap_fit_verified":false,"prototype_assembled":false},
+  "power":{"uses_usb_c":true,"internal_battery_installed":false,"fully_unplugged_supported":false,"powerbank_continuity_overnight_verified":false,"solder_fault_protection_guaranteed":false},
+  "firmware":{"six_button_sources_written":true,"portal_written":true,"host_logic_unit_tests_pass":true,"host_api_stub_syntax_check_pass":true,"arduino_esp32_real_compile":false,"flash_and_physical_screen_test":false},
+  "release_approved":false
+}

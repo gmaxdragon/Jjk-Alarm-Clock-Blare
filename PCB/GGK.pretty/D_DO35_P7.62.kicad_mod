@@ -1,0 +1,9 @@
+(footprint "D_DO35_P7.62" (version 20221018) (generator pcbnew) (layer "F.Cu") (attr through_hole)
+(fp_text reference "D1" (at 0 -3) (layer "F.SilkS") (effects (font (size 0.75 0.75) (thickness .13))))
+(fp_text value "1N4148" (at 0 4) (layer "F.Fab") (effects (font (size 0.7 0.7) (thickness .13))))
+
+(fp_rect (start -2.1 -1) (end 2.1 1) (stroke (width 0.12) (type solid)) (fill none) (layer "F.SilkS") (uuid "a11a0000-cc00-4a11-8a11-00000000001d"))
+(fp_line (start -1.2 -1.5) (end -1.2 1.5) (stroke (width 0.3) (type solid)) (layer "F.SilkS") (uuid "a11a0000-cc00-4a11-8a11-00000000001e"))
+(pad "1" thru_hole circle (at 0 0) (size 1.8 1.8) (drill 0.85) (layers "*.Cu" "*.Mask")   (uuid "a11a0000-cc00-4a11-8a11-00000000001f"))
+(pad "2" thru_hole circle (at -7.62 0) (size 1.8 1.8) (drill 0.85) (layers "*.Cu" "*.Mask")   (uuid "a11a0000-cc00-4a11-8a11-000000000020"))
+)

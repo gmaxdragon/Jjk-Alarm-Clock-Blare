@@ -1,0 +1,58 @@
+{
+  "revision": "GGK Rev C / boot strap safe GPIO and diode matrix reversed",
+  "geometry_check_result": "PASS: 0 unrouted signal groups, 0 clearance violations <0.20 mm in geometric check",
+  "not_native_kicad_drc": true,
+  "board_outline_width_mm": 99.3,
+  "board_outline_height_mm": 99.3,
+  "board_copper_substrate_area_mm2": 5271.68,
+  "area_reduction_vs_revA_pct": 27.7,
+  "switch_count": 6,
+  "switch_physical_layout": "single 1x6 straight row",
+  "switch_centers_xy_mm": [
+    [
+      10.25,
+      89.5
+    ],
+    [
+      26.15,
+      89.5
+    ],
+    [
+      42.05,
+      89.5
+    ],
+    [
+      57.95,
+      89.5
+    ],
+    [
+      73.85,
+      89.5
+    ],
+    [
+      89.75,
+      89.5
+    ]
+  ],
+  "key_pitch_mm": 15.9,
+  "standard_dsa_1u_keycaps_fit": false,
+  "required_narrow_custom_keycap_width_mm": 15.4,
+  "actual_mx_switch_housing_mm_estimate": 15.6,
+  "key_body_fit_must_be_physically_tested": true,
+  "display": "portrait 76 x 284 ST7789; example breakout body 21.08 x 73.15mm",
+  "display_module_dimensions_must_be_verified": true,
+  "display_is_separate_and_connected_by_8pin_cable": true,
+  "xiao_esp32c3": "back mount, top USB-C, 22 electrical/mechanical contacts modeled",
+  "buzzer_driver_requires_exact_kit_part_verification": true,
+  "power": "USB-C certified external source ONLY; no battery and NO guarantee of safe overnight unattended operation",
+  "embedded_backup_timekeeping_on_power_failure": false,
+  "smartphone_sync_possible_over_wifi": true,
+  "display_contents_editable_in_firmware": true,
+  "traces": 380,
+  "vias": 11,
+  "clearance_violations_0p2mm": 0,
+  "unrouted_signal_groups": 0,
+  "copper_ground_zones": "GND wired explicitly plus unfilled zones; KiCad native refill required",
+  "manufacturing_approval": false,
+  "native_kicad_erc_and_drc": "NOT YET RUN"
+}

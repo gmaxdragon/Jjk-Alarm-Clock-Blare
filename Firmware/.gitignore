@@ -1,0 +1,4 @@
+GGK_Alarm/secrets.h
+*.bin
+*.elf
+*.map

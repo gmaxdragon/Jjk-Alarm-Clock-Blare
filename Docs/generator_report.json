@@ -1,0 +1,483 @@
+{
+  "design": "GGK ALARM Rev C / T-SHAPE / NO ART / USB ONLY",
+  "board_outline_mm": [
+    99.3,
+    99.3
+  ],
+  "area_mm2": 5271.68,
+  "switches": 6,
+  "mx_matrix": "2 rows x 3 cols",
+  "diodes": 6,
+  "tft": "ST7789 76x284 (portrait display, 8-pin cable header)",
+  "key_pitch_mm": 15.9,
+  "stock_DSA_keycaps_fit": false,
+  "narrow_3d_printed_keycaps_required": true,
+  "parts": {
+    "SW1": {
+      "value": "UP",
+      "side": "F",
+      "xy": [
+        12.79,
+        84.42
+      ]
+    },
+    "D1": {
+      "value": "1N4148",
+      "side": "B",
+      "xy": [
+        11.25,
+        78.1
+      ]
+    },
+    "SW2": {
+      "value": "DOWN",
+      "side": "F",
+      "xy": [
+        28.689999999999998,
+        84.42
+      ]
+    },
+    "D2": {
+      "value": "1N4148",
+      "side": "B",
+      "xy": [
+        24.5,
+        78.1
+      ]
+    },
+    "SW3": {
+      "value": "TIME SET",
+      "side": "F",
+      "xy": [
+        44.589999999999996,
+        84.42
+      ]
+    },
+    "D3": {
+      "value": "1N4148",
+      "side": "B",
+      "xy": [
+        37.75,
+        78.1
+      ]
+    },
+    "SW4": {
+      "value": "CLOCK SET",
+      "side": "F",
+      "xy": [
+        60.49,
+        84.42
+      ]
+    },
+    "D4": {
+      "value": "1N4148",
+      "side": "B",
+      "xy": [
+        51.0,
+        78.1
+      ]
+    },
+    "SW5": {
+      "value": "SNOOZE",
+      "side": "F",
+      "xy": [
+        76.39,
+        84.42
+      ]
+    },
+    "D5": {
+      "value": "1N4148",
+      "side": "B",
+      "xy": [
+        64.25,
+        78.1
+      ]
+    },
+    "SW6": {
+      "value": "ALARM ON",
+      "side": "F",
+      "xy": [
+        92.29,
+        84.42
+      ]
+    },
+    "D6": {
+      "value": "1N4148",
+      "side": "B",
+      "xy": [
+        77.5,
+        78.1
+      ]
+    },
+    "U1": {
+      "value": "XIAO ESP32-C3",
+      "side": "B",
+      "xy": [
+        58.9,
+        23.0
+      ]
+    },
+    "J1": {
+      "value": "TFT 8PIN",
+      "side": "B",
+      "xy": [
+        58.89,
+        67.0
+      ]
+    },
+    "BZ1": {
+      "value": "3.3V PIEZO",
+      "side": "B",
+      "xy": [
+        53.81,
+        46.0
+      ]
+    },
+    "H1": {
+      "value": "M3",
+      "side": "F",
+      "xy": [
+        35.6,
+        38.0
+      ]
+    },
+    "H2": {
+      "value": "M3",
+      "side": "F",
+      "xy": [
+        64.4,
+        38.0
+      ]
+    },
+    "H3": {
+      "value": "M3",
+      "side": "F",
+      "xy": [
+        5.4,
+        76.9
+      ]
+    },
+    "H4": {
+      "value": "M3",
+      "side": "F",
+      "xy": [
+        94.6,
+        76.9
+      ]
+    }
+  },
+  "nets": {
+    "COL_TOP": [
+      "SW1:1",
+      "SW2:1",
+      "U1:4"
+    ],
+    "K1": [
+      "SW1:2",
+      "D1:1"
+    ],
+    "ROW_LEFT": [
+      "D1:2",
+      "D3:2",
+      "D5:2",
+      "U1:9"
+    ],
+    "K2": [
+      "SW2:2",
+      "D2:1"
+    ],
+    "ROW_RIGHT": [
+      "D2:2",
+      "D4:2",
+      "D6:2",
+      "U1:10"
+    ],
+    "COL_MIDDLE": [
+      "SW3:1",
+      "SW4:1",
+      "U1:5"
+    ],
+    "K3": [
+      "SW3:2",
+      "D3:1"
+    ],
+    "K4": [
+      "SW4:2",
+      "D4:1"
+    ],
+    "COL_BOTTOM": [
+      "SW5:1",
+      "SW6:1",
+      "U1:6"
+    ],
+    "K5": [
+      "SW5:2",
+      "D5:1"
+    ],
+    "K6": [
+      "SW6:2",
+      "D6:1"
+    ],
+    "DISP_DC": [
+      "U1:2",
+      "J1:6"
+    ],
+    "DISP_CS": [
+      "U1:3",
+      "J1:7"
+    ],
+    "DISP_SCK": [
+      "U1:7",
+      "J1:3"
+    ],
+    "DISP_MOSI": [
+      "U1:8",
+      "J1:4"
+    ],
+    "PIEZO": [
+      "U1:11",
+      "BZ1:1"
+    ],
+    "3V3": [
+      "U1:12",
+      "J1:2",
+      "J1:5"
+    ],
+    "GND": [
+      "U1:13",
+      "J1:1",
+      "J1:8",
+      "BZ1:2"
+    ]
+  },
+  "routing": [
+    {
+      "net": "ROW_LEFT",
+      "status": "ROUTED",
+      "to": "D3:2",
+      "frompad": "D1:2",
+      "vias": 0,
+      "expanded": 444
+    },
+    {
+      "net": "ROW_LEFT",
+      "status": "ROUTED",
+      "to": "D5:2",
+      "frompad": "D3:2",
+      "vias": 0,
+      "expanded": 462
+    },
+    {
+      "net": "ROW_LEFT",
+      "status": "ROUTED",
+      "to": "U1:9",
+      "frompad": "D3:2",
+      "vias": 0,
+      "expanded": 1924
+    },
+    {
+      "net": "ROW_RIGHT",
+      "status": "ROUTED",
+      "to": "D4:2",
+      "frompad": "D2:2",
+      "vias": 0,
+      "expanded": 280
+    },
+    {
+      "net": "ROW_RIGHT",
+      "status": "ROUTED",
+      "to": "D6:2",
+      "frompad": "D4:2",
+      "vias": 0,
+      "expanded": 288
+    },
+    {
+      "net": "ROW_RIGHT",
+      "status": "ROUTED",
+      "to": "U1:10",
+      "frompad": "D2:2",
+      "vias": 1,
+      "expanded": 5149
+    },
+    {
+      "net": "DISP_DC",
+      "status": "ROUTED",
+      "to": "J1:6",
+      "frompad": "U1:2",
+      "vias": 0,
+      "expanded": 3166
+    },
+    {
+      "net": "DISP_MOSI",
+      "status": "ROUTED",
+      "to": "J1:4",
+      "frompad": "U1:8",
+      "vias": 1,
+      "expanded": 6184
+    },
+    {
+      "net": "DISP_SCK",
+      "status": "ROUTED",
+      "to": "J1:3",
+      "frompad": "U1:7",
+      "vias": 1,
+      "expanded": 5672
+    },
+    {
+      "net": "DISP_CS",
+      "status": "ROUTED",
+      "to": "J1:7",
+      "frompad": "U1:3",
+      "vias": 0,
+      "expanded": 5116
+    },
+    {
+      "net": "PIEZO",
+      "status": "ROUTED",
+      "to": "BZ1:1",
+      "frompad": "U1:11",
+      "vias": 1,
+      "expanded": 2994
+    },
+    {
+      "net": "3V3",
+      "status": "ROUTED",
+      "to": "J1:5",
+      "frompad": "U1:12",
+      "vias": 1,
+      "expanded": 4297
+    },
+    {
+      "net": "3V3",
+      "status": "ROUTED",
+      "to": "J1:2",
+      "frompad": "J1:5",
+      "vias": 0,
+      "expanded": 78
+    },
+    {
+      "net": "K6",
+      "status": "ROUTED",
+      "to": "D6:1",
+      "frompad": "SW6:2",
+      "vias": 0,
+      "expanded": 477
+    },
+    {
+      "net": "K5",
+      "status": "ROUTED",
+      "to": "D5:1",
+      "frompad": "SW5:2",
+      "vias": 0,
+      "expanded": 555
+    },
+    {
+      "net": "K4",
+      "status": "ROUTED",
+      "to": "D4:1",
+      "frompad": "SW4:2",
+      "vias": 0,
+      "expanded": 392
+    },
+    {
+      "net": "K3",
+      "status": "ROUTED",
+      "to": "D3:1",
+      "frompad": "SW3:2",
+      "vias": 0,
+      "expanded": 203
+    },
+    {
+      "net": "K2",
+      "status": "ROUTED",
+      "to": "D2:1",
+      "frompad": "SW2:2",
+      "vias": 0,
+      "expanded": 101
+    },
+    {
+      "net": "K1",
+      "status": "ROUTED",
+      "to": "D1:1",
+      "frompad": "SW1:2",
+      "vias": 0,
+      "expanded": 162
+    },
+    {
+      "net": "COL_BOTTOM",
+      "status": "ROUTED",
+      "to": "SW6:1",
+      "frompad": "SW5:1",
+      "vias": 0,
+      "expanded": 34
+    },
+    {
+      "net": "COL_BOTTOM",
+      "status": "ROUTED",
+      "to": "U1:6",
+      "frompad": "SW5:1",
+      "vias": 1,
+      "expanded": 13592
+    },
+    {
+      "net": "COL_MIDDLE",
+      "status": "ROUTED",
+      "to": "SW4:1",
+      "frompad": "SW3:1",
+      "vias": 0,
+      "expanded": 34
+    },
+    {
+      "net": "COL_MIDDLE",
+      "status": "ROUTED",
+      "to": "U1:5",
+      "frompad": "SW4:1",
+      "vias": 3,
+      "expanded": 24715
+    },
+    {
+      "net": "COL_TOP",
+      "status": "ROUTED",
+      "to": "SW2:1",
+      "frompad": "SW1:1",
+      "vias": 0,
+      "expanded": 562
+    },
+    {
+      "net": "COL_TOP",
+      "status": "ROUTED",
+      "to": "U1:4",
+      "frompad": "SW2:1",
+      "vias": 1,
+      "expanded": 14931
+    },
+    {
+      "net": "GND",
+      "status": "ROUTED",
+      "to": "BZ1:2",
+      "frompad": "U1:13",
+      "vias": 1,
+      "expanded": 5190
+    },
+    {
+      "net": "GND",
+      "status": "ROUTED",
+      "to": "J1:8",
+      "frompad": "BZ1:2",
+      "vias": 0,
+      "expanded": 793
+    },
+    {
+      "net": "GND",
+      "status": "ROUTED",
+      "to": "J1:1",
+      "frompad": "J1:8",
+      "vias": 0,
+      "expanded": 283
+    }
+  ],
+  "trace_segments": 380,
+  "vias": 11,
+  "unrouted": 0,
+  "verification": "UNVERIFIED BY KICAD CLI; board is design prototype until ERC/DRC and net connectivity validate"
+}

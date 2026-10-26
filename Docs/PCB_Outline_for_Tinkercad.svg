@@ -1,0 +1,8 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='100mm' height='100mm' viewBox='0 0 100 100'>
+<!-- Exact manufactured Edge.Cuts outline drawn as standalone SVG -->
+<polygon points='31,0.35 69,0.35 69,73 71.1,75.2 98.1,75.2 99.65,76.75 99.65,98 98,99.65 2,99.65 0.35,98 0.35,76.75 1.9,75.2 28.9,75.2 31,73' fill='#111111' stroke='none'/>
+<circle cx='35.6' cy='38' r='1.6' fill='#ffffff'/>
+<circle cx='64.4' cy='38' r='1.6' fill='#ffffff'/>
+<circle cx='5.4' cy='76.9' r='1.6' fill='#ffffff'/>
+<circle cx='94.6' cy='76.9' r='1.6' fill='#ffffff'/>
+</svg>

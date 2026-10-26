@@ -1,0 +1,6 @@
+(footprint "MountingHole_3.2" (version 20221018) (generator pcbnew) (layer "F.Cu") (attr board_only exclude_from_pos_files exclude_from_bom)
+(fp_text reference "H1" (at 0 4) (layer "F.SilkS") (effects (font (size 0.75 0.75) (thickness .13))))
+(fp_text value "M3" (at 0 4) (layer "F.Fab") (effects (font (size 0.7 0.7) (thickness .13))))
+
+(pad "" np_thru_hole circle (at 0 0) (size 3.2 3.2) (drill 3.2) (layers "*.Cu" "*.Mask") (uuid "a11a0000-cc00-4a11-8a11-00000000008a"))
+)

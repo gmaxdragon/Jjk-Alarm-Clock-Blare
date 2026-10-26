@@ -1,0 +1,11 @@
+Reference,Quantity,Part,From_BLARE_Kit,Mount,Verification_Gate
+U1,1,Seeed Studio XIAO ESP32-C3 with built-in USB-C,YES,PCB back near top,Check castellated solder joints and access to USB-C
+J1,1,8-pin 2.54mm male header,YES,PCB back below TFT region,Verify pin order and jumper orientation
+TFT1,1,2.25-inch ST7789 76x284 portrait TFT module,YES,Off-board front via 8 F-F jumper wires,Verify actual supplied module current and dimensions
+SW1-SW6,6,MX keyboard switch,YES,One 15.9mm-spaced row on front,Actual housing/keycap fit MUST PASS
+D1-D6,6,1N4148 through-hole diode DO-35,YES,PCB back along switches,Bar pad1 towards individual switch K signal
+BZ1,1,3.3V low-current passive piezo (PROVISIONAL),YES,PCB back,Exact kit part type/current must be verified before solder/enable
+H1-H4,4,M3 mechanical hole 3.2mm,PCB CUTOUT,Through PCB,Check metal screw head clearance
+CAP1-CAP6,6,Custom <=15.4mm MX keycaps with GGK design,USER PRINTS,Above switches,Stock DSA full width NOT compatible
+USB_C_CABLE,1,Certified USB-C cable/adapter or USB power bank,NOT IN KIT,USB port on XIAO,Test power supply and current
+BATTERY,0,No internal battery (not in kit),NOT IN KIT,NONE,USB unplugged means board off

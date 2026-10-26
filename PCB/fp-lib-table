@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name "GGK") (type "KiCad") (uri "${KIPRJMOD}/GGK.pretty") (options "") (descr "Bundled GGK PCB footprints"))
+)
