@@ -121,7 +121,7 @@
       "value": "TFT 8PIN",
       "side": "B",
       "xy": [
-        58.89,
+        41.11,
         67.0
       ]
     },
@@ -129,7 +129,7 @@
       "value": "3.3V PIEZO",
       "side": "B",
       "xy": [
-        53.81,
+        46.19,
         46.0
       ]
     },
@@ -147,22 +147,6 @@
       "xy": [
         64.4,
         38.0
-      ]
-    },
-    "H3": {
-      "value": "M3",
-      "side": "F",
-      "xy": [
-        5.4,
-        76.9
-      ]
-    },
-    "H4": {
-      "value": "M3",
-      "side": "F",
-      "xy": [
-        94.6,
-        76.9
       ]
     }
   },
@@ -305,15 +289,15 @@
       "to": "J1:6",
       "frompad": "U1:2",
       "vias": 0,
-      "expanded": 3166
+      "expanded": 1805
     },
     {
       "net": "DISP_MOSI",
       "status": "ROUTED",
       "to": "J1:4",
       "frompad": "U1:8",
-      "vias": 1,
-      "expanded": 6184
+      "vias": 0,
+      "expanded": 1626
     },
     {
       "net": "DISP_SCK",
@@ -321,15 +305,15 @@
       "to": "J1:3",
       "frompad": "U1:7",
       "vias": 1,
-      "expanded": 5672
+      "expanded": 5534
     },
     {
       "net": "DISP_CS",
       "status": "ROUTED",
       "to": "J1:7",
       "frompad": "U1:3",
-      "vias": 0,
-      "expanded": 5116
+      "vias": 1,
+      "expanded": 7167
     },
     {
       "net": "PIEZO",
@@ -337,23 +321,23 @@
       "to": "BZ1:1",
       "frompad": "U1:11",
       "vias": 1,
-      "expanded": 2994
-    },
-    {
-      "net": "3V3",
-      "status": "ROUTED",
-      "to": "J1:5",
-      "frompad": "U1:12",
-      "vias": 1,
-      "expanded": 4297
+      "expanded": 3940
     },
     {
       "net": "3V3",
       "status": "ROUTED",
       "to": "J1:2",
-      "frompad": "J1:5",
+      "frompad": "U1:12",
       "vias": 0,
-      "expanded": 78
+      "expanded": 3689
+    },
+    {
+      "net": "3V3",
+      "status": "ROUTED",
+      "to": "J1:5",
+      "frompad": "J1:2",
+      "vias": 0,
+      "expanded": 73
     },
     {
       "net": "K6",
@@ -416,8 +400,8 @@
       "status": "ROUTED",
       "to": "U1:6",
       "frompad": "SW5:1",
-      "vias": 1,
-      "expanded": 13592
+      "vias": 3,
+      "expanded": 33368
     },
     {
       "net": "COL_MIDDLE",
@@ -432,8 +416,8 @@
       "status": "ROUTED",
       "to": "U1:5",
       "frompad": "SW4:1",
-      "vias": 3,
-      "expanded": 24715
+      "vias": 1,
+      "expanded": 27716
     },
     {
       "net": "COL_TOP",
@@ -449,7 +433,7 @@
       "to": "U1:4",
       "frompad": "SW2:1",
       "vias": 1,
-      "expanded": 14931
+      "expanded": 13741
     },
     {
       "net": "GND",
@@ -457,15 +441,15 @@
       "to": "BZ1:2",
       "frompad": "U1:13",
       "vias": 1,
-      "expanded": 5190
+      "expanded": 3919
     },
     {
       "net": "GND",
       "status": "ROUTED",
       "to": "J1:8",
       "frompad": "BZ1:2",
-      "vias": 0,
-      "expanded": 793
+      "vias": 1,
+      "expanded": 1741
     },
     {
       "net": "GND",
@@ -473,10 +457,10 @@
       "to": "J1:1",
       "frompad": "J1:8",
       "vias": 0,
-      "expanded": 283
+      "expanded": 267
     }
   ],
-  "trace_segments": 380,
+  "trace_segments": 318,
   "vias": 11,
   "unrouted": 0,
   "verification": "UNVERIFIED BY KICAD CLI; board is design prototype until ERC/DRC and net connectivity validate"

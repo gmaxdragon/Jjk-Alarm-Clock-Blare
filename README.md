@@ -1,88 +1,87 @@
-# GGK ALARM — BLARE Rev C engineering package
+# GGK Alarm — BLARE Rev D
 
-**STATUS: DESIGN + SOFTWARE PROTOTYPE. NOT APPROVED TO FABRICATE, POWER UNATTENDED OR RELY ON FOR WAKING.**
+**Design status: KiCad electrical validation passed; physical fabrication/overnight safety approval remains ON HOLD.** This is a custom GGK-themed bedside alarm clock built from the standard Hack Club BLARE electronics kit. **No extra electronic components or internal battery.**
 
-This revision rebuilds the user's uploaded blank `jjkspeakerpcb` KiCad project as a narrow vertical GGK alarm PCB: kit 76 × 284 portrait ST7789 TFT (connected by 8 F-F jumper wires), a single six-switch horizontal row, ESP32-C3 XIAO on the back with USB-C at the top, 3.3 V piezo footprint, six 1N4148 switch matrix diodes, and M3 screws. No side decoration or key silkscreen labels. The board is 99.3 × 99.3 mm, with 15.9 mm switch pitch.
+## Hardware and design
 
-## What was engineered in Rev C
+- **Custom 99.3 × 99.3 mm T-shaped two-layer PCB** with a narrow display stalk and one six-switch horizontal keyboard bar. No artwork or key labels in the PCB silkscreen.
+- **Six MX keyboard switches** wired as a 2-row × 3-column matrix using **six kit-supplied 1N4148 through-hole diodes**. LEFT TO RIGHT: Up, Down, Time Set, Clock Set, Snooze, Alarm On.
+- **Seeed XIAO ESP32-C3** mounted on the back, USB-C accessible at the top. Its **22 edge/underside pad locations** were compared to the native KiCad board model.
+- **Kit 2.25-inch ST7789 TFT display**, 76 × 284 pixels, oriented **portrait** and connected using the provided 8-pin header and jumper wires. Exact panel wiring/order and dimensions must be checked against the physically supplied module.
+- **Kit 3.3 V piezo buzzer**, with output **disabled by default** in firmware until its current/type and GPIO compatibility are measured.
+- **Only two top-stem M3 mounting holes** (H1, H2). The lower switch bar must be held by a properly designed printed case; don't assume the earlier four-hole Rev C drawing.
 
-- Corrected 2×3 keyboard diode orientation for LOW-driven columns and pulled-up row inputs.
-- Reassigned XIAO D9/GPIO9 (BOOT strap) to a **pulled-up keyboard row input** rather than TFT CS. TFT DC and CS now use non-strapping D1/D2 GPIO; GPIO8 likewise a row input.
-- Explicitly routed GND between U1, J1, and BZ1, so copper planes do not have to be filled to achieve basic GND connectivity.
-- Existing copper and pad geometries independently checked for same-net connectivity and ≥0.2 mm spacing with a Python math checker; the checks found 0 unrouted pad networks and 0 violations below 0.20 mm in their geometric model.
-- Added firmware that implements all six actual keys (no longer an incompatible four-key prototype), 12-hour portrait display with AM/PM, alarm/day editing, manual time/date editing, NTP Wi-Fi sync, 5-minute snooze, optional GK trivia dismissal, protected-local-PIN phone controls, and selectable display colors/title.
-- Added host C++ behavioral tests, syntax-only firmware API stubs, manufacturing holds, electrical first-power checklist, full GPIO schematic map and Tinkercad enclosure dimensions.
+See `PCB/` for the **complete editable native KiCad project** and local embedded symbols/footprints, `Docs/Tinkercad_fit_guide.md` for the enclosure outline, and `Docs/BOM_Kit_Only.csv` for the exact parts list.
 
-## Exact pin mapping (KiCad U1)
+### XIAO pin mapping
 
-| XIAO pin | GPIO | Board net/function |
-|---|---:|---|
-| D0 | 2 | NC. ESP-C3 strapping pin, intentionally unused |
+| XIAO | GPIO | Net / function |
+| --- | ---: | --- |
+| D0 | 2 | NC (strap; do not load) |
 | D1 | 3 | TFT DC |
 | D2 | 4 | TFT CS |
-| D3 | 5 | Matrix column 0 (SW1/SW2) |
-| D4 | 6 | Matrix column 1 (SW3/SW4) |
-| D5 | 7 | Matrix column 2 (SW5/SW6) |
-| D6 | 21 | TFT SCK, output; UART boot activity may flash display |
+| D3 | 5 | Key matrix column 0 |
+| D4 | 6 | Key matrix column 1 |
+| D5 | 7 | Key matrix column 2 |
+| D6 | 21 | TFT SCK |
 | D7 | 20 | TFT MOSI |
-| D8 | 8 | Matrix row 0 input with pull-up |
-| D9 | 9 | Matrix row 1 input with pull-up (BOOT strap) |
-| D10 | 10 | Buzzer drive GPIO, blocked until kit piezo electrically approved |
-| 3V3 | – | 3.3 V output for TFT VCC and RST |
-| GND | – | Ground and TFT active-low BL |
-| VBUS | – | NC; USB-C is built into the XIAO |
-| BAT underside | – | NC; **no internal battery circuit** |
+| D8 | 8 | Row 0 input with pull-up (strapping-sensitive) |
+| D9 | 9 | Row 1 input with pull-up (BOOT strap; check at boot) |
+| D10 | 10 | Buzzer GPIO **held disabled by default** |
+| 3V3 | — | TFT VCC and RST |
+| GND | — | TFT GND and active-low BL |
+| VBUS/BAT | — | Neither wired by the PCB; no internal battery |
 
-The TFT's *pin order* is J1: GND / 3V3 / SCK / MOSI / RST(3V3) / DC / CS / BL(GND). Verify the actual shipped BLARE screen and its labels; if they differ, STOP before connecting.
+J1 net sequence: **GND, 3V3, SCK, MOSI, RST(3V3), DC, CS, BL(GND)**. Never presume the shipped display has that physical header order; map each jumper to its printed label before first power. Diode cathode stripe goes to **K1–K6 (switch side)**, anode to the appropriate **ROW**.
 
-## BOM and scope
+## Verification evidence — Rev D
 
-`Docs/BOM_Kit_Only.csv` lists everything sourced from BLARE and custom 3D-printed keycaps. **No additional USB-C connector, battery charger, 18650 cell, LiPo connector, speaker amplifier, or TFT was quietly added.** The display module must be the actual BLARE screen, not the generic 1.9-inch display in the previous fictional image.
+| Validation | Observed result |
+| --- | --- |
+| Native KiCad schematic ERC | **0 errors / 0 warnings** |
+| Native KiCad PCB DRC after native ground-zone refill | **0 violations** |
+| Schematic-vs-PCB parity | **0 conflicts** |
+| Native unrouted/unconnected pads | **0** |
+| Native pad-geometry parity | **56/56 exact intended positions (±0.015 mm)** |
+| Copper routing and GPIO fail-safe regression tests | **Pass** |
+| Clock/alarm and timer/stopwatch C++ unit tests | **Pass** |
+| Real Arduino ESP32-C3 / Adafruit compilation | **Pass (no physical flash)** |
 
-### Important six-switch mechanical exception
+Native KiCad and copper-zone proof: [GitHub Actions run 40272574464](https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40272574464). Genuine ESP32-C3/Adafruit compile: [run 40272572429](https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40272572429). The Rev D GitHub workflows rerun these checks. Generated source is committed to the repository, while **production Gerbers are not released**.
 
-BLARE supplies twelve full-size MX keycaps, but six 1U keycaps at standard 19.05 mm pitch need ~114.3 mm width, violating the recommended <100 mm PCB envelope. This board uses 15.9 mm pitch and therefore **cannot use six included full-size keycaps together**. Six custom narrow ≤15.4 mm-wide keycaps (and confirmation that the switches themselves fit) are mandatory. Check with an actual 1:1 switch-spacing test print before order. If they do not fit, choose a longer board or fewer buttons instead of forcing them.
+## Functions requiring no new parts
 
-## Power and overnight operation — STOP AND READ
+- One programmable alarm with individually selectable weekdays; large portrait time display with **AM/PM**, optional date, and red/cyan/gold themes.
+- Six-button setup for local date/time or alarm settings, **five-minute snooze**, and GGK trivia with a deliberate dismissal shortcut.
+- Wi-Fi **NTP synchronization**, plus a PIN-protected local phone settings page for clock sync, caption, colors, date visibility, and alarm settings. Only connect on a trusted private network; the site uses **HTTP**, not TLS.
+- Extra **1–90 minute countdown timer** and **stopwatch** using the existing six keys. Hold **Clock Set** for countdown, **Down** for stopwatch. Countdown completion is visual until the piezo is verified. See `Firmware/README.md`.
+- Firmware retains an audio-hold by default and will not assume any extra LEDs, speakers, RTC or backlight driver.
 
-**There is no safe claim of mis-solder-proof or guaranteed all-night operation.**
+## Mechanical constraints
 
-- Wired mode: a high-quality, standards-compliant USB-C cable and certified 5 V USB adapter power the XIAO. The USB-C connector is already on the XIAO. A correctly assembled device may be suitable for overnight operation **only after** electrical inspection, supervised burn-in, enclosure/heat checks, and a verified alarm cycle.
-- Away from a wall outlet: plug the same USB-C into a reputable **external USB power bank** that stays awake under the load. You must run a full overnight no-dropout trial with that exact bank. It is still plugged into the USB power bank; it is **not an internal self-contained battery**.
-- Fully unplugged: the BLARE kit contains no battery. The Rev C board cannot operate when **all** USB sources are disconnected. Seeed's XIAO has battery charging circuitry, but without a qualified protected battery, validated connector polarity, pack protection, current limits and mechanical isolation, an internal Li-ion path would introduce unacceptable risk.
-- Do not solder an unprotected loose Li-ion pouch cell to the BAT pads. Do not test charging a battery in a closed or flammable enclosure. No lithium battery interface has been added to this revision.
-- GPIO alone may NOT safely operate an unknown active or electromagnetic buzzer. The supplied "3.3 V piezo" part lacks an exact part number/current spec in the kit list. Firmware defaults to **AUDIO HOLD**. The output must remain disabled unless the shipped part is proven passive and low-current; otherwise add a properly sized transistor driver and associated parts in a later design.
-- This kit PCB has **no dedicated external overcurrent fuse**; it cannot prevent all solder shorts, wiring reversals, overheating, or electrically unsafe adapters. A phone or powerbank's short-circuit protection is not a substitute for inspecting every connection.
-- The TFT active-low BL pin is grounded, so its backlight remains powered. Black pixels or ESP deep sleep do **not** make a low-power battery alarm; proper backlight switching is an unbuilt future revision.
-- No RTC battery, DS3231, GPS, or protected time backup is included. If input power disappears, device stops. It attempts NTP synchronization once connectivity returns, but the alarm **must not** be the only source you rely on to wake up.
+The board uses **15.9 mm switch pitch** to remain below Hack Club's ~100 mm guideline. **Standard full-size 1U/DSA keycaps cannot fit all six switches in that width**. Six custom **≤15.4 mm wide** printed keycaps are required, plus a physical 1:1 switch/housing fit test. If the real MX housings bind even without caps, the board must be reworked rather than forced.
 
-### Electronics release blockers
+The display is **off-board** and attached by eight wires; the faceplate needs final dimensions from the actual shipped part. Two M3 holes support the upper stem while the printed enclosure supports the lower PCB. Keep the USB-C cable from flexing XIAO joints.
 
-1. KiCad `kicad-cli` is not available in this container (Debian package repository unreachable); **native KiCad schematic ERC and PCB DRC, refill, exact pad checks and exported production Gerbers have NOT been run**. Geometric route checks DO NOT substitute for them.
-2. Actual kit 2.25-in TFT module pin order and outside dimensions remain unverified. Reference box on `Dwgs.User` is example-only.
-3. Actual kit buzzer's part number, 3.3V current and passive/active behavior remain unverified. Verify before driving GPIO10.
-4. Standard DSA keycap collision (15.9 mm vs 19.05 mm pitch) requires a physical printed fit check.
-5. All 22 XIAO lands and USB-C external access must be confirmed against actual delivered board and case.
-6. Verify diode band orientation (cathode pad1 to switch node; anode pad2 to row) matches both silkscreen/back-side view and KiCad generated netlist.
-7. Run electrical continuity and polarity testing **before USB power**, then supervised current-limited bring-up. See `Docs/SAFETY_FIRST_POWER.md`.
-8. Arduino `.ino` was host syntax-parsed against API *stubs*, and behavioral logic was unit-tested; it has not been compiled with genuine ESP32/Adafruit libraries or flashed to hardware. Real firmware compile and panel test mandatory.
-9. Screen module/mechanical fit and enclosure ventilation must be measured and validated before enclosed continuous use.
+## Power and safety limits — important
 
-## Project structure
+**Passing ERC/DRC does NOT prove the physical assembled device is safe if mis-soldered, safe in bed overnight, or usable without power.**
 
-- `PCB/`: editable KiCad `.kicad_pro`, `.kicad_sch`, `.kicad_pcb` and local symbol/footprint library; **no released Gerbers**.
-- `Firmware/GGK_Alarm/`: Arduino `.ino`, alarm logic, GPIO map and Wi-Fi PIN template.
-- `Docs/`: BOM, hardware constraints, safety test plan, geometry/connectivity reports, Tinkercad geometry.
-- `Preview/GGK_Alarm_RevC_KiCad_PCB_Layout.png`: actual source-coordinate geometry plot; it is not a KiCad 3D viewer output.
-- `Tests/`: C++ alarm logic tests, firmware API stub parse, copper connectivity checker.
+- **USB-C wall adapter:** use a reputable, correctly rated certified 5 V adapter and cable, **only after** inspecting every solder joint, polarity and output voltage, checking shorts with a multimeter, and supervised current/temperature testing.
+- **Wall unplugged, USB connected to power bank:** possible with a reputable protected 5 V USB power bank that is tested to **remain on throughout the night**. Unplugging every power source shuts the clock off.
+- **No internal battery:** BLARE's base kit includes no battery. Do not wire or solder a loose Li-ion cell to the XIAO to improvise standalone operation.
+- **No guaranteed solder-fault protection:** there is no dedicated PCB fuse, reverse-polarity protection for a miswired TFT, battery charging/thermal protection circuit, or independent power cutoff. Such failures can damage electronics and potentially cause overheating.
+- **Sound held disabled:** the 3.3 V buzzer's precise model, load and passive/active behavior are unknown; verify before enabling buzzer GPIO. Do not rely on this alarm to wake you until physical audio is validated.
+- **Backlight permanently on:** the kit's active-low BL line is grounded; software cannot turn it off or guarantee energy savings. No RTC or protected timekeeping during power loss.
 
-## Validate software locally
+Before any overnight use, follow the complete **`Docs/SAFETY_FIRST_POWER.md`** checklist, have an adult with electronics experience inspect the assembly, run a supervised thermal trial, and use another dependable alarm. Physical product approval remains **false** in `Docs/RELEASE_GATES.json`.
 
-```bash
-python3 verify_board_geometry.py
-python3 Tests/independent_connectivity.py
-g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/alarm_logic_tests.cpp -o /tmp/ggk_logic && /tmp/ggk_logic
-g++ -std=c++17 -Wall -Wextra -Werror -pedantic -ITests/fake_arduino -x c++ -fsyntax-only Firmware/GGK_Alarm/GGK_Alarm.ino
-```
+## Files
 
-**Status is DESIGN HOLD until the KiCad, fabrication, electrical, thermal, and all-night tests pass.** No Gerber ZIP for ordering is included intentionally.
+- `PCB/jjkspeakerpcb.kicad_pcb`, `.kicad_sch`, `.kicad_pro`, local libraries — editable design and filled copper zones.
+- `Firmware/GGK_Alarm/GGK_Alarm.ino`, `AlarmLogic.h`, `TimeTools.h`, `BoardConfig.h`, `secrets.example.h` — firmware; Wi-Fi credentials are not committed.
+- `Docs/` — BOM, mechanical details, safety, power choices, engineering evidence.
+- `Tests/` — KiCad physical-pad position, native GND refill, host logic, GPIO, and independent routing regression checks.
+- `.github/workflows/` — repeatable KiCad ERC/DRC and real Arduino board compile.
+
+**A manufacturing ZIP, confirmed assembly, and permission for unattended bedside operation have NOT been issued.**

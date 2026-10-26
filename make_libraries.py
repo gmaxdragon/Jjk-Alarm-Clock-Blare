@@ -44,6 +44,15 @@ for m in re.finditer(r'\(footprint "GGK:([^"]+)"',b):
         lambda m:'(footprint "'+lib+'" (version 20221018) (generator pcbnew) (layer "F.Cu") (attr '+m.group(1)+')',t,count=1)
     t=t.replace('"B.Cu"','"F.Cu"').replace('"B.Paste"','"F.Paste"').replace('"B.Mask"','"F.Mask"')
     t=t.replace('"B.Fab"','"F.Fab"').replace('"B.SilkS"','"F.SilkS"').replace('"B.CrtYd"','"F.CrtYd"')
+    # Canonical XIAO front-view library: reflect B-side local X back to
+    # the original Seeed front-view coordinate system. The board's physical
+    # U1 instance remains on B, and KiCad owns the back-layer flip.
+    # U1 has a custom native BACK-mounted pattern with 22 documented
+    # castellated/underside pads. Preserve this footprint's B-side layers
+    # in the project-local library so KiCad compares the *actual* pattern.
+    if lib == 'Seeed_XIAO_ESP32C3_Castellated':
+        for suffix in ('Cu','Paste','Mask','Fab','SilkS','CrtYd'):
+            t=t.replace('"F.'+suffix+'"','"B.'+suffix+'"')
     t=re.sub(r'\(path "/[^"]+"\)', '', t)
     t=re.sub(r'\(net \d+ "[^"]+"\)', '', t)
     (lib_dir/(lib+'.kicad_mod')).write_text(t+'\n')

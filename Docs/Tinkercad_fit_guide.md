@@ -1,4 +1,4 @@
-# GGK Alarm — Tinkercad mechanical fit guide (Rev C)
+# GGK Alarm — Tinkercad mechanical fit guide (Rev D)
 
 PCB maximum envelope: **99.3 mm wide × 99.3 mm tall × 1.6 mm thick**.
 The outline is an inverted **T**: top display stem nominally x=31.0..69.0 mm,
@@ -23,7 +23,7 @@ switch spacing is 19.05 mm. Make six <=15.4 mm wide keycap bodies with
 no spikes extending sideways into neighbors. Print and dry-fit a plate
 with 15.9 mm spacing BEFORE approving electronics production.
 
-Mechanical M3 hole centers: H1 (35.6,38), H2 (64.4,38), H3 (5.4,76.9), H4 (94.6,76.9). Hole diameter 3.2 mm; the screw heads and copper clearance need to be checked against actual parts. Do not trust the printed enclosure alone to be electrically safe.
+Mechanical M3 hole centers: **H1 (35.6,38)** and **H2 (64.4,38)** ONLY. Holes H3 and H4 were removed from the final Rev D PCB because of interference with diode/switch routing. Hole diameter 3.2 mm. Design a captive ledge and standoffs in Tinkercad to support the **entire lower horizontal keyboard bar** without compressing switch solder joints. Metal fastener heads/heatset inserts must not touch copper.
 
 USB-C belongs at the very top of the narrow stem around (50,0). The XIAO is mounted **on the back**; leave an accurately measured USB opening and enough space for cable bending without putting force on the PCB/module solder pads.
 

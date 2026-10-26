@@ -1,4 +1,4 @@
-name: GGK Alarm Rev C Engineering Gate
+name: GGK Alarm Rev D Native Engineering Gate
 on:
   push:
     branches: [main]
@@ -19,6 +19,10 @@ jobs:
       - name: Python prerequisites
         run: |
           python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
+      - name: Regenerate schematic and physical copper from audited source
+        run: |
+          python3 build_board.py
+          python3 make_libraries.py
       - name: Pin map, failsafe defaults, no internal battery assertions
         run: python3 Tests/check_pinmap_and_failsafe.py
       - name: Independent pad-to-pad copper path verification
@@ -29,6 +33,10 @@ jobs:
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/alarm_logic_tests.cpp -o /tmp/ggk_alarm_logic
           /tmp/ggk_alarm_logic
+      - name: Offline timer and stopwatch rollover tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/time_tools_tests.cpp -o /tmp/ggk_time
+          /tmp/ggk_time
       - name: Host-stub syntax check; not an Arduino-core compile
         run: |
           # Use an empty, safe config in CI. Never commit private credentials.
@@ -41,7 +49,10 @@ jobs:
           r=json.load(open('Docs/RELEASE_GATES.json'))
           assert r['release_approved'] is False
           assert r['power']['fully_unplugged_supported'] is False
-          assert r['firmware']['arduino_esp32_real_compile'] is False
+          assert r['pcb_copper_geometry']['native_kicad_erc'] is True
+          assert r['pcb_copper_geometry']['native_kicad_drc'] is True
+          assert r['pcb_copper_geometry']['zones_refilled'] is True
+          assert r['firmware']['arduino_esp32_real_compile'] is True
           print('DESIGN HOLD enforced; no Gerbers released')
           PY
   native-kicad:
@@ -60,6 +71,16 @@ jobs:
           kicad-cli version
           kicad-cli sch erc --help | grep -q "exit-code-violations"
           kicad-cli pcb drc --help | grep -q "exit-code-violations"
+      - name: Python routing dependencies
+        run: python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
+      - name: Regenerate native PCB/schematic from the audited generator
+        run: |
+          python3 build_board.py
+          python3 make_libraries.py
+      - name: Native KiCad pad coordinate parity
+        run: python3 Tests/native_pad_position_gate.py
+      - name: Native ground-zone refill
+        run: python3 Tests/native_fill_zones.py
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
@@ -70,7 +91,7 @@ jobs:
           echo "----- NATIVE ERC VIOLATION REPORT -----"
           if [ -f ggk-erc.rpt ]; then cat ggk-erc.rpt; else echo "ERC report missing"; fi
           exit "$result"
-      - name: Native KiCad PCB DRC (filled zones must be checked separately)
+      - name: Native KiCad PCB DRC (ground zones refilled)
         id: drc
         continue-on-error: true
         run: |

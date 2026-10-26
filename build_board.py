@@ -88,7 +88,7 @@ for ref,label,cx,cy,col,row,kn,dref in BUTTONS:
     # D9/BOOT GPIO9 is now used only as a pullup row INPUT; attached switches
     # cannot force a boot strap state until firmware actively scans columns.
     dx1=[11.25,24.5,37.75,51.0,64.25,77.5][int(ref[2:])-1]
-    dx2=dx1-7.62   # B-side footprint flip places pad2 at dx1+7.62
+    dx2=dx1+7.62   # Native KiCad pad2 is +7.62mm from cathode pad1
     dy=78.1
     dpads=[pad('both','1',kn,0,0,size=1.8,drill=0.85),
            pad('both','2',row,dx2-dx1,0,size=1.8,drill=0.85)]
@@ -111,7 +111,7 @@ for i in range(1,15):
         px,py = 0.835, -18.12+(i-1)*2.54
     else:
         px,py = 17, -2.88-(i-8)*2.54
-    upads.append(pad('B',str(i),XIAO[i],px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
+    upads.append(pad('B',str(i),XIAO[i],-px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
 # Official Seeed XIAO-ESP32-C3-SMD underside lands, pads 15..22.
 # The side pins already provide signals; redundant center lands are left
 # isolated on *this carrier* instead of trying to route duplicate pins.
@@ -127,7 +127,7 @@ underside = [
  (22,4.445,-12.787,2.5,1.1,None), # GND (internal module)
 ]
 for number,px,py,w,h,net in underside:
-    upads.append(pad('B',str(number),net,px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
+    upads.append(pad('B',str(number),net,-px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
 # Mount XIAO on PCB back under the front-facing portrait screen. Its native
 # USB-C connector points UP, with the shell accessible at the top of the case.
 add('U1','Seeed_XIAO_ESP32C3_Castellated',58.9,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
@@ -138,42 +138,42 @@ DISPLAY={1:'GND',2:'3V3',3:'DISP_SCK',4:'DISP_MOSI',5:'3V3',
          6:'DISP_DC',7:'DISP_CS',8:'GND'}
 jpads=[pad('both',str(i),DISPLAY[i],(i-1)*2.54,0,shape='rect' if i==1 else 'circle',size=1.75,drill=1.0)
        for i in range(1,9)]
-add('J1','PinHeader_1x08_2.54',58.89,67,'B',jpads,value='TFT 8PIN')
+add('J1','PinHeader_1x08_2.54',41.11,67,'B',jpads,value='TFT 8PIN')
 
 # No assumption that an active magnetic buzzer is safe on GPIO. The board is
 # wired directly for the advertised LOW CURRENT 3.3V PIEZO only; kit part must
 # be verified before assembly. Mounted BACK, vent faces case opening.
-add('BZ1','Piezo_P12_P7.62',53.81,46,'B',[
+add('BZ1','Piezo_P12_P7.62',46.19,46,'B',[
     pad('both','1','PIEZO',0,0,shape='rect',size=1.9,drill=0.9),
     pad('both','2','GND',7.62,0,size=1.9,drill=0.9)],value='3.3V PIEZO')
 
 # Hole centers chosen outside MX PCB guide holes and typical 1u keycaps.
-HOLES=[('H1',35.6,38),('H2',64.4,38),('H3',5.4,76.9),('H4',94.6,76.9)]
+HOLES=[('H1',35.6,38),('H2',64.4,38)]
 for ref,hx,hy in HOLES:
     add(ref,'MountingHole_3.2',hx,hy,'F',[
         pad('none','',None,0,0,size=3.2,drill=3.2,role='np_thru_hole')],value='M3',attr='board_only exclude_from_pos_files exclude_from_bom')
 
 # Calculate pad locations. Backside pads keep local X/Y as seen in the KiCad
 # B-side footprint coordinate system, allowing pcbnew to perform mirroring.
-# IMPORTANT: This generator stores B-side footprint x-values as back-view
+# IMPORTANT: This generator stores B-side footprint x-values as local x
 # coordinates; in board drawing, pcbnew flips local x -> -x. Physical target:
-# place front-view module left pad column at x39.935; right at x56.10.
+# place front-view module pad columns within the narrow PCB stalk.
 def target(p, q):
-    # On bottom layer, local x mirrors; anchor at x56.935 so pad1 physical x56.1,
-    # and pad8 physical x39.935. PCB KiCad F-frame coordinates derived by flip.
-    x=p['x'] + (-q['x'] if p['face']=='B' else q['x'])
+    # KiCad back-layer pads follow authored S-expression x/y positions.
+    # Native pcbnew pad position parity must pass before fabrication.
+    x=p['x'] + q['x']  # Native pcbnew pad positions use the authored local x
     y=p['y'] + q['y']
     return (round(x,4),round(y,4))
 
 # Board back-side footprints anchor x-values reversed from front-view:
-# We want XIAO center x48.0 and the USB near board bottom.
+# Place XIAO centrally with its USB connector toward the TOP board edge.
 for p in parts:
     if p['ref']=='U1':
-        p['x']=58.9      # B-side body x=41.1..58.9, USB at board top
+        p['x']=58.9      # Canonical KiCad B-side physical flip; body x41.1..58.9
     if p['ref']=='J1':
-        p['x']=58.89     # B-side header physical pads x=58.89..41.11
+        p['x']=41.11     # Native header pads x41.11..58.89
     if p['ref']=='BZ1':
-        p['x']=53.81     # B-side piezo center x50.0
+        p['x']=46.19     # Native buzzer pads x46.19..53.81
 
 PADS=[]
 for p in parts:
@@ -363,7 +363,8 @@ for net in priority:
 # Zones still exist as supplemental copper planes and need native refill before fab.
 
 def fp_text(layer,kind,s,x,y,size=.8):
-    return f'(fp_text {kind} {quote(s)} (at {fmt(x)} {fmt(y)}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness .13))))'
+    mirror = ' (justify mirror)' if layer.startswith('B.') else ''
+    return f'(fp_text {kind} {quote(s)} (at {fmt(x)} {fmt(y)}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness .13)){mirror}))'
 
 def fp_line(x1,y1,x2,y2,layer='F.SilkS',width=.12):
     return f'(fp_line (start {fmt(x1)} {fmt(y1)}) (end {fmt(x2)} {fmt(y2)}) (stroke (width {fmt(width)}) (type solid)) (layer {quote(layer)}) (uuid {quote(uid())}))'
@@ -375,9 +376,9 @@ def footprint(p):
     layer='B.Cu' if p['face']=='B' else 'F.Cu'; base=layer[:1]; sig=[]
     sig.append(f'(footprint {quote("GGK:"+p["lib"])} (layer {quote(layer)}) (uuid {quote(uid())}) (at {fmt(p["x"])} {fmt(p["y"])}) (attr {p["attr"]})')
     refat=(0,-10.8) if p['ref'].startswith('SW') else (0,-3)
-    if p['ref']=='U1': refat=(8.9,-23.5)
+    if p['ref']=='U1': refat=(-8.9,-23.5)
     if p['ref'].startswith('H'): refat=(0,4)
-    sig.append(fp_text((base+'.Fab') if p['ref'].startswith('SW') else (base+'.SilkS'),'reference',p['ref'],*refat,size=.75))
+    sig.append(fp_text(base+'.Fab','reference',p['ref'],*refat,size=.8))
     sig.append(fp_text(base+'.Fab','value',p['value'],0,12 if p['lib'].startswith('MX') else 4,size=.7))
     sig.append(f'(path "/{p["symid"]}")')
     if p['lib'].startswith('MX'):
@@ -386,16 +387,17 @@ def footprint(p):
         sig.extend([fp_rect(-9.525,-1.905,4.445,12.065,layer='F.Fab'),
                     fp_rect(-10.44,-2.82,5.36,12.98,layer='F.CrtYd',width=.05)])
     elif p['ref']=='U1':
-        sig.extend([fp_rect(0,-21,17.8,0,'B.Fab',.12),
-                    fp_rect(-.15,-21.3,17.95,.2,'B.CrtYd',.05)])
-        sig.append(fp_text('B.SilkS','user','USB-C',9,-22.5,size=.7))
+        # The XIAO's real component envelope is in the Tinkercad mechanical
+        # guide, not duplicated as ad-hoc reversed footprint graphics here.
+        # Only the canonical Seeed pad geometry participates in DRC.
+        pass
     elif p['ref']=='J1':sig.append(fp_rect(-1.45,-1.45,19.23,1.45,'B.SilkS',.1))
     elif p['ref']=='BZ1':
         sig.append(f'(fp_circle (center 3.81 0) (end 9.81 0) (stroke (width .12) (type solid)) (fill none) (layer "B.SilkS") (uuid {quote(uid())}))')
-        sig.append(fp_text('B.SilkS','user','+',-1,3.5,size=.85))
+        sig.append(fp_text('B.Fab','user','+',-1,3.5,size=.85))
     elif p['ref'].startswith('D'):
-        sig.append(fp_rect(-2.1,-1.0,2.1,1.0,base+'.SilkS',.12))
-        sig.append(fp_line(-1.2,-1.5,-1.2,1.5,base+'.SilkS',.3)) # cathode stripe pad1
+        sig.append(fp_rect(-2.1,-1.0,2.1,1.0,base+'.Fab',.12))
+        sig.append(fp_line(-1.2,-1.5,-1.2,1.5,base+'.Fab',.3)) # cathode stripe pad1
     elif p['ref'].startswith('H'):
         pass
     for q in p['pads']:
@@ -409,8 +411,12 @@ def footprint(p):
         else:w=h=siz
         shape=smdshape if q['role']=='smd' else q['shape']
         special='(roundrect_rratio .2)' if q['role']=='smd' else ''
-        net=f'(net {NETIDS[q["net"]]} {quote(q["net"])})' if q['net'] else ''
-        sig.append(f'(pad {quote(q["number"])} {q["role"]} {shape} (at {xy((q["x"],q["y"]))}) (size {fmt(w)} {fmt(h)}) {dr} (layers {layers}) {special} {net} (uuid {quote(uid())}))')
+        # J1 pad 1 (GND) already has an explicit copper trace. The narrow TFT
+        # header spacing leaves only one thermal spoke on the front zone;
+        # use a native solid zone attachment for THIS grounded through-hole.
+        zone='(zone_connect 2)' if p['ref']=='J1' and q['number']=='1' else ''
+        net=f'(net {NETIDS[q["net"]]} {quote(chr(47)+q["net"])})' if q['net'] else ''
+        sig.append(f'(pad {quote(q["number"])} {q["role"]} {shape} (at {xy((q["x"],q["y"]))}) (size {fmt(w)} {fmt(h)}) {dr} (layers {layers}) {special} {zone} {net} (uuid {quote(uid())}))')
     sig.append(')')
     return '\n'.join(sig)
 
@@ -418,7 +424,8 @@ def footprint(p):
 # The screen body appears ONLY as a mechanical reference on Dwgs.User.
 # Avoid claiming special colors are in PCB data; solder-mask finish chosen at fab.
 def gtext(s,x,y,size=1.25,thickness=.19,layer='F.SilkS',angle=0):
-    return f'(gr_text {quote(s)} (at {fmt(x)} {fmt(y)} {angle}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness {fmt(thickness)}) (bold yes))) (uuid {quote(uid())}))'
+    mirror = ' (justify mirror)' if layer.startswith('B.') else ''
+    return f'(gr_text {quote(s)} (at {fmt(x)} {fmt(y)} {angle}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness {fmt(thickness)}) (bold yes)){mirror}) (uuid {quote(uid())}))'
 
 def gline(x1,y1,x2,y2,width=.25,layer='F.SilkS'):
     return f'(gr_line (start {fmt(x1)} {fmt(y1)}) (end {fmt(x2)} {fmt(y2)}) (stroke (width {fmt(width)}) (type solid)) (layer {quote(layer)}) (uuid {quote(uid())}))'
@@ -454,7 +461,7 @@ PCB_HEADER='''(kicad_pcb
  (net 0 "")
 '''
 board_text=[PCB_HEADER]
-for n in NAMES:board_text.append(f'(net {NETIDS[n]} {quote(n)})')
+for n in NAMES:board_text.append(f'(net {NETIDS[n]} {quote(chr(47)+n)})')
 for p in parts:board_text.append(footprint(p))
 for a,b,layer,net in segments:
     board_text.append(f'(segment (start {xy(a)}) (end {xy(b)}) (width 0.25) (layer {quote(layer)}) (net {NETIDS[net]}) (uuid {quote(uid())}))')
@@ -466,8 +473,8 @@ for a,b in zip(OUTLINE,OUTLINE[1:]+OUTLINE[:1]):
 # Intentionally no F.SilkS key names or decorative images. Screen is 21.08 x
 # 73.15mm (example module body) centered on front, within the central stalk.
 # The exact kit screen must be measured before the case is final.
-board_text.append(gtext('GGK ALARM R2',50,54,.65,.12,layer='B.SilkS'))
-board_text.append(gtext('6 KEY MATRIX // TFT ON FRONT',50,60,.56,.1,layer='B.SilkS'))
+board_text.append(gtext('GGK ALARM REV D',50,54,.8,.12,layer='B.Fab'))
+board_text.append(gtext('6 KEY MATRIX / PORTRAIT TFT',50,60,.8,.1,layer='B.Fab'))
 for rect in (((39.46,1.15),(60.54,74.3)),):
     (x1,y1),(x2,y2)=rect
     for (a,b),(c,d) in zip([(x1,y1),(x2,y1),(x2,y2),(x1,y2)],[(x2,y1),(x2,y2),(x1,y2),(x1,y1)]):
@@ -476,15 +483,15 @@ board_text.append(gtext('PORTRAIT TFT REF ONLY 21.08 X 73.15 MM',50,70,.55,.09,l
 # copper ground fills initially unfilled (KiCad GUI or CI fills using pcbnew)
 zone_pts=' '.join(f'(xy {xy(v)})' for v in OUTLINE)
 for layer in ('F.Cu','B.Cu'):
-    board_text.append(f'''(zone (net {NETIDS['GND']}) (net_name "GND") (layer "{layer}")
-        (uuid "{uid()}") (hatch edge 0.508) (connect_pads (clearance 0.45) (thermal_gap 0.5) (thermal_bridge_width 0.5))
-        (min_thickness 0.25) (fill yes (thermal_relief_gap 0.5) (thermal_relief_bridge_width 0.5))
+    board_text.append(f'''(zone (net {NETIDS['GND']}) (net_name "/GND") (layer "{layer}")
+        (uuid "{uid()}") (hatch edge 0.508) (connect_pads (clearance 0.45))
+        (min_thickness 0.25) (fill yes (thermal_gap 0.5) (thermal_bridge_width 0.5))
         (polygon (pts {zone_pts})))''')
 board_text.append(')')
 BOARD.write_text('\n'.join(board_text),encoding='utf-8')
 
 # Self-contained schematic: embedded symbols and global per-net labels.
-# Four M3 holes represented physically & as nonconnected schematic symbols.
+# Two M3 mounting holes: lower bar supported by printed case channels.
 SCH_HEADER=f'''(kicad_sch (version 20231120) (generator "eeschema")
 (uuid {quote(uid())}) (paper "A4")
 '''
@@ -510,7 +517,7 @@ for i in range(1,8):xpin.append((str(i),f'D{i-1}',-21.59,15.24-(i-1)*5.08,0))
 for i,name in zip(range(8,15),['D7','D8','D9','D10','3V3','GND','VBUS']):
     xpin.append((str(i),name,21.59,15.24-(i-8)*5.08,180))
 for i,name in zip(range(15,23),['D3_DUP','D5_DUP','EN','GND2','D2_DUP','D4_DUP','VBAT','GND3']):
-    xpin.append((str(i),name,-15.75+(i-15)*4.5,22.86,270))
+    xpin.append((str(i),name,-15.24+(i-15)*5.08,22.86,270))
 # Keep the unused 8 underside lands isolated; the other side pads perform I/O.
 SWPINS=[('1','C',-7.62,0,0),('2','A',7.62,0,180)]
 DPINS=[('1','K',-7.62,0,0),('2','A',7.62,0,180)]
@@ -535,19 +542,19 @@ for p in parts:
 # Pin symbol locations for each part type (in local schematic coordinates)
 positions={'XIAO_ESP32_C3':xpin,'MX_1U_PCB':SWPINS,'D_DO35_P7.62':DPINS,
            'HEADER_TFT_1x08':JPINS,'PIEZO_PASSIVE':BPINS,'M3_MOUNT':[]}
-placements={'U1':(82,82,'XIAO_ESP32_C3'),
-            'J1':(82,161,'HEADER_TFT_1x08'),
-            'BZ1':(145,161,'PIEZO_PASSIVE')}
+placements={'U1':(81.28,81.28,'XIAO_ESP32_C3'),
+            'J1':(81.28,161.29,'HEADER_TFT_1x08'),
+            'BZ1':(144.78,161.29,'PIEZO_PASSIVE')}
 for idx,(swref,_,*_) in enumerate(BUTTONS):
-    placements[swref]=(145,44+idx*18,'MX_1U_PCB')
-    placements[f'D{idx+1}']=(190,44+idx*18,'D_DO35_P7.62')
-for i,(ref,_,_) in enumerate(HOLES):placements[ref]=(228,145+12*i,'M3_MOUNT')
+    placements[swref]=(144.78,44.45+idx*17.78,'MX_1U_PCB')
+    placements[f'D{idx+1}']=(190.5,44.45+idx*17.78,'D_DO35_P7.62')
+for i,(ref,_,_) in enumerate(HOLES):placements[ref]=(228.6,144.78+12.7*i,'M3_MOUNT')
 
 for part in parts:
     ref=part['ref'];x,y,typ=placements[ref];pin_def=positions[typ]
     # lib symbol x positive right, y positive up; instance y positive down.
     body=f'''(symbol (lib_id {quote('GGK:'+typ)}) (at {fmt(x)} {fmt(y)} 0) (unit 1)
-       (in_bom yes) (on_board yes) (dnp no) (uuid {quote(part['symid'])})
+       (in_bom {'no' if ref.startswith('H') else 'yes'}) (on_board yes) (dnp no) (uuid {quote(part['symid'])})
        (property "Reference" {quote(ref)} (at {fmt(x)} {fmt(y-25 if ref=='U1' else y-7.3)} 0) {effects(1)})
        (property "Value" {quote(part['value'])} (at {fmt(x)} {fmt(y+25 if ref=='U1' else y+7.3)} 0) {effects(.9)})
        (property "Footprint" {quote('GGK:'+part['lib'])} (at {fmt(x)} {fmt(y+10)} 0) {effects(.8,'(hide yes)')})
@@ -569,9 +576,9 @@ for part in parts:
         S.append(f'(label {quote(net)} (at {fmt(ex)} {fmt(ey)} 0) {effects(.9)} (uuid {quote(uid())}))')
 
 # Descriptive fields; no copyrighted illustrations.
-S.append(f'''(text "GGK ALARM / BLARE - SIX-KEY SINGLE ROW PCB (DESIGN Rev B)"
+S.append(f'''(text "GGK ALARM / BLARE - SIX-KEY SINGLE ROW PCB (AUDIT Rev D)"
    (at 44 21 0) {effects(1.4)} (uuid {quote(uid())}))''')
-S.append(f'''(text "1N4148 cathode stripes on ROW; six active-low buttons via 2x3 matrix."
+S.append(f'''(text "1N4148 cathode stripes on SWITCH K1..K6; anodes on ROW; active-low 2x3 matrix."
    (at 48 27 0) {effects(1)} (uuid {quote(uid())}))''')
 S.append(f'''(text "Power via XIAO USB-C only; battery pack output must stay ON for alarm."
    (at 48 33 0) {effects(1)} (uuid {quote(uid())}))''')
@@ -592,9 +599,16 @@ report={
  'nets':{net:[q['part']+':'+q['number'] for q in pads] for net,pads in byNet.items()},
  'routing':routing_report, 'trace_segments':len(segments),'vias':len(vias),
  'unrouted':len([r for r in routing_report if r['status']=='UNROUTED']),
- 'verification':'UNVERIFIED BY KICAD CLI; board is design prototype until ERC/DRC and net connectivity validate'
+ 'verification':'Source generator only; native KiCad ERC/DRC and ground-zone fill are verified separately in CI, physical release remains HOLD'
 }
 (ROOT/'Docs'/'generator_report.json').write_text(json.dumps(report,indent=2))
+(ROOT/'Docs'/'physical_pad_map.json').write_text(json.dumps({
+  'schema':'ggk-native-pad-position-v1',
+  'pads':[{'ref':q['part'],'number':q['number'],'x':q['at'][0],
+           'y':q['at'][1],'net':q['net']}
+          for q in PADS if q['role']!='np_thru_hole' and q['number']]
+},indent=2)+'\n')
+
 print(json.dumps({k:report[k] for k in ['area_mm2','switches','diodes','trace_segments','vias','unrouted']},indent=2))
 print('Wrote',BOARD,BOARD.stat().st_size,'bytes')
 print('Wrote',SCHEM,SCHEM.stat().st_size,'bytes')

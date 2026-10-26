@@ -1,6 +1,8 @@
 name: GGK Alarm Real Arduino ESP32-C3 Compile
 on:
   push:
+    branches: [main, ggk-rev-d-audit-20261025]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 

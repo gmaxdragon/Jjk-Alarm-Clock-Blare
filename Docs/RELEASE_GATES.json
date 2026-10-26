@@ -1,9 +1,56 @@
 {
-  "revision":"GGK Alarm Rev C 2026-10-25",
-  "status":"DESIGN_HOLD_NOT_FOR_OVERNIGHT_USE",
-  "pcb_copper_geometry":{"unrouted":0,"min_0p2mm_clearance_violations":0,"native_kicad_drc":false,"native_kicad_erc":false,"zones_refilled":false},
-  "hardware":{"tft_actual_module_dimensions_verified":false,"tft_actual_pinout_verified":false,"buzzer_current_and_type_verified":false,"xiao_usb_orientation_physically_verified":false,"six_custom_keycap_fit_verified":false,"prototype_assembled":false},
-  "power":{"uses_usb_c":true,"internal_battery_installed":false,"fully_unplugged_supported":false,"powerbank_continuity_overnight_verified":false,"solder_fault_protection_guaranteed":false},
-  "firmware":{"six_button_sources_written":true,"portal_written":true,"host_logic_unit_tests_pass":true,"host_api_stub_syntax_check_pass":true,"arduino_esp32_real_compile":false,"flash_and_physical_screen_test":false},
-  "release_approved":false
+  "revision": "GGK Alarm Rev D — 2026-10-25",
+  "status": "DESIGN_HOLD_NOT_FOR_OVERNIGHT_USE",
+  "pcb_copper_geometry": {
+    "unrouted": 0,
+    "min_0p2mm_clearance_violations": 0,
+    "native_kicad_drc": true,
+    "native_kicad_erc": true,
+    "zones_refilled": true,
+    "native_pin_position_parity_pads": 56,
+    "schematic_parity_issues": 0,
+    "native_unconnected_pads": 0,
+    "native_drc_violations": 0,
+    "native_erc_violations": 0
+  },
+  "hardware": {
+    "tft_actual_module_dimensions_verified": false,
+    "tft_actual_pinout_verified": false,
+    "buzzer_current_and_type_verified": false,
+    "xiao_usb_orientation_physically_verified": false,
+    "six_custom_keycap_fit_verified": false,
+    "prototype_assembled": false
+  },
+  "power": {
+    "uses_usb_c": true,
+    "internal_battery_installed": false,
+    "fully_unplugged_supported": false,
+    "powerbank_continuity_overnight_verified": false,
+    "solder_fault_protection_guaranteed": false,
+    "exact_USB_supply_tested": false,
+    "overnight_unattended_approved": false
+  },
+  "firmware": {
+    "six_button_sources_written": true,
+    "portal_written": true,
+    "host_logic_unit_tests_pass": true,
+    "host_api_stub_syntax_check_pass": true,
+    "arduino_esp32_real_compile": true,
+    "flash_and_physical_screen_test": false,
+    "countdown_timer_written": true,
+    "stopwatch_written": true,
+    "real_hardware_flash_test": false
+  },
+  "release_approved": false,
+  "manufacturing": {
+    "gerbers_released": false,
+    "physical_buzzer_verified": false,
+    "all_6_key_switch_housings_fit_verified": false,
+    "approval_requires_physical_parts_test": true
+  },
+  "evidence": {
+    "native_erc_drc_ci": "https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40272574464",
+    "real_arduino_compile_ci": "https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40272572429",
+    "note": "CI checks design correctness, not actual assembled power or thermal safety"
+  }
 }

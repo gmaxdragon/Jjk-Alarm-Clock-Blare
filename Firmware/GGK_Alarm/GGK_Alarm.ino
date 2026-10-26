@@ -24,6 +24,7 @@
 #include <Adafruit_ST7789.h>
 #include "BoardConfig.h"
 #include "AlarmLogic.h"
+#include "TimeTools.h"
 #include "secrets.h"
 
 class TinyPortrait : public Adafruit_ST7789 {
@@ -44,12 +45,14 @@ TinyPortrait tft;
 WebServer portal(80);
 Preferences prefs;
 ggk::Alarm configuredAlarm;
+ggk::Countdown countdown;
+ggk::Stopwatch stopwatch;
 
 static constexpr uint8_t ROW[2] = {ggkpin::ROW0, ggkpin::ROW1};
 static constexpr uint8_t COL[3] = {ggkpin::COL0, ggkpin::COL1, ggkpin::COL2};
 enum Key : uint8_t { UP=0, DOWN=1, TIME_SET=2, CLOCK_SET=3, SNOOZE=4, ALARM_ON=5 };
 enum class Event : uint8_t { NONE, SHORT, LONG };
-enum class Mode : uint8_t { HOME, TIME_EDIT, ALARM_EDIT, DAY_EDIT, QUIZ, INFO };
+enum class Mode : uint8_t { HOME, TIME_EDIT, ALARM_EDIT, DAY_EDIT, QUIZ, INFO, TIMER, STOPWATCH };
 struct Debounce {
   bool raw=false, pressed=false, longSent=false;
   uint32_t changed=0, pressedAt=0;
@@ -286,6 +289,30 @@ void paintInfo(){
   small("BATTERY",3,181,ST77XX_WHITE);
   small("TIME:BACK",3,252,colorAccent());
 }
+void paintTimer(){
+  banner("COUNTDOWN");
+  const uint32_t left=countdown.left(currentMs());
+  const unsigned secs=(left+999U)/1000U;
+  char value[12];snprintf(value,sizeof(value),"%02u:%02u",
+      (unsigned)(secs/60),(unsigned)(secs%60));
+  tft.setTextColor(ST77XX_WHITE);tft.setTextSize(2);tft.setCursor(8,85);tft.print(value);
+  small(countdown.finished?"TIMER DONE":countdown.running?"RUNNING":"PAUSED",4,143,colorAccent());
+  small("UP/DOWN MINS",3,176,ST77XX_WHITE);
+  small("CLOCK:GO/PAUS",3,207,colorAccent());
+  small("SNOOZE:RESET",3,232,ST77XX_WHITE);
+  small("TIME:EXIT",3,254,ST77XX_WHITE);
+}
+void paintStopwatch(){
+  banner("STOPWATCH");
+  uint32_t seconds=stopwatch.elapsed(currentMs())/1000UL;
+  char value[13];snprintf(value,sizeof(value),"%02u:%02u",
+      (unsigned)((seconds/60)%100),(unsigned)(seconds%60));
+  tft.setTextColor(ST77XX_WHITE);tft.setTextSize(2);tft.setCursor(8,85);tft.print(value);
+  small(stopwatch.running?"RUNNING":"PAUSED",4,145,colorAccent());
+  small("CLOCK:GO/PAUS",3,207,ST77XX_WHITE);
+  small("SNOOZE:RESET",3,232,ST77XX_WHITE);
+  small("TIME:EXIT",3,254,ST77XX_WHITE);
+}
 void paint(){
   switch(mode){
     case Mode::HOME:paintHome();break;
@@ -293,6 +320,8 @@ void paint(){
     case Mode::DAY_EDIT:paintDays();break;
     case Mode::QUIZ:paintQuiz();break;
     case Mode::INFO:paintInfo();break;
+    case Mode::TIMER:paintTimer();break;
+    case Mode::STOPWATCH:paintStopwatch();break;
   }
   lastPaintMs=currentMs();redraw=false;
 }
@@ -336,6 +365,24 @@ void onKey(Key key,Event event){
     if(key==CLOCK_SET && ggk::quizCorrect(question,answer))dismiss();
     redraw=true;return;
   }
+  if(mode==Mode::TIMER){
+    if(event==Event::SHORT){
+      if(key==UP)countdown.chooseMinutes(int(countdown.minutes)+1);
+      if(key==DOWN)countdown.chooseMinutes(int(countdown.minutes)-1);
+      if(key==CLOCK_SET)countdown.pauseOrResume(currentMs());
+      if(key==SNOOZE)countdown.reset();
+      if(key==TIME_SET)mode=Mode::HOME;
+    }
+    redraw=true;return;
+  }
+  if(mode==Mode::STOPWATCH){
+    if(event==Event::SHORT){
+      if(key==CLOCK_SET)stopwatch.pauseOrResume(currentMs());
+      if(key==SNOOZE)stopwatch.reset();
+      if(key==TIME_SET)mode=Mode::HOME;
+    }
+    redraw=true;return;
+  }
   if(mode==Mode::TIME_EDIT){
     if(event==Event::SHORT){
       if(key==UP)adjustManual(1);
@@ -369,7 +416,9 @@ void onKey(Key key,Event event){
     redraw=true;return;
   }
   if(mode==Mode::HOME){
-    if(key==TIME_SET && event==Event::LONG){mode=Mode::INFO;}
+    if(key==CLOCK_SET && event==Event::LONG){mode=Mode::TIMER;}
+    else if(key==DOWN && event==Event::LONG){mode=Mode::STOPWATCH;}
+    else if(key==TIME_SET && event==Event::LONG){mode=Mode::INFO;}
     else if(key==TIME_SET && event==Event::SHORT){beginTimeEdit();}
     else if(key==CLOCK_SET && event==Event::SHORT){
       alarmField=0;mode=Mode::ALARM_EDIT;
@@ -518,6 +567,7 @@ void loop(){
   serviceWifi();
   if(portalStarted)portal.handleClient();
   checkAlarm();serviceAlarmSound();
+  if(countdown.tick(currentMs()))redraw=true; // visual timer; no unverified buzzer drive
   if(redraw || currentMs()-lastPaintMs>1000)paint();
   delay(10);
 }
