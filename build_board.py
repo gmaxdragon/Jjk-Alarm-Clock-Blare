@@ -363,7 +363,8 @@ for net in priority:
 # Zones still exist as supplemental copper planes and need native refill before fab.
 
 def fp_text(layer,kind,s,x,y,size=.8):
-    return f'(fp_text {kind} {quote(s)} (at {fmt(x)} {fmt(y)}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness .13))))'
+    mirror = ' (justify mirror)' if layer.startswith('B.') else ''
+    return f'(fp_text {kind} {quote(s)} (at {fmt(x)} {fmt(y)}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness .13)){mirror}))'
 
 def fp_line(x1,y1,x2,y2,layer='F.SilkS',width=.12):
     return f'(fp_line (start {fmt(x1)} {fmt(y1)}) (end {fmt(x2)} {fmt(y2)}) (stroke (width {fmt(width)}) (type solid)) (layer {quote(layer)}) (uuid {quote(uid())}))'
@@ -418,7 +419,8 @@ def footprint(p):
 # The screen body appears ONLY as a mechanical reference on Dwgs.User.
 # Avoid claiming special colors are in PCB data; solder-mask finish chosen at fab.
 def gtext(s,x,y,size=1.25,thickness=.19,layer='F.SilkS',angle=0):
-    return f'(gr_text {quote(s)} (at {fmt(x)} {fmt(y)} {angle}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness {fmt(thickness)}) (bold yes))) (uuid {quote(uid())}))'
+    mirror = ' (justify mirror)' if layer.startswith('B.') else ''
+    return f'(gr_text {quote(s)} (at {fmt(x)} {fmt(y)} {angle}) (layer {quote(layer)}) (effects (font (size {fmt(size)} {fmt(size)}) (thickness {fmt(thickness)}) (bold yes)){mirror}) (uuid {quote(uid())}))'
 
 def gline(x1,y1,x2,y2,width=.25,layer='F.SilkS'):
     return f'(gr_line (start {fmt(x1)} {fmt(y1)}) (end {fmt(x2)} {fmt(y2)}) (stroke (width {fmt(width)}) (type solid)) (layer {quote(layer)}) (uuid {quote(uid())}))'

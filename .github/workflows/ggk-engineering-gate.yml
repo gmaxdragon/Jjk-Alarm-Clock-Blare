@@ -20,7 +20,9 @@ jobs:
         run: |
           python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
       - name: Regenerate schematic and physical copper from audited source
-        run: python3 build_board.py
+        run: |
+          python3 build_board.py
+          python3 make_libraries.py
       - name: Pin map, failsafe defaults, no internal battery assertions
         run: python3 Tests/check_pinmap_and_failsafe.py
       - name: Independent pad-to-pad copper path verification
@@ -89,7 +91,9 @@ jobs:
       - name: Python routing dependencies
         run: python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
       - name: Regenerate native PCB/schematic from the audited generator
-        run: python3 build_board.py
+        run: |
+          python3 build_board.py
+          python3 make_libraries.py
       - name: Native KiCad parser subset isolation
         continue-on-error: true
         run: python3 Tests/native_board_loader_diag.py
