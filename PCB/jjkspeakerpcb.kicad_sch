@@ -291,7 +291,7 @@
        (instances (project "jjkspeakerpcb" (path "/" (reference "H4") (unit 1)))))
 (text "GGK ALARM / BLARE - SIX-KEY SINGLE ROW PCB (DESIGN Rev B)"
    (at 44 21 0) (effects (font (size 1.4 1.4) (thickness .12)) ) (uuid "a11a0000-cc00-4a11-8a11-0000000002ce"))
-(text "1N4148 cathode stripes on ROW; six active-low buttons via 2x3 matrix."
+(text "1N4148 cathode stripes on SWITCH K1..K6; anodes on ROW; active-low 2x3 matrix."
    (at 48 27 0) (effects (font (size 1 1) (thickness .12)) ) (uuid "a11a0000-cc00-4a11-8a11-0000000002cf"))
 (text "Power via XIAO USB-C only; battery pack output must stay ON for alarm."
    (at 48 33 0) (effects (font (size 1 1) (thickness .12)) ) (uuid "a11a0000-cc00-4a11-8a11-0000000002d0"))

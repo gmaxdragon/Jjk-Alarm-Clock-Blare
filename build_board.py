@@ -477,8 +477,8 @@ board_text.append(gtext('PORTRAIT TFT REF ONLY 21.08 X 73.15 MM',50,70,.55,.09,l
 zone_pts=' '.join(f'(xy {xy(v)})' for v in OUTLINE)
 for layer in ('F.Cu','B.Cu'):
     board_text.append(f'''(zone (net {NETIDS['GND']}) (net_name "GND") (layer "{layer}")
-        (uuid "{uid()}") (hatch edge 0.508) (connect_pads (clearance 0.45) (thermal_gap 0.5) (thermal_bridge_width 0.5))
-        (min_thickness 0.25) (fill yes (thermal_relief_gap 0.5) (thermal_relief_bridge_width 0.5))
+        (uuid "{uid()}") (hatch edge 0.508) (connect_pads (clearance 0.45))
+        (min_thickness 0.25) (fill yes (thermal_gap 0.5) (thermal_bridge_width 0.5))
         (polygon (pts {zone_pts})))''')
 board_text.append(')')
 BOARD.write_text('\n'.join(board_text),encoding='utf-8')
@@ -571,7 +571,7 @@ for part in parts:
 # Descriptive fields; no copyrighted illustrations.
 S.append(f'''(text "GGK ALARM / BLARE - SIX-KEY SINGLE ROW PCB (DESIGN Rev B)"
    (at 44 21 0) {effects(1.4)} (uuid {quote(uid())}))''')
-S.append(f'''(text "1N4148 cathode stripes on ROW; six active-low buttons via 2x3 matrix."
+S.append(f'''(text "1N4148 cathode stripes on SWITCH K1..K6; anodes on ROW; active-low 2x3 matrix."
    (at 48 27 0) {effects(1)} (uuid {quote(uid())}))''')
 S.append(f'''(text "Power via XIAO USB-C only; battery pack output must stay ON for alarm."
    (at 48 33 0) {effects(1)} (uuid {quote(uid())}))''')
