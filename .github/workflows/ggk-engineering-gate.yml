@@ -128,7 +128,7 @@ jobs:
       - name: Save regenerated source files to audit branch only
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/ggk-rev-d-audit-20261025'
         run: |
-          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro Docs/generator_report.json Docs/physical_pad_map.json
+          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro PCB/GGK.pretty PCB/GGK.kicad_sym Docs/generator_report.json Docs/physical_pad_map.json
           if git diff --cached --quiet; then
             echo 'Generated design already synchronized'
           else
@@ -137,6 +137,9 @@ jobs:
             git commit -m "Regenerate PCB and schematic using KiCad backside coordinates"
             git push origin HEAD:ggk-rev-d-audit-20261025
           fi
+      - name: Compare actual XIAO footprint against bundled library
+        continue-on-error: true
+        run: python3 Tests/native_xiao_footprint_compare.py
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
