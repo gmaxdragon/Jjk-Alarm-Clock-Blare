@@ -1,0 +1,39 @@
+name: GGK Alarm Real Arduino ESP32-C3 Compile
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arduino-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install Espressif ESP32 core and display libraries
+        run: |
+          set -euxo pipefail
+          URL="https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+          arduino-cli core update-index --additional-urls "$URL"
+          arduino-cli core install esp32:esp32 --additional-urls "$URL"
+          arduino-cli lib install "Adafruit GFX Library"
+          arduino-cli lib install "Adafruit ST7735 and ST7789 Library"
+          arduino-cli board listall | grep -i 'XIAO'
+      - name: Compile actual XIAO ESP32C3 firmware without power or device
+        run: |
+          set -euxo pipefail
+          cp Firmware/GGK_Alarm/secrets.example.h Firmware/GGK_Alarm/secrets.h
+          URL="https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+          arduino-cli compile --fqbn "esp32:esp32:XIAO_ESP32C3" --additional-urls "$URL" --warnings all Firmware/GGK_Alarm
+      - name: Verify no firmware has been released for overnight use
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open("Docs/RELEASE_GATES.json"))
+          assert d["release_approved"] is False
+          print("Firmware compilation is NOT physical inspection and not approval for unattended use.")
+          PY
