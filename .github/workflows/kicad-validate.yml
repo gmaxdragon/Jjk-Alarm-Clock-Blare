@@ -21,7 +21,7 @@ jobs:
       - name: Install KiCad native CLI and Python board API
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq kicad python3-pcbnew
+          sudo apt-get install -y -qq kicad
           kicad-cli version
           /usr/bin/python3 -c 'import pcbnew; print(pcbnew.GetBuildVersion())'
       - name: Parse schematic and fill native ground planes
