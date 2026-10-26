@@ -387,9 +387,10 @@ def footprint(p):
         sig.extend([fp_rect(-9.525,-1.905,4.445,12.065,layer='F.Fab'),
                     fp_rect(-10.44,-2.82,5.36,12.98,layer='F.CrtYd',width=.05)])
     elif p['ref']=='U1':
-        sig.extend([fp_rect(-17.8,-21,0,0,'B.Fab',.12),
-                    fp_rect(-17.95,-21.3,.15,.2,'B.CrtYd',.05)])
-        sig.append(fp_text('B.Fab','user','USB-C',-9,-22.5,size=.8))
+        # The XIAO's real component envelope is in the Tinkercad mechanical
+        # guide, not duplicated as ad-hoc reversed footprint graphics here.
+        # Only the canonical Seeed pad geometry participates in DRC.
+        pass
     elif p['ref']=='J1':sig.append(fp_rect(-1.45,-1.45,19.23,1.45,'B.SilkS',.1))
     elif p['ref']=='BZ1':
         sig.append(f'(fp_circle (center 3.81 0) (end 9.81 0) (stroke (width .12) (type solid)) (fill none) (layer "B.SilkS") (uuid {quote(uid())}))')
