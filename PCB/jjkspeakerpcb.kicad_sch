@@ -1,4 +1,4 @@
-(kicad_sch (version 20231120) (generator "eeschema")
+(kicad_sch (version 20230121) (generator "eeschema")
 (uuid "a11a0000-cc00-4a11-8a11-00000000021c") (paper "A4")
 (lib_symbols (symbol "GGK:XIAO_ESP32_C3" (pin_names (offset .9)) (in_bom yes) (on_board yes)
       (property "Reference" "U" (at 0 23.32 0) (effects (font (size 1.27 1.27) (thickness .12)) )) (property "Value" "XIAO_ESP32_C3" (at 0 -23.32 0) (effects (font (size 0.9 0.9) (thickness .12)) )) (symbol "XIAO_ESP32_C3_0_1" (rectangle (start -17.78 20.32) (end 17.78 -20.32) (stroke (width .25) (type default)) (fill (type none))))
@@ -283,4 +283,4 @@
    (at 48 35.8 0) (effects (font (size 0.8 0.8) (thickness .12)) ) (uuid "a11a0000-cc00-4a11-8a11-0000000002ae"))
 (text "Buzzer: 3.3V LOW-CURRENT PASSIVE PIEZO only; verify exact kit part before soldering."
    (at 48 39 0) (effects (font (size 0.8 0.8) (thickness .12)) ) (uuid "a11a0000-cc00-4a11-8a11-0000000002af"))
-(embedded_fonts no) )
+)
