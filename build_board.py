@@ -111,7 +111,7 @@ for i in range(1,15):
         px,py = 0.835, -18.12+(i-1)*2.54
     else:
         px,py = 17, -2.88-(i-8)*2.54
-    upads.append(pad('B',str(i),XIAO[i],-px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
+    upads.append(pad('B',str(i),XIAO[i],px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
 # Official Seeed XIAO-ESP32-C3-SMD underside lands, pads 15..22.
 # The side pins already provide signals; redundant center lands are left
 # isolated on *this carrier* instead of trying to route duplicate pins.
@@ -127,7 +127,7 @@ underside = [
  (22,4.445,-12.787,2.5,1.1,None), # GND (internal module)
 ]
 for number,px,py,w,h,net in underside:
-    upads.append(pad('B',str(number),net,-px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
+    upads.append(pad('B',str(number),net,px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
 # Mount XIAO on PCB back under the front-facing portrait screen. Its native
 # USB-C connector points UP, with the shell accessible at the top of the case.
 add('U1','Seeed_XIAO_ESP32C3_Castellated',58.9,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
@@ -138,12 +138,12 @@ DISPLAY={1:'GND',2:'3V3',3:'DISP_SCK',4:'DISP_MOSI',5:'3V3',
          6:'DISP_DC',7:'DISP_CS',8:'GND'}
 jpads=[pad('both',str(i),DISPLAY[i],(i-1)*2.54,0,shape='rect' if i==1 else 'circle',size=1.75,drill=1.0)
        for i in range(1,9)]
-add('J1','PinHeader_1x08_2.54',41.11,67,'B',jpads,value='TFT 8PIN')
+add('J1','PinHeader_1x08_2.54',58.89,67,'B',jpads,value='TFT 8PIN')
 
 # No assumption that an active magnetic buzzer is safe on GPIO. The board is
 # wired directly for the advertised LOW CURRENT 3.3V PIEZO only; kit part must
 # be verified before assembly. Mounted BACK, vent faces case opening.
-add('BZ1','Piezo_P12_P7.62',46.19,46,'B',[
+add('BZ1','Piezo_P12_P7.62',53.81,46,'B',[
     pad('both','1','PIEZO',0,0,shape='rect',size=1.9,drill=0.9),
     pad('both','2','GND',7.62,0,size=1.9,drill=0.9)],value='3.3V PIEZO')
 
@@ -155,25 +155,25 @@ for ref,hx,hy in HOLES:
 
 # Calculate pad locations. Backside pads keep local X/Y as seen in the KiCad
 # B-side footprint coordinate system, allowing pcbnew to perform mirroring.
-# IMPORTANT: This generator stores B-side footprint x-values as back-view
+# IMPORTANT: This generator stores B-side footprint x-values as local x
 # coordinates; in board drawing, pcbnew flips local x -> -x. Physical target:
-# place front-view module left pad column at x39.935; right at x56.10.
+# place front-view module pad columns within the narrow PCB stalk.
 def target(p, q):
-    # On bottom layer, local x mirrors; anchor at x56.935 so pad1 physical x56.1,
-    # and pad8 physical x39.935. PCB KiCad F-frame coordinates derived by flip.
-    x=p['x'] + q['x']
+    # On bottom layer x mirrors around the footprint origin, y does not.
+    # Native pcbnew pad-position parity is enforced in CI.
+    x=p['x'] - q['x'] if p['face']=='B' else p['x'] + q['x']
     y=p['y'] + q['y']
     return (round(x,4),round(y,4))
 
 # Board back-side footprints anchor x-values reversed from front-view:
-# We want XIAO center x48.0 and the USB near board bottom.
+# Place XIAO centrally with its USB connector toward the TOP board edge.
 for p in parts:
     if p['ref']=='U1':
         p['x']=58.9      # Canonical KiCad B-side physical flip; body x41.1..58.9
     if p['ref']=='J1':
-        p['x']=41.11     # KiCad back footprint pins x41.11..58.89
+        p['x']=58.89     # Back transform: pins x41.11..58.89
     if p['ref']=='BZ1':
-        p['x']=46.19     # KiCad back footprint piezo center x50.0
+        p['x']=53.81     # Back transform: pins x46.19..53.81
 
 PADS=[]
 for p in parts:
@@ -598,6 +598,13 @@ report={
  'verification':'UNVERIFIED BY KICAD CLI; board is design prototype until ERC/DRC and net connectivity validate'
 }
 (ROOT/'Docs'/'generator_report.json').write_text(json.dumps(report,indent=2))
+(ROOT/'Docs'/'physical_pad_map.json').write_text(json.dumps({
+  'schema':'ggk-native-pad-position-v1',
+  'pads':[{'ref':q['part'],'number':q['number'],'x':q['at'][0],
+           'y':q['at'][1],'net':q['net']}
+          for q in PADS if q['role']!='np_thru_hole' and q['number']]
+},indent=2)+'\n')
+
 print(json.dumps({k:report[k] for k in ['area_mm2','switches','diodes','trace_segments','vias','unrouted']},indent=2))
 print('Wrote',BOARD,BOARD.stat().st_size,'bytes')
 print('Wrote',SCHEM,SCHEM.stat().st_size,'bytes')

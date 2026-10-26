@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   source-and-firmware:
@@ -120,6 +120,23 @@ jobs:
             print("U1 ACTUAL GRAPHICS",[(type(g).__name__,str(g.GetClass())) for g in u.GraphicalItems()])
             print("U1 LIB GRAPHICS",[(type(g).__name__,str(g.GetClass())) for g in lib.GraphicalItems()])
           PY
+      - name: Regenerate KiCad from corrected physical pad coordinates
+        run: |
+          python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3' numpy
+          python3 build_board.py
+          python3 Tests/native_pad_position_gate.py
+      - name: Save regenerated source files to audit branch only
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/ggk-rev-d-audit-20261025'
+        run: |
+          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro Docs/generator_report.json Docs/physical_pad_map.json
+          if git diff --cached --quiet; then
+            echo 'Generated design already synchronized'
+          else
+            git config user.name "ggk-hardware-audit"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Regenerate PCB and schematic using KiCad backside coordinates"
+            git push origin HEAD:ggk-rev-d-audit-20261025
+          fi
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
