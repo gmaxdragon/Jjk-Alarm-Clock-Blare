@@ -411,8 +411,12 @@ def footprint(p):
         else:w=h=siz
         shape=smdshape if q['role']=='smd' else q['shape']
         special='(roundrect_rratio .2)' if q['role']=='smd' else ''
+        # J1 pad 1 (GND) already has an explicit copper trace. The narrow TFT
+        # header spacing leaves only one thermal spoke on the front zone;
+        # use a native solid zone attachment for THIS grounded through-hole.
+        zone='(zone_connect 2)' if p['ref']=='J1' and q['number']=='1' else ''
         net=f'(net {NETIDS[q["net"]]} {quote(chr(47)+q["net"])})' if q['net'] else ''
-        sig.append(f'(pad {quote(q["number"])} {q["role"]} {shape} (at {xy((q["x"],q["y"]))}) (size {fmt(w)} {fmt(h)}) {dr} (layers {layers}) {special} {net} (uuid {quote(uid())}))')
+        sig.append(f'(pad {quote(q["number"])} {q["role"]} {shape} (at {xy((q["x"],q["y"]))}) (size {fmt(w)} {fmt(h)}) {dr} (layers {layers}) {special} {zone} {net} (uuid {quote(uid())}))')
     sig.append(')')
     return '\n'.join(sig)
 
