@@ -1,13 +1,13 @@
 name: GGK Alarm Rev D Native Engineering Gate
 on:
   push:
-    branches: [main]
+    branches: [main, ggk-rev-d-audit-20261025]
   pull_request:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   source-and-firmware:
@@ -106,6 +106,20 @@ jobs:
         run: |
           test "${{ steps.erc.outcome }}" = success
           test "${{ steps.drc.outcome }}" = success
+      - name: Persist native-verified PCB + schematic to audit branch
+        if: ${{ success() && github.event_name == 'push' && github.ref == 'refs/heads/ggk-rev-d-audit-20261025' && !contains(github.event.head_commit.message, 'SYNC_NATIVE_REVD') }}
+        run: |
+          git config user.name 'ggk-kicad-native-gate'
+          git config user.email 'ggk-kicad-native-gate@users.noreply.github.com'
+          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/GGK.pretty PCB/GGK.kicad_sym
+          git add Docs/generator_report.json Docs/geometry_check.json Docs/independent_connectivity.json
+          if ! git diff --cached --quiet; then
+            git diff --cached --stat
+            git commit -m 'SYNC_NATIVE_REVD: save KiCad 9 ERC+DRC-verified editable board and schematic'
+            git push origin HEAD:ggk-rev-d-audit-20261025
+          else
+            echo 'COMMITTED_SOURCE_MATCHES_GENERATOR_AND_NATIVE_KICAD'
+          fi
       - name: Always upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
