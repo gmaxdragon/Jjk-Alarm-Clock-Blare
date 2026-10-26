@@ -1,0 +1,74 @@
+name: GGK Alarm Rev C Engineering Gate
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-firmware:
+    name: Router, Copper Connectivity, Fail-Closed Safety, Firmware
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python prerequisites
+        run: |
+          python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
+      - name: Pin map, failsafe defaults, no internal battery assertions
+        run: python3 Tests/check_pinmap_and_failsafe.py
+      - name: Independent pad-to-pad copper path verification
+        run: python3 Tests/independent_connectivity.py
+      - name: Geometric routing and 0.2 mm clearance check
+        run: python3 verify_board_geometry.py
+      - name: C++ alarm-logic tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/alarm_logic_tests.cpp -o /tmp/ggk_alarm_logic
+          /tmp/ggk_alarm_logic
+      - name: Host-stub syntax check; not an Arduino-core compile
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic -ITests/fake_arduino -x c++ -fsyntax-only Firmware/GGK_Alarm/GGK_Alarm.ino
+      - name: Confirm manufacturing remains blocked
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('Docs/RELEASE_GATES.json'))
+          assert r['release_approved'] is False
+          assert r['power']['fully_unplugged_supported'] is False
+          assert r['firmware']['arduino_esp32_real_compile'] is False
+          print('DESIGN HOLD enforced; no Gerbers released')
+          PY
+  native-kicad:
+    name: Native KiCad ERC + DRC — fabrication gate only
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kicad
+          kicad-cli version
+      - name: Native KiCad schematic ERC
+        run: |
+          set -o pipefail
+          kicad-cli sch erc -o ggk-erc.rpt --severity-all --exit-code-violations PCB/jjkspeakerpcb.kicad_sch
+          cat ggk-erc.rpt
+      - name: Native KiCad PCB DRC and refill
+        run: |
+          set -o pipefail
+          kicad-cli pcb drc -o ggk-drc.rpt --severity-all --refill-zones --exit-code-violations PCB/jjkspeakerpcb.kicad_pcb
+          cat ggk-drc.rpt
+      - name: Always upload validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ggk-native-kicad-reports
+          path: |
+            ggk-erc.rpt
+            ggk-drc.rpt
+          if-no-files-found: ignore
