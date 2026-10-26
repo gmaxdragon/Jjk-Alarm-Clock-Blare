@@ -61,15 +61,30 @@ jobs:
           kicad-cli sch erc --help | grep -q "exit-code-violations"
           kicad-cli pcb drc --help | grep -q "exit-code-violations"
       - name: Native KiCad schematic ERC
+        id: erc
+        continue-on-error: true
         run: |
-          set -o pipefail
+          set +e
           kicad-cli sch erc -o ggk-erc.rpt --severity-all --exit-code-violations PCB/jjkspeakerpcb.kicad_sch
-          cat ggk-erc.rpt
-      - name: Native KiCad PCB DRC and refill
+          result=$?
+          echo "----- NATIVE ERC VIOLATION REPORT -----"
+          if [ -f ggk-erc.rpt ]; then cat ggk-erc.rpt; else echo "ERC report missing"; fi
+          exit "$result"
+      - name: Native KiCad PCB DRC (filled zones must be checked separately)
+        id: drc
+        continue-on-error: true
         run: |
-          set -o pipefail
-          kicad-cli pcb drc -o ggk-drc.rpt --severity-all --refill-zones --exit-code-violations PCB/jjkspeakerpcb.kicad_pcb
-          cat ggk-drc.rpt
+          set +e
+          kicad-cli pcb drc -o ggk-drc.rpt --severity-all --schematic-parity --exit-code-violations PCB/jjkspeakerpcb.kicad_pcb
+          result=$?
+          echo "----- NATIVE DRC VIOLATION REPORT -----"
+          if [ -f ggk-drc.rpt ]; then cat ggk-drc.rpt; else echo "DRC report missing"; fi
+          exit "$result"
+      - name: Fail manufacturing gate if either check fails
+        if: always()
+        run: |
+          test "${{ steps.erc.outcome }}" = success
+          test "${{ steps.drc.outcome }}" = success
       - name: Always upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
