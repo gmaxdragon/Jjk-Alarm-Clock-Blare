@@ -1,0 +1,69 @@
+name: KiCad PCB verification (no hardware)
+on:
+  push:
+    paths:
+      - 'PCB/**'
+      - 'scripts/fill_zones.py'
+      - '.github/workflows/kicad-validate.yml'
+  pull_request:
+    paths:
+      - 'PCB/**'
+      - 'scripts/fill_zones.py'
+      - '.github/workflows/kicad-validate.yml'
+permissions:
+  contents: read
+jobs:
+  pcb:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install KiCad native CLI and Python board API
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq kicad python3-pcbnew
+          kicad-cli version
+          /usr/bin/python3 -c 'import pcbnew; print(pcbnew.GetBuildVersion())'
+      - name: Parse schematic and fill native ground planes
+        run: |
+          mkdir -p Production/DRC Production/NativeSVG
+          /usr/bin/python3 scripts/fill_zones.py PCB/jjkspeakerpcb.kicad_pcb
+      - name: Native electrical rule check
+        id: erc
+        continue-on-error: true
+        run: |
+          kicad-cli sch erc -o Production/DRC/ERC.rpt PCB/jjkspeakerpcb.kicad_sch
+      - name: Native PCB design rule check
+        id: drc
+        continue-on-error: true
+        run: |
+          kicad-cli pcb drc -o Production/DRC/DRC.rpt PCB/jjkspeakerpcb.kicad_pcb
+      - name: Generate native KiCad SVG previews
+        id: svg
+        continue-on-error: true
+        run: |
+          kicad-cli pcb export svg --help
+          kicad-cli pcb export svg -l F.Cu,F.Silkscreen,Edge.Cuts -o Production/NativeSVG/ PCB/jjkspeakerpcb.kicad_pcb
+      - name: Show verification summary
+        if: always()
+        run: |
+          echo "ERC outcome: ${{ steps.erc.outcome }}"
+          echo "DRC outcome: ${{ steps.drc.outcome }}"
+          echo "SVG outcome: ${{ steps.svg.outcome }}"
+          for file in Production/DRC/*.rpt; do
+            if [ -f "$file" ]; then echo "--- $file"; head -90 "$file"; fi
+          done
+      - name: Upload editable filled PCB and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GGK-KiCad-native-verification
+          path: |
+            PCB/
+            Production/
+          retention-days: 30
+      - name: Fail if native verification failed
+        if: steps.erc.outcome != 'success' || steps.drc.outcome != 'success'
+        run: |
+          echo "PCB NOT FABRICATION-APPROVED; inspect KiCad ERC and DRC outputs."
+          exit 1
