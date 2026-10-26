@@ -1,4 +1,4 @@
-name: GGK Alarm Rev C Engineering Gate
+name: GGK Alarm Rev D Native Engineering Gate
 on:
   push:
     branches: [main, ggk-rev-d-audit-20261025]
@@ -45,7 +45,7 @@ jobs:
           r=json.load(open('Docs/RELEASE_GATES.json'))
           assert r['release_approved'] is False
           assert r['power']['fully_unplugged_supported'] is False
-          assert r['firmware']['arduino_esp32_real_compile'] is False
+          assert r['firmware']['arduino_esp32_real_compile'] is True
           print('DESIGN HOLD enforced; no Gerbers released')
           PY
   native-kicad:
@@ -64,82 +64,16 @@ jobs:
           kicad-cli version
           kicad-cli sch erc --help | grep -q "exit-code-violations"
           kicad-cli pcb drc --help | grep -q "exit-code-violations"
-      - name: Diagnostic native PCB parser (non-fabrication)
-        continue-on-error: true
-        run: |
-          python3 - <<'PY'
-          import sys,traceback
-          sys.path.insert(0, "/usr/lib/python3/dist-packages")
-          try:
-              import pcbnew
-              print("PCBNEW version:",pcbnew.GetBuildVersion())
-              try:
-                  b=pcbnew.LoadBoard("PCB/jjkspeakerpcb.kicad_pcb")
-                  print("NATIVE_LOAD_OK:",b.GetFootprints().GetCount())
-              except Exception as e:
-                  print("NATIVE_LOAD_ERROR:",repr(e))
-                  traceback.print_exc()
-          except Exception as e:
-              print("PCBNEW_LIBRARY_ERROR", repr(e))
-              traceback.print_exc()
-          PY
-      - name: Print KiCad file load diagnostics
-        continue-on-error: true
-        run: |
-          kicad-cli pcb export svg -o /tmp/ggk-board.svg -l F.Cu PCB/jjkspeakerpcb.kicad_pcb || true
-          kicad-cli pcb export gerbers -o /tmp/ggk-diagnostic-gerbers/ PCB/jjkspeakerpcb.kicad_pcb || true
       - name: Python routing dependencies
         run: python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
       - name: Regenerate native PCB/schematic from the audited generator
         run: |
           python3 build_board.py
           python3 make_libraries.py
-      - name: Native KiCad parser subset isolation
-        continue-on-error: true
-        run: python3 Tests/native_board_loader_diag.py
-      - name: Inspect XIAO footprint geometry against the regenerated local library
-        continue-on-error: true
-        run: |
-          python3 - <<'PY'
-          import sys
-          sys.path.insert(0,"/usr/lib/python3/dist-packages")
-          import pcbnew
-          b=pcbnew.LoadBoard("PCB/jjkspeakerpcb.kicad_pcb")
-          u=next(f for f in b.GetFootprints() if f.GetReference()=="U1")
-          lib=pcbnew.FootprintLoad("PCB/GGK.pretty","Seeed_XIAO_ESP32C3_Castellated")
-          print("DIAG U1 board",u.GetPosition().x,u.GetPosition().y,"flipped",u.IsFlipped())
-          print("DIAG U1 lib",bool(lib))
-          if lib:
-            lib.SetPosition(u.GetPosition())
-            lib.Flip(u.GetPosition(),False)
-            actual={p.GetNumber():(p.GetPosition().x,p.GetPosition().y,p.GetLayerSet().FmtBin(),p.GetShape()) for p in u.Pads()}
-            expected={p.GetNumber():(p.GetPosition().x,p.GetPosition().y,p.GetLayerSet().FmtBin(),p.GetShape()) for p in lib.Pads()}
-            print("DIAG COUNTS",len(actual),len(expected))
-            for i in sorted(set(actual)|set(expected),key=lambda n:int(n)):
-              if actual.get(i)!=expected.get(i):print("PAD DIFFERENCE",i,actual.get(i),expected.get(i))
-            print("U1 ACTUAL GRAPHICS",[(type(g).__name__,str(g.GetClass())) for g in u.GraphicalItems()])
-            print("U1 LIB GRAPHICS",[(type(g).__name__,str(g.GetClass())) for g in lib.GraphicalItems()])
-          PY
-      - name: Regenerate KiCad from corrected physical pad coordinates
-        run: |
-          python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3' numpy
-          python3 build_board.py
-          python3 Tests/native_pad_position_gate.py
-      - name: Save regenerated source files to audit branch only
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/ggk-rev-d-audit-20261025'
-        run: |
-          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro PCB/GGK.pretty PCB/GGK.kicad_sym Docs/generator_report.json Docs/physical_pad_map.json
-          if git diff --cached --quiet; then
-            echo 'Generated design already synchronized'
-          else
-            git config user.name "ggk-hardware-audit"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Regenerate PCB and schematic using KiCad backside coordinates"
-            git push origin HEAD:ggk-rev-d-audit-20261025
-          fi
-      - name: Compare actual XIAO footprint against bundled library
-        continue-on-error: true
-        run: python3 Tests/native_xiao_footprint_compare.py
+      - name: Native KiCad pad coordinate parity
+        run: python3 Tests/native_pad_position_gate.py
+      - name: Native ground-zone refill
+        run: python3 Tests/native_fill_zones.py
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
@@ -150,7 +84,7 @@ jobs:
           echo "----- NATIVE ERC VIOLATION REPORT -----"
           if [ -f ggk-erc.rpt ]; then cat ggk-erc.rpt; else echo "ERC report missing"; fi
           exit "$result"
-      - name: Native KiCad PCB DRC (filled zones must be checked separately)
+      - name: Native KiCad PCB DRC (ground zones refilled)
         id: drc
         continue-on-error: true
         run: |
@@ -165,6 +99,18 @@ jobs:
         run: |
           test "${{ steps.erc.outcome }}" = success
           test "${{ steps.drc.outcome }}" = success
+      - name: Commit native-validated KiCad source files to audit branch
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/ggk-rev-d-audit-20261025'
+        run: |
+          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro PCB/GGK.pretty PCB/GGK.kicad_sym Docs/generator_report.json Docs/physical_pad_map.json
+          if git diff --cached --quiet; then
+            echo 'Generated design already synchronized'
+          else
+            git config user.name "ggk-hardware-audit"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Regenerate PCB and schematic using KiCad backside coordinates"
+            git push origin HEAD:ggk-rev-d-audit-20261025
+          fi
       - name: Always upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
