@@ -21,8 +21,13 @@ jobs:
       - name: Install KiCad native CLI and Python board API
         run: |
           sudo apt-get update -qq
+          sudo apt-get install -y -qq software-properties-common
+          sudo add-apt-repository -y ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -qq
           sudo apt-get install -y -qq kicad
           kicad-cli version
+          kicad-cli sch erc --help
+          kicad-cli pcb drc --help
           /usr/bin/python3 -c 'import pcbnew; print(pcbnew.GetBuildVersion())'
       - name: Parse schematic and fill native ground planes
         run: |
@@ -42,8 +47,7 @@ jobs:
         id: svg
         continue-on-error: true
         run: |
-          kicad-cli pcb export svg --help
-          kicad-cli pcb export svg -l F.Cu,F.Silkscreen,Edge.Cuts -o Production/NativeSVG/ PCB/jjkspeakerpcb.kicad_pcb
+          kicad-cli pcb export svg -l F.Cu,F.Silkscreen,Edge.Cuts --page-size-mode 2 -o Production/NativeSVG/ PCB/jjkspeakerpcb.kicad_pcb
       - name: Show verification summary
         if: always()
         run: |
