@@ -4,6 +4,6 @@
 
 (fp_rect (start -2.1 -1) (end 2.1 1) (stroke (width 0.12) (type solid)) (fill none) (layer "F.Fab") (uuid "a11a0000-cc00-4a11-8a11-00000000001b"))
 (fp_line (start -1.2 -1.5) (end -1.2 1.5) (stroke (width 0.3) (type solid)) (layer "F.Fab") (uuid "a11a0000-cc00-4a11-8a11-00000000001c"))
-(pad "1" thru_hole circle (at 0 0) (size 1.8 1.8) (drill 0.85) (layers "*.Cu" "*.Mask")   (uuid "a11a0000-cc00-4a11-8a11-00000000001d"))
-(pad "2" thru_hole circle (at 7.62 0) (size 1.8 1.8) (drill 0.85) (layers "*.Cu" "*.Mask")   (uuid "a11a0000-cc00-4a11-8a11-00000000001e"))
+(pad "1" thru_hole circle (at 0 0) (size 1.8 1.8) (drill 0.85) (layers "*.Cu" "*.Mask")    (uuid "a11a0000-cc00-4a11-8a11-00000000001d"))
+(pad "2" thru_hole circle (at 7.62 0) (size 1.8 1.8) (drill 0.85) (layers "*.Cu" "*.Mask")    (uuid "a11a0000-cc00-4a11-8a11-00000000001e"))
 )
