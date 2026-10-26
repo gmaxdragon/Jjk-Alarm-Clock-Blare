@@ -43,7 +43,7 @@ class TinyPortrait : public Adafruit_ST7789 {
 TinyPortrait tft;
 WebServer portal(80);
 Preferences prefs;
-ggk::Alarm alarm;
+ggk::Alarm configuredAlarm;
 
 static constexpr uint8_t ROW[2] = {ggkpin::ROW0, ggkpin::ROW1};
 static constexpr uint8_t COL[3] = {ggkpin::COL0, ggkpin::COL1, ggkpin::COL2};
@@ -82,23 +82,23 @@ int stringToInt(const String& s,int lo,int hi,int fallback){
   int v=s.toInt();return v>=lo&&v<=hi?v:fallback;
 }
 void remember(){
-  prefs.putUChar("hh",alarm.hour);prefs.putUChar("mm",alarm.minute);
-  prefs.putUChar("days",alarm.days);prefs.putBool("on",alarm.enabled);
+  prefs.putUChar("hh",configuredAlarm.hour);prefs.putUChar("mm",configuredAlarm.minute);
+  prefs.putUChar("days",configuredAlarm.days);prefs.putBool("on",configuredAlarm.enabled);
   prefs.putUChar("theme",theme);prefs.putBool("date",showDate);
   prefs.putString("caption",caption);
 }
 void loadSettings(){
   prefs.begin("ggk-alarm",false);
-  alarm.hour=prefs.getUChar("hh",7);alarm.minute=prefs.getUChar("mm",0);
-  alarm.days=prefs.getUChar("days",ggk::SCHOOL_DAYS);
-  alarm.enabled=prefs.getBool("on",false);
+  configuredAlarm.hour=prefs.getUChar("hh",7);configuredAlarm.minute=prefs.getUChar("mm",0);
+  configuredAlarm.days=prefs.getUChar("days",ggk::SCHOOL_DAYS);
+  configuredAlarm.enabled=prefs.getBool("on",false);
   theme=prefs.getUChar("theme",0)%3;
   showDate=prefs.getBool("date",true);
   String label=prefs.getString("caption","GGK ALARM");
   if(!ggk::validLabel(label.c_str()))label="GGK ALARM";
   label.toCharArray(caption,sizeof(caption));
   lastAlarmDay=prefs.getInt("lastday",-1);
-  if(!ggk::valid(alarm))alarm=ggk::Alarm{};
+  if(!ggk::valid(configuredAlarm))configuredAlarm=ggk::Alarm{};
 }
 
 // The PCB diode cathode/bar is K1..K6 (on the switch side), while anode
@@ -158,7 +158,7 @@ void checkAlarm(){
   if(snoozeUntil && now>=snoozeUntil){startAlert();return;}
   if(snoozeUntil || alerting)return;
   ggk::Clock c{t.tm_year+1900,t.tm_yday,t.tm_wday,t.tm_hour,t.tm_min};
-  if(ggk::due(alarm,c,lastAlarmDay)){
+  if(ggk::due(configuredAlarm,c,lastAlarmDay)){
     lastAlarmDay=ggk::dateKey(c);
     prefs.putInt("lastday",lastAlarmDay);  // once/day NVS write
     startAlert();
@@ -213,8 +213,8 @@ void paintHome(){
       small(day,3,182,ST77XX_WHITE);
     }
   }
-  small(alarm.enabled?"ALARM ON":"ALARM OFF",5,216,colorAccent());
-  char next[12];snprintf(next,sizeof(next),"%02d:%02d %s",ggk::hour12(alarm.hour),alarm.minute,ggk::period(alarm.hour));
+  small(configuredAlarm.enabled?"ALARM ON":"ALARM OFF",5,216,colorAccent());
+  char next[12];snprintf(next,sizeof(next),"%02d:%02d %s",ggk::hour12(configuredAlarm.hour),configuredAlarm.minute,ggk::period(configuredAlarm.hour));
   small(next,5,232,ST77XX_WHITE);
   if(snoozeUntil)small("SNOOZE 5M",5,247,colorAccent());
   if(!soundAllowed())small("AUDIO HOLD",5,260,0xFBE0);
@@ -234,7 +234,7 @@ void paintEdit(){
     if(timeField==4)value=editedTime.tm_year+1900;
   }else{
     name=alarmField==0?"ALARM HOUR":"ALARM MIN";
-    value=alarmField==0?alarm.hour:alarm.minute;
+    value=alarmField==0?configuredAlarm.hour:configuredAlarm.minute;
   }
   small(name,4,44,colorAccent());
   if(value>=100){
@@ -249,7 +249,7 @@ void paintDays(){
   banner("PICK DAYS");
   for(int i=0;i<7;i++){
     int y=35+i*27;
-    bool selected=ggk::chosen(alarm,i);
+    bool selected=ggk::chosen(configuredAlarm,i);
     if(i==chosenDay)tft.fillRect(0,y-4,76,23,colorAccent());
     small(weekdays[i],4,y,i==chosenDay?ST77XX_BLACK:ST77XX_WHITE);
     small(selected?"ON":"--",43,y,i==chosenDay?ST77XX_BLACK:ST77XX_WHITE);
@@ -323,8 +323,8 @@ void saveManualTime(){
   mode=Mode::HOME;redraw=true;
 }
 void adjustAlarm(int delta){
-  if(alarmField==0)alarm.hour=(uint8_t)ggk::wrap(int(alarm.hour)+delta,24);
-  else alarm.minute=(uint8_t)ggk::wrap(int(alarm.minute)+delta,60);
+  if(alarmField==0)configuredAlarm.hour=(uint8_t)ggk::wrap(int(configuredAlarm.hour)+delta,24);
+  else configuredAlarm.minute=(uint8_t)ggk::wrap(int(configuredAlarm.minute)+delta,60);
 }
 void onKey(Key key,Event event){
   if(event==Event::NONE)return;
@@ -358,7 +358,7 @@ void onKey(Key key,Event event){
     if(event==Event::SHORT){
       if(key==UP)chosenDay=(uint8_t)ggk::wrap(int(chosenDay)-1,7);
       if(key==DOWN)chosenDay=(uint8_t)ggk::wrap(int(chosenDay)+1,7);
-      if(key==ALARM_ON)alarm.days ^= (uint8_t(1)<<chosenDay);
+      if(key==ALARM_ON)configuredAlarm.days ^= (uint8_t(1)<<chosenDay);
       if(key==CLOCK_SET){remember();mode=Mode::HOME;}
       if(key==SNOOZE)mode=Mode::HOME;
     }
@@ -376,7 +376,7 @@ void onKey(Key key,Event event){
     }else if(key==ALARM_ON && event==Event::LONG){
       theme=(theme+1)%3;remember();
     }else if(key==ALARM_ON && event==Event::SHORT){
-      alarm.enabled=!alarm.enabled;remember();
+      configuredAlarm.enabled=!configuredAlarm.enabled;remember();
     }
     redraw=true;
   }
@@ -413,10 +413,10 @@ void renderPortal(){
   if(!portalReady())html+="<p>Phone editing locked until a unique portal PIN is set during flashing.</p>";
   else{
     html+="<form action='/save' method='POST'><label>Portal PIN<input type='password' name='pin' required></label>";
-    html+="<label>Alarm hour (0-23)<input name='h' type='number' min='0' max='23' value='"+String(alarm.hour)+"'></label>";
-    html+="<label>Alarm minute<input name='m' type='number' min='0' max='59' value='"+String(alarm.minute)+"'></label>";
-    html+="<label>Weekday bits SUN=1 MON=2 TUE=4 WED=8 THU=16 FRI=32 SAT=64<input name='d' type='number' min='0' max='127' value='"+String(alarm.days)+"'></label>";
-    html+="<label>Alarm on? (0/1)<input name='on' type='number' min='0' max='1' value='"+String(alarm.enabled?1:0)+"'></label>";
+    html+="<label>Alarm hour (0-23)<input name='h' type='number' min='0' max='23' value='"+String(configuredAlarm.hour)+"'></label>";
+    html+="<label>Alarm minute<input name='m' type='number' min='0' max='59' value='"+String(configuredAlarm.minute)+"'></label>";
+    html+="<label>Weekday bits SUN=1 MON=2 TUE=4 WED=8 THU=16 FRI=32 SAT=64<input name='d' type='number' min='0' max='127' value='"+String(configuredAlarm.days)+"'></label>";
+    html+="<label>Alarm on? (0/1)<input name='on' type='number' min='0' max='1' value='"+String(configuredAlarm.enabled?1:0)+"'></label>";
     html+="<label>Screen accent: 0=Red, 1=Cyan, 2=Gold<input name='theme' type='number' min='0' max='2' value='"+String(theme)+"'></label>";
     html+="<label>Display title (max 11 letters)<input name='label' maxlength='11' value='"+htmlEscape(String(caption))+"'></label>";
     html+="<label>Show date? (0/1)<input name='date' type='number' min='0' max='1' value='"+String(showDate?1:0)+"'></label>";
@@ -448,10 +448,10 @@ void saveViaPortal(){
      !ggk::validLabel(portal.arg("label").c_str())){
     portal.send(422,"text/plain","Invalid settings; no changes saved");return;
   }
-  alarm.hour=(uint8_t)portal.arg("h").toInt();
-  alarm.minute=(uint8_t)portal.arg("m").toInt();
-  alarm.days=(uint8_t)portal.arg("d").toInt();
-  alarm.enabled=portal.arg("on").toInt()==1;
+  configuredAlarm.hour=(uint8_t)portal.arg("h").toInt();
+  configuredAlarm.minute=(uint8_t)portal.arg("m").toInt();
+  configuredAlarm.days=(uint8_t)portal.arg("d").toInt();
+  configuredAlarm.enabled=portal.arg("on").toInt()==1;
   theme=(uint8_t)portal.arg("theme").toInt();
   showDate=portal.arg("date").toInt()==1;
   portal.arg("label").toCharArray(caption,sizeof(caption));
