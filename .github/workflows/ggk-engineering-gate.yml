@@ -97,6 +97,29 @@ jobs:
       - name: Native KiCad parser subset isolation
         continue-on-error: true
         run: python3 Tests/native_board_loader_diag.py
+      - name: Inspect XIAO footprint geometry against the regenerated local library
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0,"/usr/lib/python3/dist-packages")
+          import pcbnew
+          b=pcbnew.LoadBoard("PCB/jjkspeakerpcb.kicad_pcb")
+          u=next(f for f in b.GetFootprints() if f.GetReference()=="U1")
+          lib=pcbnew.FootprintLoad("PCB/GGK.pretty","Seeed_XIAO_ESP32C3_Castellated")
+          print("DIAG U1 board",u.GetPosition().x,u.GetPosition().y,"flipped",u.IsFlipped())
+          print("DIAG U1 lib",bool(lib))
+          if lib:
+            lib.SetPosition(u.GetPosition())
+            lib.Flip(u.GetPosition(),False)
+            actual={p.GetNumber():(p.GetPosition().x,p.GetPosition().y,p.GetLayerSet().FmtBin(),p.GetShape()) for p in u.Pads()}
+            expected={p.GetNumber():(p.GetPosition().x,p.GetPosition().y,p.GetLayerSet().FmtBin(),p.GetShape()) for p in lib.Pads()}
+            print("DIAG COUNTS",len(actual),len(expected))
+            for i in sorted(set(actual)|set(expected),key=lambda n:int(n)):
+              if actual.get(i)!=expected.get(i):print("PAD DIFFERENCE",i,actual.get(i),expected.get(i))
+            print("U1 ACTUAL GRAPHICS",[(type(g).__name__,str(g.GetClass())) for g in u.GraphicalItems()])
+            print("U1 LIB GRAPHICS",[(type(g).__name__,str(g.GetClass())) for g in lib.GraphicalItems()])
+          PY
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
