@@ -84,6 +84,9 @@ jobs:
         run: |
           kicad-cli pcb export svg -o /tmp/ggk-board.svg -l F.Cu PCB/jjkspeakerpcb.kicad_pcb || true
           kicad-cli pcb export gerbers -o /tmp/ggk-diagnostic-gerbers/ PCB/jjkspeakerpcb.kicad_pcb || true
+      - name: Native KiCad parser subset isolation
+        continue-on-error: true
+        run: python3 Tests/native_board_loader_diag.py
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
