@@ -19,6 +19,8 @@ jobs:
       - name: Python prerequisites
         run: |
           python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
+      - name: Regenerate schematic and physical copper from audited source
+        run: python3 build_board.py
       - name: Pin map, failsafe defaults, no internal battery assertions
         run: python3 Tests/check_pinmap_and_failsafe.py
       - name: Independent pad-to-pad copper path verification
@@ -84,6 +86,10 @@ jobs:
         run: |
           kicad-cli pcb export svg -o /tmp/ggk-board.svg -l F.Cu PCB/jjkspeakerpcb.kicad_pcb || true
           kicad-cli pcb export gerbers -o /tmp/ggk-diagnostic-gerbers/ PCB/jjkspeakerpcb.kicad_pcb || true
+      - name: Python routing dependencies
+        run: python3 -m pip install --break-system-packages --quiet 'shapely>=2.0,<3'
+      - name: Regenerate native PCB/schematic from the audited generator
+        run: python3 build_board.py
       - name: Native KiCad parser subset isolation
         continue-on-error: true
         run: python3 Tests/native_board_loader_diag.py

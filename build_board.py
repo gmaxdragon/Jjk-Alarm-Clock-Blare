@@ -130,7 +130,7 @@ for number,px,py,w,h,net in underside:
     upads.append(pad('B',str(number),net,px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
 # Mount XIAO on PCB back under the front-facing portrait screen. Its native
 # USB-C connector points UP, with the shell accessible at the top of the case.
-add('U1','Seeed_XIAO_ESP32C3_Castellated',58.9,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
+add('U1','Seeed_XIAO_ESP32C3_Castellated',41.1,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
 
 # Eight-pin TFT breakout header, horizontal at TOP. Actual female-female jumper cable
 # connects separate vertical screen to this header, following BLARE's kit guide.
@@ -138,17 +138,17 @@ DISPLAY={1:'GND',2:'3V3',3:'DISP_SCK',4:'DISP_MOSI',5:'3V3',
          6:'DISP_DC',7:'DISP_CS',8:'GND'}
 jpads=[pad('both',str(i),DISPLAY[i],(i-1)*2.54,0,shape='rect' if i==1 else 'circle',size=1.75,drill=1.0)
        for i in range(1,9)]
-add('J1','PinHeader_1x08_2.54',58.89,67,'B',jpads,value='TFT 8PIN')
+add('J1','PinHeader_1x08_2.54',41.11,67,'B',jpads,value='TFT 8PIN')
 
 # No assumption that an active magnetic buzzer is safe on GPIO. The board is
 # wired directly for the advertised LOW CURRENT 3.3V PIEZO only; kit part must
 # be verified before assembly. Mounted BACK, vent faces case opening.
-add('BZ1','Piezo_P12_P7.62',53.81,46,'B',[
+add('BZ1','Piezo_P12_P7.62',46.19,46,'B',[
     pad('both','1','PIEZO',0,0,shape='rect',size=1.9,drill=0.9),
     pad('both','2','GND',7.62,0,size=1.9,drill=0.9)],value='3.3V PIEZO')
 
 # Hole centers chosen outside MX PCB guide holes and typical 1u keycaps.
-HOLES=[('H1',35.6,38),('H2',64.4,38),('H3',5.4,76.9),('H4',94.6,76.9)]
+HOLES=[('H1',35.6,38),('H2',64.4,38)]
 for ref,hx,hy in HOLES:
     add(ref,'MountingHole_3.2',hx,hy,'F',[
         pad('none','',None,0,0,size=3.2,drill=3.2,role='np_thru_hole')],value='M3',attr='board_only exclude_from_pos_files exclude_from_bom')
@@ -161,7 +161,7 @@ for ref,hx,hy in HOLES:
 def target(p, q):
     # On bottom layer, local x mirrors; anchor at x56.935 so pad1 physical x56.1,
     # and pad8 physical x39.935. PCB KiCad F-frame coordinates derived by flip.
-    x=p['x'] + (-q['x'] if p['face']=='B' else q['x'])
+    x=p['x'] + q['x']
     y=p['y'] + q['y']
     return (round(x,4),round(y,4))
 
@@ -169,11 +169,11 @@ def target(p, q):
 # We want XIAO center x48.0 and the USB near board bottom.
 for p in parts:
     if p['ref']=='U1':
-        p['x']=58.9      # B-side body x=41.1..58.9, USB at board top
+        p['x']=41.1      # KiCad back footprint anchor; body x41.1..58.9
     if p['ref']=='J1':
-        p['x']=58.89     # B-side header physical pads x=58.89..41.11
+        p['x']=41.11     # KiCad back footprint pins x41.11..58.89
     if p['ref']=='BZ1':
-        p['x']=53.81     # B-side piezo center x50.0
+        p['x']=46.19     # KiCad back footprint piezo center x50.0
 
 PADS=[]
 for p in parts:
@@ -377,7 +377,7 @@ def footprint(p):
     refat=(0,-10.8) if p['ref'].startswith('SW') else (0,-3)
     if p['ref']=='U1': refat=(8.9,-23.5)
     if p['ref'].startswith('H'): refat=(0,4)
-    sig.append(fp_text((base+'.Fab') if p['ref'].startswith('SW') else (base+'.SilkS'),'reference',p['ref'],*refat,size=.75))
+    sig.append(fp_text(base+'.Fab','reference',p['ref'],*refat,size=.8))
     sig.append(fp_text(base+'.Fab','value',p['value'],0,12 if p['lib'].startswith('MX') else 4,size=.7))
     sig.append(f'(path "/{p["symid"]}")')
     if p['lib'].startswith('MX'):
@@ -388,14 +388,14 @@ def footprint(p):
     elif p['ref']=='U1':
         sig.extend([fp_rect(0,-21,17.8,0,'B.Fab',.12),
                     fp_rect(-.15,-21.3,17.95,.2,'B.CrtYd',.05)])
-        sig.append(fp_text('B.SilkS','user','USB-C',9,-22.5,size=.7))
+        sig.append(fp_text('B.Fab','user','USB-C',9,-22.5,size=.8))
     elif p['ref']=='J1':sig.append(fp_rect(-1.45,-1.45,19.23,1.45,'B.SilkS',.1))
     elif p['ref']=='BZ1':
         sig.append(f'(fp_circle (center 3.81 0) (end 9.81 0) (stroke (width .12) (type solid)) (fill none) (layer "B.SilkS") (uuid {quote(uid())}))')
-        sig.append(fp_text('B.SilkS','user','+',-1,3.5,size=.85))
+        sig.append(fp_text('B.Fab','user','+',-1,3.5,size=.85))
     elif p['ref'].startswith('D'):
-        sig.append(fp_rect(-2.1,-1.0,2.1,1.0,base+'.SilkS',.12))
-        sig.append(fp_line(-1.2,-1.5,-1.2,1.5,base+'.SilkS',.3)) # cathode stripe pad1
+        sig.append(fp_rect(-2.1,-1.0,2.1,1.0,base+'.Fab',.12))
+        sig.append(fp_line(-1.2,-1.5,-1.2,1.5,base+'.Fab',.3)) # cathode stripe pad1
     elif p['ref'].startswith('H'):
         pass
     for q in p['pads']:
@@ -409,7 +409,7 @@ def footprint(p):
         else:w=h=siz
         shape=smdshape if q['role']=='smd' else q['shape']
         special='(roundrect_rratio .2)' if q['role']=='smd' else ''
-        net=f'(net {NETIDS[q["net"]]} {quote(q["net"])})' if q['net'] else ''
+        net=f'(net {NETIDS[q["net"]]} {quote(chr(47)+q["net"])})' if q['net'] else ''
         sig.append(f'(pad {quote(q["number"])} {q["role"]} {shape} (at {xy((q["x"],q["y"]))}) (size {fmt(w)} {fmt(h)}) {dr} (layers {layers}) {special} {net} (uuid {quote(uid())}))')
     sig.append(')')
     return '\n'.join(sig)
@@ -454,7 +454,7 @@ PCB_HEADER='''(kicad_pcb
  (net 0 "")
 '''
 board_text=[PCB_HEADER]
-for n in NAMES:board_text.append(f'(net {NETIDS[n]} {quote(n)})')
+for n in NAMES:board_text.append(f'(net {NETIDS[n]} {quote(chr(47)+n)})')
 for p in parts:board_text.append(footprint(p))
 for a,b,layer,net in segments:
     board_text.append(f'(segment (start {xy(a)}) (end {xy(b)}) (width 0.25) (layer {quote(layer)}) (net {NETIDS[net]}) (uuid {quote(uid())}))')
@@ -466,8 +466,8 @@ for a,b in zip(OUTLINE,OUTLINE[1:]+OUTLINE[:1]):
 # Intentionally no F.SilkS key names or decorative images. Screen is 21.08 x
 # 73.15mm (example module body) centered on front, within the central stalk.
 # The exact kit screen must be measured before the case is final.
-board_text.append(gtext('GGK ALARM R2',50,54,.65,.12,layer='B.SilkS'))
-board_text.append(gtext('6 KEY MATRIX // TFT ON FRONT',50,60,.56,.1,layer='B.SilkS'))
+board_text.append(gtext('GGK ALARM REV D',50,54,.8,.12,layer='B.Fab'))
+board_text.append(gtext('6 KEY MATRIX / PORTRAIT TFT',50,60,.8,.1,layer='B.Fab'))
 for rect in (((39.46,1.15),(60.54,74.3)),):
     (x1,y1),(x2,y2)=rect
     for (a,b),(c,d) in zip([(x1,y1),(x2,y1),(x2,y2),(x1,y2)],[(x2,y1),(x2,y2),(x1,y2),(x1,y1)]):
@@ -476,7 +476,7 @@ board_text.append(gtext('PORTRAIT TFT REF ONLY 21.08 X 73.15 MM',50,70,.55,.09,l
 # copper ground fills initially unfilled (KiCad GUI or CI fills using pcbnew)
 zone_pts=' '.join(f'(xy {xy(v)})' for v in OUTLINE)
 for layer in ('F.Cu','B.Cu'):
-    board_text.append(f'''(zone (net {NETIDS['GND']}) (net_name "GND") (layer "{layer}")
+    board_text.append(f'''(zone (net {NETIDS['GND']}) (net_name "/GND") (layer "{layer}")
         (uuid "{uid()}") (hatch edge 0.508) (connect_pads (clearance 0.45))
         (min_thickness 0.25) (fill yes (thermal_gap 0.5) (thermal_bridge_width 0.5))
         (polygon (pts {zone_pts})))''')
@@ -484,7 +484,7 @@ board_text.append(')')
 BOARD.write_text('\n'.join(board_text),encoding='utf-8')
 
 # Self-contained schematic: embedded symbols and global per-net labels.
-# Four M3 holes represented physically & as nonconnected schematic symbols.
+# Two M3 mounting holes: lower bar supported by printed case channels.
 SCH_HEADER=f'''(kicad_sch (version 20231120) (generator "eeschema")
 (uuid {quote(uid())}) (paper "A4")
 '''
@@ -510,7 +510,7 @@ for i in range(1,8):xpin.append((str(i),f'D{i-1}',-21.59,15.24-(i-1)*5.08,0))
 for i,name in zip(range(8,15),['D7','D8','D9','D10','3V3','GND','VBUS']):
     xpin.append((str(i),name,21.59,15.24-(i-8)*5.08,180))
 for i,name in zip(range(15,23),['D3_DUP','D5_DUP','EN','GND2','D2_DUP','D4_DUP','VBAT','GND3']):
-    xpin.append((str(i),name,-15.75+(i-15)*4.5,22.86,270))
+    xpin.append((str(i),name,-15.24+(i-15)*5.08,22.86,270))
 # Keep the unused 8 underside lands isolated; the other side pads perform I/O.
 SWPINS=[('1','C',-7.62,0,0),('2','A',7.62,0,180)]
 DPINS=[('1','K',-7.62,0,0),('2','A',7.62,0,180)]
@@ -535,19 +535,19 @@ for p in parts:
 # Pin symbol locations for each part type (in local schematic coordinates)
 positions={'XIAO_ESP32_C3':xpin,'MX_1U_PCB':SWPINS,'D_DO35_P7.62':DPINS,
            'HEADER_TFT_1x08':JPINS,'PIEZO_PASSIVE':BPINS,'M3_MOUNT':[]}
-placements={'U1':(82,82,'XIAO_ESP32_C3'),
-            'J1':(82,161,'HEADER_TFT_1x08'),
-            'BZ1':(145,161,'PIEZO_PASSIVE')}
+placements={'U1':(81.28,81.28,'XIAO_ESP32_C3'),
+            'J1':(81.28,161.29,'HEADER_TFT_1x08'),
+            'BZ1':(144.78,161.29,'PIEZO_PASSIVE')}
 for idx,(swref,_,*_) in enumerate(BUTTONS):
-    placements[swref]=(145,44+idx*18,'MX_1U_PCB')
-    placements[f'D{idx+1}']=(190,44+idx*18,'D_DO35_P7.62')
-for i,(ref,_,_) in enumerate(HOLES):placements[ref]=(228,145+12*i,'M3_MOUNT')
+    placements[swref]=(144.78,44.45+idx*17.78,'MX_1U_PCB')
+    placements[f'D{idx+1}']=(190.5,44.45+idx*17.78,'D_DO35_P7.62')
+for i,(ref,_,_) in enumerate(HOLES):placements[ref]=(228.6,144.78+12.7*i,'M3_MOUNT')
 
 for part in parts:
     ref=part['ref'];x,y,typ=placements[ref];pin_def=positions[typ]
     # lib symbol x positive right, y positive up; instance y positive down.
     body=f'''(symbol (lib_id {quote('GGK:'+typ)}) (at {fmt(x)} {fmt(y)} 0) (unit 1)
-       (in_bom yes) (on_board yes) (dnp no) (uuid {quote(part['symid'])})
+       (in_bom {'no' if ref.startswith('H') else 'yes'}) (on_board yes) (dnp no) (uuid {quote(part['symid'])})
        (property "Reference" {quote(ref)} (at {fmt(x)} {fmt(y-25 if ref=='U1' else y-7.3)} 0) {effects(1)})
        (property "Value" {quote(part['value'])} (at {fmt(x)} {fmt(y+25 if ref=='U1' else y+7.3)} 0) {effects(.9)})
        (property "Footprint" {quote('GGK:'+part['lib'])} (at {fmt(x)} {fmt(y+10)} 0) {effects(.8,'(hide yes)')})
@@ -569,7 +569,7 @@ for part in parts:
         S.append(f'(label {quote(net)} (at {fmt(ex)} {fmt(ey)} 0) {effects(.9)} (uuid {quote(uid())}))')
 
 # Descriptive fields; no copyrighted illustrations.
-S.append(f'''(text "GGK ALARM / BLARE - SIX-KEY SINGLE ROW PCB (DESIGN Rev B)"
+S.append(f'''(text "GGK ALARM / BLARE - SIX-KEY SINGLE ROW PCB (AUDIT Rev D)"
    (at 44 21 0) {effects(1.4)} (uuid {quote(uid())}))''')
 S.append(f'''(text "1N4148 cathode stripes on SWITCH K1..K6; anodes on ROW; active-low 2x3 matrix."
    (at 48 27 0) {effects(1)} (uuid {quote(uid())}))''')
