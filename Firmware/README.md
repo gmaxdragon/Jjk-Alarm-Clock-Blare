@@ -42,3 +42,7 @@ pin is grounded; a software black screen **cannot physically switch it off**.
 - `GGK_BUZZER_VERIFIED` and `GGK_HARDWARE_INSPECTED` are user attestations, **not a hardware safety interlock**.
 - Wi-Fi portal uses local plaintext HTTP with PIN; only use on trusted Wi-Fi. Never expose the site to the public Internet or open router port forwarding.
 - Alarm auto-stops after 180 s to limit sustained sound/current. This sacrifices guaranteed wakefulness to limit unattended activation.
+
+## Added kit-only timer and stopwatch
+
+No extra parts: **hold CLOCK SET** on the clock face for a 1–90 minute countdown timer, or **hold DOWN** for a stopwatch. Use CLOCK SET to start/pause, SNOOZE to reset, and TIME SET to exit. Countdown completion is **visual only** while the supplied piezo remains electrically unverified. These features need power continuously; no standalone battery/RTC is included.

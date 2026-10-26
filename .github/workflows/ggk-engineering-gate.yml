@@ -33,6 +33,10 @@ jobs:
         run: |
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/alarm_logic_tests.cpp -o /tmp/ggk_alarm_logic
           /tmp/ggk_alarm_logic
+      - name: Offline timer and stopwatch rollover tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/time_tools_tests.cpp -o /tmp/ggk_time
+          /tmp/ggk_time
       - name: Host-stub syntax check; not an Arduino-core compile
         run: |
           # Use an empty, safe config in CI. Never commit private credentials.
