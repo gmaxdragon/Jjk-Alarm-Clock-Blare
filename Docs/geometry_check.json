@@ -1,5 +1,5 @@
 {
-  "revision": "GGK Rev C / boot strap safe GPIO and diode matrix reversed",
+  "revision": "GGK Rev D — native KiCad validated",
   "geometry_check_result": "PASS: 0 unrouted signal groups, 0 clearance violations <0.20 mm in geometric check",
   "not_native_kicad_drc": true,
   "board_outline_width_mm": 99.3,
@@ -48,11 +48,15 @@
   "embedded_backup_timekeeping_on_power_failure": false,
   "smartphone_sync_possible_over_wifi": true,
   "display_contents_editable_in_firmware": true,
-  "traces": 380,
+  "traces": 318,
   "vias": 11,
   "clearance_violations_0p2mm": 0,
   "unrouted_signal_groups": 0,
-  "copper_ground_zones": "GND wired explicitly plus unfilled zones; KiCad native refill required",
+  "copper_ground_zones": "GND wired explicitly and both native KiCad copper zones refilled and DRC validated",
   "manufacturing_approval": false,
-  "native_kicad_erc_and_drc": "NOT YET RUN"
+  "native_kicad_erc_and_drc": "0 ERC errors/warnings; 0 DRC violations; 0 unconnected; 0 schematic parity issues",
+  "native_kicad_verified": true,
+  "native_kicad_erc_violations": 0,
+  "native_kicad_drc_violations": 0,
+  "native_copper_zones_refilled": true
 }

@@ -1,4 +1,4 @@
-# GGK Alarm Rev C firmware
+# GGK Alarm Rev D firmware
 
 Arduino IDE board: **Seeed XIAO ESP32C3** (ESP32 by Espressif); libraries:
 **Adafruit GFX**, **Adafruit ST7735 and ST7789**. Uses built-in `WiFi`, `WebServer`,
@@ -28,14 +28,14 @@ The alarm defaults to **disabled** for safety until the user configures it.
 ## Display
 
 The BLARE ST7789 is a **76 x 284 pixel portrait display**, and cannot fit the entire
-large `10:24 AM` string on a single row. Rev C shows hour and minute on separate
+large `10:24 AM` string on a single row. Rev D shows hour and minute on separate
 large rows and `AM` or `PM` below. You can customize the caption, date visibility,
 and red/cyan/gold accents from the phone portal. The screen's hardware backlight
 pin is grounded; a software black screen **cannot physically switch it off**.
 
 ## Important limitations
 
-- **No Arduino compile or physical flash test has been done in this container.** Pin constants are aligned with the native KiCad schematic and audited against Seeed's pinout, but the exact kit module's TFT offsets, buzzer type, and physical board must be validated.
+- **Real Arduino ESP32-C3 compilation passes in GitHub Actions**, including the Adafruit libraries; no hardware has been flashed or measured. Pin constants are aligned to KiCad, but actual TFT offsets, the piezo type, boot with pressed keys and physical assembly must still be verified.
 - Kit includes no battery, battery connector, fuel gauge, physical RTC, or protection board. This does **not** run independently once every source of USB power is unplugged.
 - Power loss interrupts the alarm; settings persist but manual time needs resetting unless NTP reconnects. Do not use as the only morning alarm until tested.
 - The 3.3V piezo must NOT be operated until measured for low-current passive-piezo behavior; if active magnetic buzzer, a transistor driver with resistor and protection is needed.
@@ -46,3 +46,7 @@ pin is grounded; a software black screen **cannot physically switch it off**.
 ## Added kit-only timer and stopwatch
 
 No extra parts: **hold CLOCK SET** on the clock face for a 1–90 minute countdown timer, or **hold DOWN** for a stopwatch. Use CLOCK SET to start/pause, SNOOZE to reset, and TIME SET to exit. Countdown completion is **visual only** while the supplied piezo remains electrically unverified. These features need power continuously; no standalone battery/RTC is included.
+
+## Design verification vs use in a bedroom
+
+GitHub CI produces an **electrical/software prototype design**. No battery protection, overcurrent fuse, independently verified TFT/buzzer or physical safety testing is included. A supervising adult must check soldering and power; do not leave untested DIY hardware on overnight. See `../Docs/SAFETY_FIRST_POWER.md` from the repository root.

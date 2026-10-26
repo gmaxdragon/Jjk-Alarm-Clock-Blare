@@ -599,7 +599,7 @@ report={
  'nets':{net:[q['part']+':'+q['number'] for q in pads] for net,pads in byNet.items()},
  'routing':routing_report, 'trace_segments':len(segments),'vias':len(vias),
  'unrouted':len([r for r in routing_report if r['status']=='UNROUTED']),
- 'verification':'UNVERIFIED BY KICAD CLI; board is design prototype until ERC/DRC and net connectivity validate'
+ 'verification':'Source generator only; native KiCad ERC/DRC and ground-zone fill are verified separately in CI, physical release remains HOLD'
 }
 (ROOT/'Docs'/'generator_report.json').write_text(json.dumps(report,indent=2))
 (ROOT/'Docs'/'physical_pad_map.json').write_text(json.dumps({

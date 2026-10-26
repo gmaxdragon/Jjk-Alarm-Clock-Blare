@@ -1,13 +1,13 @@
 name: GGK Alarm Rev D Native Engineering Gate
 on:
   push:
-    branches: [main, ggk-rev-d-audit-20261025]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   source-and-firmware:
@@ -49,6 +49,9 @@ jobs:
           r=json.load(open('Docs/RELEASE_GATES.json'))
           assert r['release_approved'] is False
           assert r['power']['fully_unplugged_supported'] is False
+          assert r['pcb_copper_geometry']['native_kicad_erc'] is True
+          assert r['pcb_copper_geometry']['native_kicad_drc'] is True
+          assert r['pcb_copper_geometry']['zones_refilled'] is True
           assert r['firmware']['arduino_esp32_real_compile'] is True
           print('DESIGN HOLD enforced; no Gerbers released')
           PY
@@ -103,18 +106,6 @@ jobs:
         run: |
           test "${{ steps.erc.outcome }}" = success
           test "${{ steps.drc.outcome }}" = success
-      - name: Commit native-validated KiCad source files to audit branch
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/ggk-rev-d-audit-20261025'
-        run: |
-          git add PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro PCB/GGK.pretty PCB/GGK.kicad_sym Docs/generator_report.json Docs/physical_pad_map.json
-          if git diff --cached --quiet; then
-            echo 'Generated design already synchronized'
-          else
-            git config user.name "ggk-hardware-audit"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Regenerate PCB and schematic using KiCad backside coordinates"
-            git push origin HEAD:ggk-rev-d-audit-20261025
-          fi
       - name: Always upload validation reports
         if: always()
         uses: actions/upload-artifact@v4
