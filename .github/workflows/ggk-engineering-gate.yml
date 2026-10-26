@@ -31,6 +31,8 @@ jobs:
           /tmp/ggk_alarm_logic
       - name: Host-stub syntax check; not an Arduino-core compile
         run: |
+          # Use an empty, safe config in CI. Never commit private credentials.
+          cp Firmware/GGK_Alarm/secrets.example.h Firmware/GGK_Alarm/secrets.h
           g++ -std=c++17 -Wall -Wextra -Werror -pedantic -ITests/fake_arduino -x c++ -fsyntax-only Firmware/GGK_Alarm/GGK_Alarm.ino
       - name: Confirm manufacturing remains blocked
         run: |
