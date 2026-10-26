@@ -60,6 +60,30 @@ jobs:
           kicad-cli version
           kicad-cli sch erc --help | grep -q "exit-code-violations"
           kicad-cli pcb drc --help | grep -q "exit-code-violations"
+      - name: Diagnostic native PCB parser (non-fabrication)
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import sys,traceback
+          sys.path.insert(0, "/usr/lib/python3/dist-packages")
+          try:
+              import pcbnew
+              print("PCBNEW version:",pcbnew.GetBuildVersion())
+              try:
+                  b=pcbnew.LoadBoard("PCB/jjkspeakerpcb.kicad_pcb")
+                  print("NATIVE_LOAD_OK:",b.GetFootprints().GetCount())
+              except Exception as e:
+                  print("NATIVE_LOAD_ERROR:",repr(e))
+                  traceback.print_exc()
+          except Exception as e:
+              print("PCBNEW_LIBRARY_ERROR", repr(e))
+              traceback.print_exc()
+          PY
+      - name: Print KiCad file load diagnostics
+        continue-on-error: true
+        run: |
+          kicad-cli pcb export svg -o /tmp/ggk-board.svg -l F.Cu PCB/jjkspeakerpcb.kicad_pcb || true
+          kicad-cli pcb export gerbers -o /tmp/ggk-diagnostic-gerbers/ PCB/jjkspeakerpcb.kicad_pcb || true
       - name: Native KiCad schematic ERC
         id: erc
         continue-on-error: true
