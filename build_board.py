@@ -111,7 +111,7 @@ for i in range(1,15):
         px,py = 0.835, -18.12+(i-1)*2.54
     else:
         px,py = 17, -2.88-(i-8)*2.54
-    upads.append(pad('B',str(i),XIAO[i],px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
+    upads.append(pad('B',str(i),XIAO[i],-px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
 # Official Seeed XIAO-ESP32-C3-SMD underside lands, pads 15..22.
 # The side pins already provide signals; redundant center lands are left
 # isolated on *this carrier* instead of trying to route duplicate pins.
@@ -127,10 +127,10 @@ underside = [
  (22,4.445,-12.787,2.5,1.1,None), # GND (internal module)
 ]
 for number,px,py,w,h,net in underside:
-    upads.append(pad('B',str(number),net,px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
+    upads.append(pad('B',str(number),net,-px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
 # Mount XIAO on PCB back under the front-facing portrait screen. Its native
 # USB-C connector points UP, with the shell accessible at the top of the case.
-add('U1','Seeed_XIAO_ESP32C3_Castellated',41.1,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
+add('U1','Seeed_XIAO_ESP32C3_Castellated',58.9,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
 
 # Eight-pin TFT breakout header, horizontal at TOP. Actual female-female jumper cable
 # connects separate vertical screen to this header, following BLARE's kit guide.
@@ -169,7 +169,7 @@ def target(p, q):
 # We want XIAO center x48.0 and the USB near board bottom.
 for p in parts:
     if p['ref']=='U1':
-        p['x']=41.1      # KiCad back footprint anchor; body x41.1..58.9
+        p['x']=58.9      # Canonical KiCad B-side physical flip; body x41.1..58.9
     if p['ref']=='J1':
         p['x']=41.11     # KiCad back footprint pins x41.11..58.89
     if p['ref']=='BZ1':
@@ -376,7 +376,7 @@ def footprint(p):
     layer='B.Cu' if p['face']=='B' else 'F.Cu'; base=layer[:1]; sig=[]
     sig.append(f'(footprint {quote("GGK:"+p["lib"])} (layer {quote(layer)}) (uuid {quote(uid())}) (at {fmt(p["x"])} {fmt(p["y"])}) (attr {p["attr"]})')
     refat=(0,-10.8) if p['ref'].startswith('SW') else (0,-3)
-    if p['ref']=='U1': refat=(8.9,-23.5)
+    if p['ref']=='U1': refat=(-8.9,-23.5)
     if p['ref'].startswith('H'): refat=(0,4)
     sig.append(fp_text(base+'.Fab','reference',p['ref'],*refat,size=.8))
     sig.append(fp_text(base+'.Fab','value',p['value'],0,12 if p['lib'].startswith('MX') else 4,size=.7))
@@ -387,9 +387,9 @@ def footprint(p):
         sig.extend([fp_rect(-9.525,-1.905,4.445,12.065,layer='F.Fab'),
                     fp_rect(-10.44,-2.82,5.36,12.98,layer='F.CrtYd',width=.05)])
     elif p['ref']=='U1':
-        sig.extend([fp_rect(0,-21,17.8,0,'B.Fab',.12),
-                    fp_rect(-.15,-21.3,17.95,.2,'B.CrtYd',.05)])
-        sig.append(fp_text('B.Fab','user','USB-C',9,-22.5,size=.8))
+        sig.extend([fp_rect(-17.8,-21,0,0,'B.Fab',.12),
+                    fp_rect(-17.95,-21.3,.15,.2,'B.CrtYd',.05)])
+        sig.append(fp_text('B.Fab','user','USB-C',-9,-22.5,size=.8))
     elif p['ref']=='J1':sig.append(fp_rect(-1.45,-1.45,19.23,1.45,'B.SilkS',.1))
     elif p['ref']=='BZ1':
         sig.append(f'(fp_circle (center 3.81 0) (end 9.81 0) (stroke (width .12) (type solid)) (fill none) (layer "B.SilkS") (uuid {quote(uid())}))')

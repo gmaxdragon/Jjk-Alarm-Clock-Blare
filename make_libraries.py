@@ -44,6 +44,15 @@ for m in re.finditer(r'\(footprint "GGK:([^"]+)"',b):
         lambda m:'(footprint "'+lib+'" (version 20221018) (generator pcbnew) (layer "F.Cu") (attr '+m.group(1)+')',t,count=1)
     t=t.replace('"B.Cu"','"F.Cu"').replace('"B.Paste"','"F.Paste"').replace('"B.Mask"','"F.Mask"')
     t=t.replace('"B.Fab"','"F.Fab"').replace('"B.SilkS"','"F.SilkS"').replace('"B.CrtYd"','"F.CrtYd"')
+    # Canonical XIAO front-view library: reflect B-side local X back to
+    # the original Seeed front-view coordinate system. The board's physical
+    # U1 instance remains on B, and KiCad owns the back-layer flip.
+    if lib == 'Seeed_XIAO_ESP32C3_Castellated':
+        def mirror_x(match):
+            x=-float(match.group(2))
+            return f'({match.group(1)} {x:.5f} {match.group(3)}'
+        t=re.sub(r'\((at|start|end)\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)',mirror_x,t)
+        t=t.replace('(justify mirror)', '')
     t=re.sub(r'\(path "/[^"]+"\)', '', t)
     t=re.sub(r'\(net \d+ "[^"]+"\)', '', t)
     (lib_dir/(lib+'.kicad_mod')).write_text(t+'\n')
