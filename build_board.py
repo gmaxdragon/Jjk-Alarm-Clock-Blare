@@ -88,7 +88,7 @@ for ref,label,cx,cy,col,row,kn,dref in BUTTONS:
     # D9/BOOT GPIO9 is now used only as a pullup row INPUT; attached switches
     # cannot force a boot strap state until firmware actively scans columns.
     dx1=[11.25,24.5,37.75,51.0,64.25,77.5][int(ref[2:])-1]
-    dx2=dx1-7.62   # B-side footprint flip places pad2 at dx1+7.62
+    dx2=dx1+7.62   # Native KiCad pad2 is +7.62mm from cathode pad1
     dy=78.1
     dpads=[pad('both','1',kn,0,0,size=1.8,drill=0.85),
            pad('both','2',row,dx2-dx1,0,size=1.8,drill=0.85)]
@@ -111,7 +111,7 @@ for i in range(1,15):
         px,py = 0.835, -18.12+(i-1)*2.54
     else:
         px,py = 17, -2.88-(i-8)*2.54
-    upads.append(pad('B',str(i),XIAO[i],px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
+    upads.append(pad('B',str(i),XIAO[i],-px,py,role='smd',shape='roundrect',size=(2.75,2.0),drill=0))
 # Official Seeed XIAO-ESP32-C3-SMD underside lands, pads 15..22.
 # The side pins already provide signals; redundant center lands are left
 # isolated on *this carrier* instead of trying to route duplicate pins.
@@ -127,7 +127,7 @@ underside = [
  (22,4.445,-12.787,2.5,1.1,None), # GND (internal module)
 ]
 for number,px,py,w,h,net in underside:
-    upads.append(pad('B',str(number),net,px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
+    upads.append(pad('B',str(number),net,-px,py,role='smd',shape='roundrect',size=(w,h),drill=0))
 # Mount XIAO on PCB back under the front-facing portrait screen. Its native
 # USB-C connector points UP, with the shell accessible at the top of the case.
 add('U1','Seeed_XIAO_ESP32C3_Castellated',58.9,23.0,'B',upads,value='XIAO ESP32-C3',attr='smd')
@@ -138,12 +138,12 @@ DISPLAY={1:'GND',2:'3V3',3:'DISP_SCK',4:'DISP_MOSI',5:'3V3',
          6:'DISP_DC',7:'DISP_CS',8:'GND'}
 jpads=[pad('both',str(i),DISPLAY[i],(i-1)*2.54,0,shape='rect' if i==1 else 'circle',size=1.75,drill=1.0)
        for i in range(1,9)]
-add('J1','PinHeader_1x08_2.54',58.89,67,'B',jpads,value='TFT 8PIN')
+add('J1','PinHeader_1x08_2.54',41.11,67,'B',jpads,value='TFT 8PIN')
 
 # No assumption that an active magnetic buzzer is safe on GPIO. The board is
 # wired directly for the advertised LOW CURRENT 3.3V PIEZO only; kit part must
 # be verified before assembly. Mounted BACK, vent faces case opening.
-add('BZ1','Piezo_P12_P7.62',53.81,46,'B',[
+add('BZ1','Piezo_P12_P7.62',46.19,46,'B',[
     pad('both','1','PIEZO',0,0,shape='rect',size=1.9,drill=0.9),
     pad('both','2','GND',7.62,0,size=1.9,drill=0.9)],value='3.3V PIEZO')
 
@@ -159,9 +159,9 @@ for ref,hx,hy in HOLES:
 # coordinates; in board drawing, pcbnew flips local x -> -x. Physical target:
 # place front-view module pad columns within the narrow PCB stalk.
 def target(p, q):
-    # On bottom layer x mirrors around the footprint origin, y does not.
-    # Native pcbnew pad-position parity is enforced in CI.
-    x=p['x'] - q['x'] if p['face']=='B' else p['x'] + q['x']
+    # KiCad back-layer pads follow authored S-expression x/y positions.
+    # Native pcbnew pad position parity must pass before fabrication.
+    x=p['x'] + q['x']  # Native pcbnew pad positions use the authored local x
     y=p['y'] + q['y']
     return (round(x,4),round(y,4))
 
@@ -171,9 +171,9 @@ for p in parts:
     if p['ref']=='U1':
         p['x']=58.9      # Canonical KiCad B-side physical flip; body x41.1..58.9
     if p['ref']=='J1':
-        p['x']=58.89     # Back transform: pins x41.11..58.89
+        p['x']=41.11     # Native header pads x41.11..58.89
     if p['ref']=='BZ1':
-        p['x']=53.81     # Back transform: pins x46.19..53.81
+        p['x']=46.19     # Native buzzer pads x46.19..53.81
 
 PADS=[]
 for p in parts:
