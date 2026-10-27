@@ -1,14 +1,14 @@
 /*
- GGK ALARM Rev C -- BLARE XIAO ESP32-C3 + portrait ST7789 76x284.
+ GGK ALARM rectangular board -- XIAO ESP32-C3 + portrait ST7789 76x284.
  Editable phone settings, direct six-key control, persistent weekday alarm,
  manual time/date setting, NTP, optional 5-minute snooze and quiz.
 
  SECURITY/SAFETY:
  - Prototype firmware: not compiled/flashed against a physical XIAO yet.
- - "SAFE BUZZER" is DISABLED unless exact piezo/current and wiring verified.
+ - BZ1 is switched via Q1 transistor; audible output DISABLED until buzzer/wiring verified.
  - No Li-ion circuit is designed here. USB-only or verified external power bank.
  - No false battery percent, fake dimming or claim of autonomous time retention.
- - ESP32 C3 GPIO9 boot-strap pin is strictly a pulled-up keyboard ROW INPUT.
+ - GPIO8 has external R1 pull-up; GPIO9/BOOT stays a pulled-up ROW INPUT.
  - Sleep/deep-sleep disabled. TFT active-low BL is physically held on by PCB.
  - All PIN-secured settings travel over local HTTP, not public Internet/TLS.
  - Standalone daily waking requires complete test + separately reliable backup.
@@ -357,6 +357,14 @@ void adjustAlarm(int delta){
 }
 void onKey(Key key,Event event){
   if(event==Event::NONE)return;
+#if GGK_DEBUG_KEY_SERIAL
+  // Each debounced key SHORT/LONG is shown on USB serial for supervised testing.
+  static const char* names[6]={"UP","DOWN","TIME","CLOCK","SNOOZE","ALARM"};
+  if((int)key>=0 && (int)key<6){
+    Serial.printf("[BLARE KEY] %s %s\n",names[key],
+                  event==Event::SHORT?"short":"long");
+  }
+#endif
   if(alerting){
     if(key==SNOOZE){if(event==Event::LONG)dismiss();else snooze();return;}
     if(event==Event::LONG)return;
@@ -555,6 +563,10 @@ void setup(){
   setenv("TZ",GGK_TIMEZONE,1);tzset();
   loadSettings();
   tft.begin();
+  Serial.println("[BLARE] Rectangular PCB firmware / portrait ST7789");
+  Serial.println("[BLARE] J3: CLK21 MOSI20 DC3 CS4 RST=3V3 BL=GND");
+  Serial.println("[BLARE] Keys: COL5/6/7 ROW8/9, Q1 buzzer GPIO10");
+  Serial.printf("[BLARE] Audio gate: %s\n",soundAllowed()?"verified configuration":"HOLD / OFF");
   if(strlen(GGK_WIFI_SSID)){
     WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(true);
     WiFi.begin(GGK_WIFI_SSID,GGK_WIFI_PASSWORD);
