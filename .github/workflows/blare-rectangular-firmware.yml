@@ -1,0 +1,57 @@
+name: BLARE rectangular alarm firmware (real ESP32-C3 compile)
+on:
+  push:
+    branches: [blare-rectangular-wip-20261026]
+    paths:
+      - 'Firmware/GGK_Alarm/**'
+      - '.github/workflows/blare-rectangular-firmware.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  arduino-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install ESP32 core and display libraries
+        run: |
+          set -euxo pipefail
+          URL="https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+          arduino-cli core update-index --additional-urls "$URL"
+          arduino-cli core install esp32:esp32 --additional-urls "$URL"
+          arduino-cli lib install "Adafruit GFX Library"
+          arduino-cli lib install "Adafruit ST7735 and ST7789 Library"
+          arduino-cli board listall | grep -i "XIAO"
+      - name: Verify rectangular pin map and fail-closed audio
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          pins=Path("Firmware/GGK_Alarm/BoardConfig.h").read_text()
+          ino=Path("Firmware/GGK_Alarm/GGK_Alarm.ino").read_text()
+          flags=Path("Firmware/GGK_Alarm/secrets.example.h").read_text()
+          for v in ["TFT_SCK=21","TFT_MOSI=20","TFT_DC=3","TFT_CS=4",
+                    "BUZZER=10","ROW0=8","ROW1=9","COL0=5","COL1=6","COL2=7"]:
+              assert v in pins, "pin mapping changed: "+v
+          for token in ("init(76, 284)", "_colstart = _colstart2 = 82",
+                        "_rowstart = _rowstart2 = 18", "setRotation(0)",
+                        "GGK_BUZZER_VERIFIED==1 && GGK_HARDWARE_INSPECTED==1",
+                        "pinMode(COL[c],INPUT);"):
+              assert token in ino, "firmware safety/display regression: "+token
+          assert "#define GGK_BUZZER_VERIFIED 0" in flags
+          assert "#define GGK_HARDWARE_INSPECTED 0" in flags
+          print("Pin map, portrait TFT, input-only boot pins and audio defaults: PASS")
+          PY
+      - name: Compile actual XIAO ESP32-C3 sketch
+        run: |
+          set -euxo pipefail
+          cp Firmware/GGK_Alarm/secrets.example.h Firmware/GGK_Alarm/secrets.h
+          URL="https://espressif.github.io/arduino-esp32/package_esp32_index.json"
+          arduino-cli compile --fqbn "esp32:esp32:XIAO_ESP32C3" --additional-urls "$URL" --warnings all Firmware/GGK_Alarm
+      - name: Run alarm and timer C++ tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/alarm_logic_tests.cpp -o /tmp/blare_alarm
+          /tmp/blare_alarm
+          g++ -std=c++17 -Wall -Wextra -Werror -pedantic Tests/time_tools_tests.cpp -o /tmp/blare_time
+          /tmp/blare_time
