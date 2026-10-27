@@ -1,5 +1,5 @@
 /*
- GGK ALARM rectangular board -- XIAO ESP32-C3 + portrait ST7789 76x284.
+ JJK ALARM rectangular board -- XIAO ESP32-C3 + portrait ST7789 76x284.
  Editable phone settings, direct six-key control, persistent weekday alarm,
  manual time/date setting, NTP, optional 5-minute snooze and quiz.
 
@@ -23,7 +23,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7789.h>
 #include "BoardConfig.h"
-#include "GGK_Hands_76x76.h"
+#include "JJK_Hands_76x76.h"
 #include "AlarmLogic.h"
 #include "TimeTools.h"
 #include "secrets.h"
@@ -62,7 +62,7 @@ Debounce buttons[6];
 Mode mode=Mode::HOME;
 uint8_t theme=0, timeField=0, alarmField=0, chosenDay=1, question=0, answer=0;
 bool showDate=true;
-char caption[12]="GGK ALARM";
+char caption[12]="JJK ALARM";
 struct tm editedTime {};
 int lastAlarmDay=-1;
 time_t snoozeUntil=0;
@@ -98,8 +98,8 @@ void loadSettings(){
   configuredAlarm.enabled=prefs.getBool("on",false);
   theme=prefs.getUChar("theme",0)%3;
   showDate=prefs.getBool("date",true);
-  String label=prefs.getString("caption","GGK ALARM");
-  if(!ggk::validLabel(label.c_str()))label="GGK ALARM";
+  String label=prefs.getString("caption","JJK ALARM");
+  if(!ggk::validLabel(label.c_str()))label="JJK ALARM";
   label.toCharArray(caption,sizeof(caption));
   lastAlarmDay=prefs.getInt("lastday",-1);
   if(!ggk::valid(configuredAlarm))configuredAlarm=ggk::Alarm{};
@@ -203,14 +203,14 @@ void centered(int value,int y){twoDigits(value,14,y);}
 // 76x76 user-supplied artwork rendered one scanline at a time.
 // The 32-color RGB565 palette and pixel indices stay in program flash.
 void paintHandsArt(int16_t topY){
-  uint16_t line[GGK_HANDS_W];
-  for(uint8_t iy=0;iy<GGK_HANDS_H;iy++){
-    for(uint8_t ix=0;ix<GGK_HANDS_W;ix++){
-      const size_t offset=(size_t)iy*GGK_HANDS_W+ix;
-      const uint8_t colorIndex=pgm_read_byte(&GGK_HANDS_PIXELS[offset]);
-      line[ix]=pgm_read_word(&GGK_HANDS_PALETTE[colorIndex]);
+  uint16_t line[JJK_HANDS_W];
+  for(uint8_t iy=0;iy<JJK_HANDS_H;iy++){
+    for(uint8_t ix=0;ix<JJK_HANDS_W;ix++){
+      const size_t offset=(size_t)iy*JJK_HANDS_W+ix;
+      const uint8_t colorIndex=pgm_read_byte(&JJK_HANDS_PIXELS[offset]);
+      line[ix]=pgm_read_word(&JJK_HANDS_PALETTE[colorIndex]);
     }
-    tft.drawRGBBitmap(0,topY+iy,line,GGK_HANDS_W,1);
+    tft.drawRGBBitmap(0,topY+iy,line,JJK_HANDS_W,1);
   }
 }
 void paintHome(){
@@ -484,8 +484,8 @@ String htmlEscape(String s){
 bool portalReady(){return strlen(GGK_PORTAL_PIN)>=6;}
 void renderPortal(){
   String html="<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>";
-  html+="<title>GGK Alarm</title><style>body{background:#0e1015;color:#f9f9f9;font-family:system-ui;margin:auto;max-width:460px;padding:24px}input,select,button{font:inherit;background:#242630;color:white;border:1px solid #52535b;border-radius:8px;padding:11px;margin:5px 0;width:100%;box-sizing:border-box}button{background:#9d2036}label{display:block;margin-top:13px}h1{color:#ff5265}</style>";
-  html+="<h1>GGK ALARM</h1><p>Local Wi-Fi only. Physical keyboard always works.</p>";
+  html+="<title>JJK Alarm</title><style>body{background:#0e1015;color:#f9f9f9;font-family:system-ui;margin:auto;max-width:460px;padding:24px}input,select,button{font:inherit;background:#242630;color:white;border:1px solid #52535b;border-radius:8px;padding:11px;margin:5px 0;width:100%;box-sizing:border-box}button{background:#9d2036}label{display:block;margin-top:13px}h1{color:#ff5265}</style>";
+  html+="<h1>JJK ALARM</h1><p>Local Wi-Fi only. Physical keyboard always works.</p>";
   if(!portalReady())html+="<p>Phone editing locked until a unique portal PIN is set during flashing.</p>";
   else{
     html+="<form action='/save' method='POST'><label>Portal PIN<input type='password' name='pin' required></label>";
