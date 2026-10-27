@@ -23,6 +23,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7789.h>
 #include "BoardConfig.h"
+#include "GGK_Hands_76x76.h"
 #include "AlarmLogic.h"
 #include "TimeTools.h"
 #include "secrets.h"
@@ -199,30 +200,48 @@ void twoDigits(int value,int x,int y){
   tft.setCursor(x,y);tft.print(b);
 }
 void centered(int value,int y){twoDigits(value,14,y);}
+// 76x76 user-supplied artwork rendered one scanline at a time.
+// The 32-color RGB565 palette and pixel indices stay in program flash.
+void paintHandsArt(int16_t topY){
+  uint16_t line[GGK_HANDS_W];
+  for(uint8_t iy=0;iy<GGK_HANDS_H;iy++){
+    for(uint8_t ix=0;ix<GGK_HANDS_W;ix++){
+      const size_t offset=(size_t)iy*GGK_HANDS_W+ix;
+      const uint8_t colorIndex=pgm_read_byte(&GGK_HANDS_PIXELS[offset]);
+      line[ix]=pgm_read_word(&GGK_HANDS_PALETTE[colorIndex]);
+    }
+    tft.drawRGBBitmap(0,topY+iy,line,GGK_HANDS_W,1);
+  }
+}
 void paintHome(){
   struct tm t{};bool validTime=localNow(t);
   banner(caption);
+  paintHandsArt(25); // image at the TOP; clock directly underneath
+  tft.drawFastHLine(4,110,68,colorAccent());
   if(!validTime){
-    small("NO TIME",8,53,ST77XX_WHITE);
-    small("TIME SET",8,79,colorAccent());
-    small("OR WIFI",8,95,ST77XX_WHITE);
+    small("NO TIME",12,130,ST77XX_WHITE);
+    small("TIME SET",8,172,colorAccent());
+    small("OR WIFI",15,191,ST77XX_WHITE);
   }else{
-    centered(ggk::hour12(t.tm_hour),45);
-    tft.drawFastHLine(10,95,56,colorAccent());
-    centered(t.tm_min,104);
-    small(ggk::period(t.tm_hour),29,154,ST77XX_WHITE);
+    centered(ggk::hour12(t.tm_hour),125);
+    tft.drawFastHLine(11,164,54,colorAccent());
+    centered(t.tm_min,177);
+    small(ggk::period(t.tm_hour),30,220,ST77XX_WHITE);
     if(showDate){
-      char day[20];snprintf(day,sizeof(day),"%s %02d/%02d",weekdays[t.tm_wday],t.tm_mon+1,t.tm_mday);
-      small(day,3,182,ST77XX_WHITE);
+      char day[20];
+      snprintf(day,sizeof(day),"%s %02d/%02d",
+               weekdays[t.tm_wday],t.tm_mon+1,t.tm_mday);
+      small(day,3,237,ST77XX_WHITE);
     }
   }
-  small(configuredAlarm.enabled?"ALARM ON":"ALARM OFF",5,216,colorAccent());
-  char next[12];snprintf(next,sizeof(next),"%02d:%02d %s",ggk::hour12(configuredAlarm.hour),configuredAlarm.minute,ggk::period(configuredAlarm.hour));
-  small(next,5,232,ST77XX_WHITE);
-  if(snoozeUntil)small("SNOOZE 5M",5,247,colorAccent());
-  if(!soundAllowed())small("AUDIO HOLD",5,260,0xFBE0);
-  else small("SOUND READY",5,260,0x07E0);
+  small(configuredAlarm.enabled?"ALARM ON":"ALARM OFF",3,253,colorAccent());
+  char next[14];
+  snprintf(next,sizeof(next),"%02d:%02d %s",
+           ggk::hour12(configuredAlarm.hour),
+           configuredAlarm.minute,ggk::period(configuredAlarm.hour));
+  small(next,3,269,ST77XX_WHITE);
 }
+
 void paintEdit(){
   bool timeMode=mode==Mode::TIME_EDIT;
   const char* fields[]={"SET HOUR","SET MIN","SET MONTH","SET DAY","SET YEAR"};
@@ -580,6 +599,17 @@ void loop(){
   if(portalStarted)portal.handleClient();
   checkAlarm();serviceAlarmSound();
   if(countdown.tick(currentMs()))redraw=true; // visual timer; no unverified buzzer drive
-  if(redraw || currentMs()-lastPaintMs>1000)paint();
+  // Redraw the artwork/clock only on changed minute or UI state.
+  // Stopwatch/countdown require one-second updates; status refreshes periodically.
+  static int64_t lastPaintMinute=-2;
+  const time_t epochNow=time(nullptr);
+  const int64_t minuteKey=epochNow>=1700000000 ? (int64_t)epochNow/60 : -1;
+  const bool changingSeconds=mode==Mode::TIMER || mode==Mode::STOPWATCH;
+  const bool needTick=changingSeconds && currentMs()-lastPaintMs>=1000;
+  const bool needInfo=mode==Mode::INFO && currentMs()-lastPaintMs>=5000;
+  if(redraw || minuteKey!=lastPaintMinute || needTick || needInfo){
+    paint();
+    lastPaintMinute=minuteKey;
+  }
   delay(10);
 }
