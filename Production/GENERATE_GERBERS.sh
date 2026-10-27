@@ -7,6 +7,7 @@ SCH="PCB/jjkspeakerpcb.kicad_sch"
 OUT="Production/ReviewOnly"
 RAW="$OUT/gerbers"
 mkdir -p "$RAW"
+trap 'echo "---- Native KiCad ERC / DRC diagnostics ----"; for p in "$OUT/native_erc.rpt" "$OUT/native_drc.rpt"; do if [ -f "$p" ]; then cat "$p"; fi; done' ERR
 rm -f "$RAW"/* "$OUT/gerbers.zip" "$OUT/native_erc.rpt" "$OUT/native_drc.rpt" "$OUT/drill_report.rpt"
 
 echo "Using $(kicad-cli version)"

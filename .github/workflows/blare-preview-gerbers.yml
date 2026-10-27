@@ -46,6 +46,7 @@ jobs:
             echo "Do not order until a human has checked the Gerber preview at the manufacturer."
           } > Production/ReviewOnly/READ_FIRST_NOT_APPROVED.md
       - name: Upload preview artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: blare-rectangular-gerber-review
