@@ -1,0 +1,10 @@
+INCOMPLETE MANUFACTURING EXPORT - NOT FOR FABRICATION
+
+These five files are the Gerbers the user uploaded on October 26, 2026:
+- jjkspeakerpcb-F_Cu.gbr
+- jjkspeakerpcb-B_Cu.gbr
+- jjkspeakerpcb-F_Silkscreen.gbr
+- jjkspeakerpcb-B_Silkscreen.gbr
+- jjkspeakerpcb-Edge_Cuts.gbr
+
+Missing from this upload: plated/nonplated drill files and top/bottom solder-mask Gerbers. Do not rename these to a complete gerbers.zip or submit them to a fabricator. Re-export a complete checked manufacturing job from the final KiCad project.
