@@ -1,0 +1,86 @@
+[
+  {
+    "path": "Docs/Images/CAD_Enclosure.png",
+    "source_attachment": "Screenshot 2026-10-27 152520.png",
+    "bytes": 204520,
+    "sha256": "2924cc0bf7bbc5c761835f6433c72d6483d006a9dd65b45257a9db316577bb90"
+  },
+  {
+    "path": "Docs/Images/PCB_Layout.png",
+    "source_attachment": "image(20261027-223958).png",
+    "bytes": 77194,
+    "sha256": "c84265a3c4e72aa378e905593f819a5dc2d2f23e3d78c14c6016adabd89e635d"
+  },
+  {
+    "path": "Docs/Images/PCB_3D.png",
+    "source_attachment": "image(20261027-224049).png",
+    "bytes": 132868,
+    "sha256": "8766916f77868ed6d51b65c6d2111d9cf314fc7b2fade14c0b6ef4c0db8f4c8b"
+  },
+  {
+    "path": "Docs/Images/Schematic.png",
+    "source_attachment": "image(20261027-224103).png",
+    "bytes": 34523,
+    "sha256": "980160a7617ddb231d160df66bf1a994894476cc241e762f9c5c3e0c0b35b523"
+  },
+  {
+    "path": "Docs/Images/Project_Overview.png",
+    "source_attachment": "image(20261027-231415).png",
+    "bytes": 565868,
+    "sha256": "e2dcf501115c4002eba1cb07568b8871ba63fee05962ee0a2a985bcc0aca9c75"
+  },
+  {
+    "path": "Docs/Images/Hand_Sign_Artwork.png",
+    "source_attachment": "image(20261027-230301).png",
+    "bytes": 82405,
+    "sha256": "9dc6a7bfee2aa85e1e822008a4c5e6bd645e619759c97f5a16ed01114c35d668"
+  },
+  {
+    "path": "Docs/Images/History/PCB_2026-10-26.png",
+    "source_attachment": "image(20261027-024032).png",
+    "bytes": 77093,
+    "sha256": "1342702ca15e35ad5c9633707a73725326103e8b446c1f818ce8ac0c102ec167"
+  },
+  {
+    "path": "Docs/Images/History/Schematic_2026-10-26.png",
+    "source_attachment": "image(20261027-024047).png",
+    "bytes": 25766,
+    "sha256": "bc439a650f20112cd5323d94ca8e8c4de36e134f6e5d245e7553fb233f89a583"
+  },
+  {
+    "path": "Docs/Images/History/PCB_Earlier.png",
+    "source_attachment": "image(20261027-010505).png",
+    "bytes": 87036,
+    "sha256": "6e57eae33494d3545d23f7fa90419399cd54abe1459c11f1096315ea87ea4f01"
+  },
+  {
+    "path": "Docs/Images/History/Schematic_Earlier.png",
+    "source_attachment": "image(20261026-215959).png",
+    "bytes": 31558,
+    "sha256": "86f5dcfa5e6777e17d441ac2e10e719c73f1cd5fd21227ed08421ba2fa19da31"
+  },
+  {
+    "path": "Docs/Images/Reference/BLARE_Kit.png",
+    "source_attachment": "image(20261027-005333).png",
+    "bytes": 588924,
+    "sha256": "ee1827c960efd878cfeef60594c1481f2d0a3289a11f5b4f2d6f5f58686e8708"
+  },
+  {
+    "path": "Docs/Images/Reference/BLARE_Parts_List.png",
+    "source_attachment": "image(20261027-005657).png",
+    "bytes": 56796,
+    "sha256": "2793b0e2450bf3d959fb718bbed85477d8e76ca869deacd5f2c60e4faee3c9d3"
+  },
+  {
+    "path": "Docs/Images/Reference/BLARE_Example_PCB.png",
+    "source_attachment": "image(20261027-005731).png",
+    "bytes": 359924,
+    "sha256": "2bc6628521fa4b27aa286102e81b8d6f0aa00d769aedee1e214b78332944c780"
+  },
+  {
+    "path": "Docs/Images/History/Schematic_Duplicate_Upload.png",
+    "source_attachment": "image(20261027-224119).png",
+    "bytes": 34523,
+    "sha256": "980160a7617ddb231d160df66bf1a994894476cc241e762f9c5c3e0c0b35b523"
+  }
+]
