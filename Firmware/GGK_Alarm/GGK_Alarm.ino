@@ -31,7 +31,7 @@ class TinyPortrait : public Adafruit_ST7789 {
  public:
   TinyPortrait() : Adafruit_ST7789(ggkpin::TFT_CS, ggkpin::TFT_DC,
                      ggkpin::TFT_MOSI, ggkpin::TFT_SCK, -1) {}
-  void begin() {
+  void initPanel() {
     init(76, 284);
     _colstart = _colstart2 = 82;
     _rowstart = _rowstart2 = 18;
@@ -212,7 +212,7 @@ void paintHome(){
     centered(t.tm_min,104);
     small(ggk::period(t.tm_hour),29,154,ST77XX_WHITE);
     if(showDate){
-      char day[12];snprintf(day,sizeof(day),"%s %02d/%02d",weekdays[t.tm_wday],t.tm_mon+1,t.tm_mday);
+      char day[20];snprintf(day,sizeof(day),"%s %02d/%02d",weekdays[t.tm_wday],t.tm_mon+1,t.tm_mday);
       small(day,3,182,ST77XX_WHITE);
     }
   }
@@ -241,7 +241,7 @@ void paintEdit(){
   }
   small(name,4,44,colorAccent());
   if(value>=100){
-    char b[8];snprintf(b,sizeof(b),"%04d",value);
+    char b[16];snprintf(b,sizeof(b),"%04d",value);
     small(b,13,107,ST77XX_WHITE);
   }else centered(value,95);
   small("UP / DOWN",4,167,ST77XX_WHITE);
@@ -360,7 +360,7 @@ void onKey(Key key,Event event){
 #if GGK_DEBUG_KEY_SERIAL
   // Each debounced key SHORT/LONG is shown on USB serial for supervised testing.
   static const char* names[6]={"UP","DOWN","TIME","CLOCK","SNOOZE","ALARM"};
-  if((int)key>=0 && (int)key<6){
+  if((unsigned)key<6){
     Serial.printf("[BLARE KEY] %s %s\n",names[key],
                   event==Event::SHORT?"short":"long");
   }
@@ -562,7 +562,7 @@ void setup(){
   for(int i=0;i<3;i++){digitalWrite(COL[i],LOW);pinMode(COL[i],INPUT);}
   setenv("TZ",GGK_TIMEZONE,1);tzset();
   loadSettings();
-  tft.begin();
+  tft.initPanel();
   Serial.println("[BLARE] Rectangular PCB firmware / portrait ST7789");
   Serial.println("[BLARE] J3: CLK21 MOSI20 DC3 CS4 RST=3V3 BL=GND");
   Serial.println("[BLARE] Keys: COL5/6/7 ROW8/9, Q1 buzzer GPIO10");
