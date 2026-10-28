@@ -4,7 +4,7 @@
  manual time/date setting, NTP, optional 5-minute snooze and quiz.
 
  SECURITY/SAFETY:
- - Prototype firmware: not compiled/flashed against a physical XIAO yet.
+ - Prototype firmware: CI compilation passed; physical flashing/testing remains unverified.
  - BZ1 is switched via Q1 transistor; audible output DISABLED until buzzer/wiring verified.
  - No Li-ion circuit is designed here. USB-only or verified external power bank.
  - No false battery percent, fake dimming or claim of autonomous time retention.
