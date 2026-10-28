@@ -12,19 +12,6 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Import new compact design when absent
-        env:
-          SOURCE_URL: 'https://sdmntprwestus3.oaiusercontent.com/files/00000000-84d8-81fd-abf0-3f0d290c0a49/raw?se=2026-10-28T02%3A52%3A54Z&sp=r&sv=2026-02-06&sr=b&scid=133084e0-708d-51c1-b3a0-2218325b621d&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-28T01%3A59%3A48Z&ske=2026-10-29T01%3A59%3A48Z&sks=b&skv=2026-02-06&sig=FYk8XKyOmHculkWmY0TmQWwchbhLl/q1RGPLI0E1o8Q%3D'
-        run: |
-          if [ ! -f Revisions/Compact_95/PCB/jjkspeakerpcb.kicad_pcb ]; then
-            curl --fail --silent --show-error --location "$SOURCE_URL" -o /tmp/jjk-source.zip
-            python3 -m zipfile -e /tmp/jjk-source.zip .
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add Revisions/Compact_95 Tools/compact
-            git commit -m 'Add separate 95mm compact candidate; original PCB remains unchanged'
-            git push
-          fi
       - name: Install matching KiCad and standard libraries
         run: |
           sudo apt-get update -qq
@@ -35,6 +22,18 @@ jobs:
           mkdir -p "$HOME/.config/kicad/10.0"
           cp /usr/share/kicad/template/sym-lib-table "$HOME/.config/kicad/10.0/sym-lib-table"
           cp /usr/share/kicad/template/fp-lib-table "$HOME/.config/kicad/10.0/fp-lib-table"
+      - name: Place lower-row diode references clear of button labels
+        run: |
+          /usr/bin/python3 - <<'PY'
+          import pcbnew
+          p='Revisions/Compact_95/PCB/jjkspeakerpcb.kicad_pcb'
+          b=pcbnew.LoadBoard(p)
+          for f in b.GetFootprints():
+            if f.GetReference() in ('D2','D4','D6'):
+              q=f.GetPosition()
+              f.Reference().SetPosition(pcbnew.VECTOR2I(q.x-pcbnew.FromMM(3),q.y))
+          pcbnew.SaveBoard(p,b)
+          PY
       - name: Native ERC and DRC with schematic parity
         run: |
           set +e
