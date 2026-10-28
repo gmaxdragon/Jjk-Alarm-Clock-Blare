@@ -1,0 +1,80 @@
+name: JJK 95mm compact PCB checks
+on:
+  push:
+    branches: [jjk-compact-revision]
+    paths: [.github/workflows/jjk-compact-check.yml, 'Revisions/Compact_95/PCB/**', 'Tools/compact/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import new compact design when absent
+        env:
+          SOURCE_URL: 'https://sdmntprwestus3.oaiusercontent.com/files/00000000-84d8-81fd-abf0-3f0d290c0a49/raw?se=2026-10-28T02%3A52%3A54Z&sp=r&sv=2026-02-06&sr=b&scid=133084e0-708d-51c1-b3a0-2218325b621d&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-28T01%3A59%3A48Z&ske=2026-10-29T01%3A59%3A48Z&sks=b&skv=2026-02-06&sig=FYk8XKyOmHculkWmY0TmQWwchbhLl/q1RGPLI0E1o8Q%3D'
+        run: |
+          if [ ! -f Revisions/Compact_95/PCB/jjkspeakerpcb.kicad_pcb ]; then
+            curl --fail --silent --show-error --location "$SOURCE_URL" -o /tmp/jjk-source.zip
+            python3 -m zipfile -e /tmp/jjk-source.zip .
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add Revisions/Compact_95 Tools/compact
+            git commit -m 'Add separate 95mm compact candidate; original PCB remains unchanged'
+            git push
+          fi
+      - name: Install matching KiCad and standard libraries
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq software-properties-common
+          sudo add-apt-repository -y ppa:kicad/kicad-10.0-releases
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends kicad kicad-symbols kicad-footprints
+          mkdir -p "$HOME/.config/kicad/10.0"
+          cp /usr/share/kicad/template/sym-lib-table "$HOME/.config/kicad/10.0/sym-lib-table"
+          cp /usr/share/kicad/template/fp-lib-table "$HOME/.config/kicad/10.0/fp-lib-table"
+      - name: Native ERC and DRC with schematic parity
+        run: |
+          set +e
+          mkdir -p Revisions/Compact_95/Checks
+          kicad-cli sch erc --severity-all --exit-code-violations -o Revisions/Compact_95/Checks/ERC.rpt Revisions/Compact_95/PCB/jjkspeakerpcb.kicad_sch
+          ERC=$?
+          kicad-cli pcb drc --severity-all --schematic-parity --refill-zones --save-board --exit-code-violations -o Revisions/Compact_95/Checks/DRC.rpt Revisions/Compact_95/PCB/jjkspeakerpcb.kicad_pcb
+          DRC=$?
+          cat Revisions/Compact_95/Checks/*.rpt
+          test "$ERC" = 0 && test "$DRC" = 0
+      - name: Export verified compact manufacturing files
+        run: |
+          set -euo pipefail
+          BASE=Revisions/Compact_95
+          mkdir -p "$BASE/Production/Gerbers" "$BASE/CAD"
+          kicad-cli pcb export gerbers --check-zones --no-protel-ext -l 'F.Cu,B.Cu,F.Mask,B.Mask,F.SilkS,B.SilkS,Edge.Cuts' -o "$BASE/Production/Gerbers/" "$BASE/PCB/jjkspeakerpcb.kicad_pcb"
+          kicad-cli pcb export drill --format excellon --drill-origin absolute --excellon-units mm --excellon-separate-th --generate-report --report-path "$BASE/Checks/Drill.rpt" -o "$BASE/Production/Gerbers/" "$BASE/PCB/jjkspeakerpcb.kicad_pcb"
+          kicad-cli pcb export step --no-components --cut-vias-in-body --force -o "$BASE/CAD/PCB_Substrate.step" "$BASE/PCB/jjkspeakerpcb.kicad_pcb"
+          kicad-cli pcb export svg --layers 'F.Cu,F.SilkS,Edge.Cuts' --mode-single --page-size-mode 2 -o "$BASE/CAD/PCB_Layout.svg" "$BASE/PCB/jjkspeakerpcb.kicad_pcb"
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          p=Path('Revisions/Compact_95/Production')
+          fs=list((p/'Gerbers').glob('*.gbr'))+list((p/'Gerbers').glob('*.drl'))
+          assert len(fs)==9, [x.name for x in fs]
+          with zipfile.ZipFile(p/'gerbers.zip','w',zipfile.ZIP_DEFLATED) as z:
+            for f in sorted(fs):z.write(f,f.name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: JJK-Compact-95-Validation
+          path: Revisions/Compact_95/
+          if-no-files-found: error
+      - name: Save validated outputs on compact branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Revisions/Compact_95
+          if ! git diff --cached --quiet; then
+            git commit -m 'Validate compact board with native KiCad and export matching Gerbers and PCB STEP'
+            git push
+          fi
