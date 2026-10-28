@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iostream>
 int main(){
- using namespace ggk;
+ using namespace jjk;
  Alarm a; Clock t{2026,297,0,7,0};
  assert(valid(a)); assert(!a.enabled); assert(!due(a,t,-1));
  a.enabled=true; assert(!due(a,t,-1)); // Sunday disabled by default
@@ -24,8 +24,8 @@ int main(){
  assert(keyFromMatrix(3,0)==-1);
  assert(quizCorrect(0,1));assert(!quizCorrect(0,0));
  assert(quizCorrect(1,2));assert(quizCorrect(2,0));
- assert(validLabel("GGK ALARM"));assert(validLabel(""));
+ assert(validLabel("JJK ALARM"));assert(validLabel(""));
  assert(!validLabel("THIS IS TOO LONG"));
  assert(SNOOZE_SECONDS==300 && MAX_RING_SECONDS==180);
- std::cout<<"GGK AlarmLogic: all 32 behavioral assertions PASS\n";
+ std::cout<<"JJK AlarmLogic: all 32 behavioral assertions PASS\n";
 }

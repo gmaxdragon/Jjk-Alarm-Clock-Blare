@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-namespace ggk {
+namespace jjk {
 // Uses unsigned millis() deltas, so counter wrap is well-defined for spans
 // shorter than 2^31 ms. Does not require Wi-Fi, RTC or another component.
 struct Countdown {
@@ -51,4 +51,4 @@ struct Stopwatch {
   }
   void reset(){heldMs=0;running=false;}
 };
-} // namespace ggk
+} // namespace jjk

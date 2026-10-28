@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
-namespace ggk {
+namespace jjk {
 constexpr uint8_t SCHOOL_DAYS = 0x3E;
 constexpr uint8_t EVERY_DAY = 0x7F;
 constexpr unsigned SNOOZE_SECONDS = 300;

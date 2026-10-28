@@ -30,8 +30,8 @@
 
 class TinyPortrait : public Adafruit_ST7789 {
  public:
-  TinyPortrait() : Adafruit_ST7789(ggkpin::TFT_CS, ggkpin::TFT_DC,
-                     ggkpin::TFT_MOSI, ggkpin::TFT_SCK, -1) {}
+  TinyPortrait() : Adafruit_ST7789(jjkpin::TFT_CS, jjkpin::TFT_DC,
+                     jjkpin::TFT_MOSI, jjkpin::TFT_SCK, -1) {}
   void initPanel() {
     init(76, 284);
     _colstart = _colstart2 = 82;
@@ -45,12 +45,12 @@ class TinyPortrait : public Adafruit_ST7789 {
 TinyPortrait tft;
 WebServer portal(80);
 Preferences prefs;
-ggk::Alarm configuredAlarm;
-ggk::Countdown countdown;
-ggk::Stopwatch stopwatch;
+jjk::Alarm configuredAlarm;
+jjk::Countdown countdown;
+jjk::Stopwatch stopwatch;
 
-static constexpr uint8_t ROW[2] = {ggkpin::ROW0, ggkpin::ROW1};
-static constexpr uint8_t COL[3] = {ggkpin::COL0, ggkpin::COL1, ggkpin::COL2};
+static constexpr uint8_t ROW[2] = {jjkpin::ROW0, jjkpin::ROW1};
+static constexpr uint8_t COL[3] = {jjkpin::COL0, jjkpin::COL1, jjkpin::COL2};
 enum Key : uint8_t { UP=0, DOWN=1, TIME_SET=2, CLOCK_SET=3, SNOOZE=4, ALARM_ON=5 };
 enum class Event : uint8_t { NONE, SHORT, LONG };
 enum class Mode : uint8_t { HOME, TIME_EDIT, ALARM_EDIT, DAY_EDIT, QUIZ, INFO, TIMER, STOPWATCH };
@@ -77,7 +77,7 @@ const char* choices[3][3]={
   {"JUJUTSU", "NARUTO", "BLEACH"}
 };
 
-bool soundAllowed(){return GGK_BUZZER_VERIFIED==1 && GGK_HARDWARE_INSPECTED==1;}
+bool soundAllowed(){return JJK_BUZZER_VERIFIED==1 && JJK_HARDWARE_INSPECTED==1;}
 uint16_t colorAccent(){return theme==1?0x07FF:theme==2?0xFFE0:0xF800;}
 uint32_t currentMs(){return millis();}
 int stringToInt(const String& s,int lo,int hi,int fallback){
@@ -92,17 +92,17 @@ void remember(){
   prefs.putString("caption",caption);
 }
 void loadSettings(){
-  prefs.begin("ggk-alarm",false);
+  prefs.begin("jjk-alarm",false);
   configuredAlarm.hour=prefs.getUChar("hh",7);configuredAlarm.minute=prefs.getUChar("mm",0);
-  configuredAlarm.days=prefs.getUChar("days",ggk::SCHOOL_DAYS);
+  configuredAlarm.days=prefs.getUChar("days",jjk::SCHOOL_DAYS);
   configuredAlarm.enabled=prefs.getBool("on",false);
   theme=prefs.getUChar("theme",0)%3;
   showDate=prefs.getBool("date",true);
   String label=prefs.getString("caption","JJK ALARM");
-  if(!ggk::validLabel(label.c_str()))label="JJK ALARM";
+  if(!jjk::validLabel(label.c_str()))label="JJK ALARM";
   label.toCharArray(caption,sizeof(caption));
   lastAlarmDay=prefs.getInt("lastday",-1);
-  if(!ggk::valid(configuredAlarm))configuredAlarm=ggk::Alarm{};
+  if(!jjk::valid(configuredAlarm))configuredAlarm=jjk::Alarm{};
 }
 
 // The PCB diode cathode/bar is K1..K6 (on the switch side), while anode
@@ -114,7 +114,7 @@ uint8_t scanPressed(){
     pinMode(COL[c],OUTPUT);        // drive only LOW, never source into a short
     delayMicroseconds(80);
     for(int r=0;r<2;r++){
-      int k=ggk::keyFromMatrix(c,r);
+      int k=jjk::keyFromMatrix(c,r);
       if(digitalRead(ROW[r])==LOW)mask|=(uint8_t(1)<<k);
     }
     pinMode(COL[c],INPUT);          // high-Z between scanning windows
@@ -123,13 +123,13 @@ uint8_t scanPressed(){
 }
 
 void setBuzzerOff(){
-  if(buzzerOn){noTone(ggkpin::BUZZER);buzzerOn=false;}
-  digitalWrite(ggkpin::BUZZER,LOW);
+  if(buzzerOn){noTone(jjkpin::BUZZER);buzzerOn=false;}
+  digitalWrite(jjkpin::BUZZER,LOW);
 }
 void playVerifiedTone(unsigned frequency,unsigned duration){
   if(!soundAllowed())return;      // fail CLOSED on unknown buzzer type
   if(duration>280)duration=280;
-  tone(ggkpin::BUZZER,frequency,duration);
+  tone(jjkpin::BUZZER,frequency,duration);
   buzzerOn=true;
 }
 void dismiss(){
@@ -139,7 +139,7 @@ void dismiss(){
 void snooze(){
   setBuzzerOff();alerting=false;
   time_t now=time(nullptr);
-  if(now>1700000000)snoozeUntil=now+ggk::SNOOZE_SECONDS;
+  if(now>1700000000)snoozeUntil=now+jjk::SNOOZE_SECONDS;
   else snoozeUntil=0;
   mode=Mode::HOME;redraw=true;
 }
@@ -161,9 +161,9 @@ void checkAlarm(){
   time_t now=time(nullptr);
   if(snoozeUntil && now>=snoozeUntil){startAlert();return;}
   if(snoozeUntil || alerting)return;
-  ggk::Clock c{t.tm_year+1900,t.tm_yday,t.tm_wday,t.tm_hour,t.tm_min};
-  if(ggk::due(configuredAlarm,c,lastAlarmDay)){
-    lastAlarmDay=ggk::dateKey(c);
+  jjk::Clock c{t.tm_year+1900,t.tm_yday,t.tm_wday,t.tm_hour,t.tm_min};
+  if(jjk::due(configuredAlarm,c,lastAlarmDay)){
+    lastAlarmDay=jjk::dateKey(c);
     prefs.putInt("lastday",lastAlarmDay);  // once/day NVS write
     startAlert();
   }
@@ -171,7 +171,7 @@ void checkAlarm(){
 void serviceAlarmSound(){
   if(!alerting){setBuzzerOff();return;}
   uint32_t elapsed=currentMs()-alertAtMs;
-  if(elapsed>ggk::MAX_RING_SECONDS*1000UL){dismiss();return;}
+  if(elapsed>jjk::MAX_RING_SECONDS*1000UL){dismiss();return;}
   if(!soundAllowed())return;
   // Beep spacing increases perceived urgency without overdriving the buzzer.
   // Maximum pulse width 250 ms; no all-night continuous drive.
@@ -223,10 +223,10 @@ void paintHome(){
     small("TIME SET",8,172,colorAccent());
     small("OR WIFI",15,191,ST77XX_WHITE);
   }else{
-    centered(ggk::hour12(t.tm_hour),125);
+    centered(jjk::hour12(t.tm_hour),125);
     tft.drawFastHLine(11,164,54,colorAccent());
     centered(t.tm_min,177);
-    small(ggk::period(t.tm_hour),30,220,ST77XX_WHITE);
+    small(jjk::period(t.tm_hour),30,220,ST77XX_WHITE);
     if(showDate){
       char day[20];
       snprintf(day,sizeof(day),"%s %02d/%02d",
@@ -237,8 +237,8 @@ void paintHome(){
   small(configuredAlarm.enabled?"ALARM ON":"ALARM OFF",3,253,colorAccent());
   char next[14];
   snprintf(next,sizeof(next),"%02d:%02d %s",
-           ggk::hour12(configuredAlarm.hour),
-           configuredAlarm.minute,ggk::period(configuredAlarm.hour));
+           jjk::hour12(configuredAlarm.hour),
+           configuredAlarm.minute,jjk::period(configuredAlarm.hour));
   small(next,3,269,ST77XX_WHITE);
 }
 
@@ -271,7 +271,7 @@ void paintDays(){
   banner("PICK DAYS");
   for(int i=0;i<7;i++){
     int y=35+i*27;
-    bool selected=ggk::chosen(configuredAlarm,i);
+    bool selected=jjk::chosen(configuredAlarm,i);
     if(i==chosenDay)tft.fillRect(0,y-4,76,23,colorAccent());
     small(weekdays[i],4,y,i==chosenDay?ST77XX_BLACK:ST77XX_WHITE);
     small(selected?"ON":"--",43,y,i==chosenDay?ST77XX_BLACK:ST77XX_WHITE);
@@ -357,11 +357,11 @@ void beginTimeEdit(){
 }
 void adjustManual(int delta){
   switch(timeField){
-    case 0:editedTime.tm_hour=ggk::wrap(editedTime.tm_hour+delta,24);break;
-    case 1:editedTime.tm_min=ggk::wrap(editedTime.tm_min+delta,60);break;
-    case 2:editedTime.tm_mon=ggk::wrap(editedTime.tm_mon+delta,12);break;
-    case 3:editedTime.tm_mday=ggk::wrap(editedTime.tm_mday-1+delta,31)+1;break;
-    case 4:editedTime.tm_year=ggk::wrap(editedTime.tm_year-124+delta,76)+124;break;
+    case 0:editedTime.tm_hour=jjk::wrap(editedTime.tm_hour+delta,24);break;
+    case 1:editedTime.tm_min=jjk::wrap(editedTime.tm_min+delta,60);break;
+    case 2:editedTime.tm_mon=jjk::wrap(editedTime.tm_mon+delta,12);break;
+    case 3:editedTime.tm_mday=jjk::wrap(editedTime.tm_mday-1+delta,31)+1;break;
+    case 4:editedTime.tm_year=jjk::wrap(editedTime.tm_year-124+delta,76)+124;break;
   }
 }
 void saveManualTime(){
@@ -371,12 +371,12 @@ void saveManualTime(){
   mode=Mode::HOME;redraw=true;
 }
 void adjustAlarm(int delta){
-  if(alarmField==0)configuredAlarm.hour=(uint8_t)ggk::wrap(int(configuredAlarm.hour)+delta,24);
-  else configuredAlarm.minute=(uint8_t)ggk::wrap(int(configuredAlarm.minute)+delta,60);
+  if(alarmField==0)configuredAlarm.hour=(uint8_t)jjk::wrap(int(configuredAlarm.hour)+delta,24);
+  else configuredAlarm.minute=(uint8_t)jjk::wrap(int(configuredAlarm.minute)+delta,60);
 }
 void onKey(Key key,Event event){
   if(event==Event::NONE)return;
-#if GGK_DEBUG_KEY_SERIAL
+#if JJK_DEBUG_KEY_SERIAL
   // Each debounced key SHORT/LONG is shown on USB serial for supervised testing.
   static const char* names[6]={"UP","DOWN","TIME","CLOCK","SNOOZE","ALARM"};
   if((unsigned)key<6){
@@ -387,9 +387,9 @@ void onKey(Key key,Event event){
   if(alerting){
     if(key==SNOOZE){if(event==Event::LONG)dismiss();else snooze();return;}
     if(event==Event::LONG)return;
-    if(key==UP)answer=(uint8_t)ggk::wrap(int(answer)-1,3);
-    if(key==DOWN)answer=(uint8_t)ggk::wrap(int(answer)+1,3);
-    if(key==CLOCK_SET && ggk::quizCorrect(question,answer))dismiss();
+    if(key==UP)answer=(uint8_t)jjk::wrap(int(answer)-1,3);
+    if(key==DOWN)answer=(uint8_t)jjk::wrap(int(answer)+1,3);
+    if(key==CLOCK_SET && jjk::quizCorrect(question,answer))dismiss();
     redraw=true;return;
   }
   if(mode==Mode::TIMER){
@@ -430,8 +430,8 @@ void onKey(Key key,Event event){
   }
   if(mode==Mode::DAY_EDIT){
     if(event==Event::SHORT){
-      if(key==UP)chosenDay=(uint8_t)ggk::wrap(int(chosenDay)-1,7);
-      if(key==DOWN)chosenDay=(uint8_t)ggk::wrap(int(chosenDay)+1,7);
+      if(key==UP)chosenDay=(uint8_t)jjk::wrap(int(chosenDay)-1,7);
+      if(key==DOWN)chosenDay=(uint8_t)jjk::wrap(int(chosenDay)+1,7);
       if(key==ALARM_ON)configuredAlarm.days ^= (uint8_t(1)<<chosenDay);
       if(key==CLOCK_SET){remember();mode=Mode::HOME;}
       if(key==SNOOZE)mode=Mode::HOME;
@@ -481,7 +481,7 @@ String htmlEscape(String s){
   s.replace(">","&gt;");s.replace("\"","&quot;");
   return s;
 }
-bool portalReady(){return strlen(GGK_PORTAL_PIN)>=6;}
+bool portalReady(){return strlen(JJK_PORTAL_PIN)>=6;}
 void renderPortal(){
   String html="<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>";
   html+="<title>JJK Alarm</title><style>body{background:#0e1015;color:#f9f9f9;font-family:system-ui;margin:auto;max-width:460px;padding:24px}input,select,button{font:inherit;background:#242630;color:white;border:1px solid #52535b;border-radius:8px;padding:11px;margin:5px 0;width:100%;box-sizing:border-box}button{background:#9d2036}label{display:block;margin-top:13px}h1{color:#ff5265}</style>";
@@ -496,7 +496,7 @@ void renderPortal(){
     html+="<label>Screen accent: 0=Red, 1=Cyan, 2=Gold<input name='theme' type='number' min='0' max='2' value='"+String(theme)+"'></label>";
     html+="<label>Display title (max 11 letters)<input name='label' maxlength='11' value='"+htmlEscape(String(caption))+"'></label>";
     html+="<label>Show date? (0/1)<input name='date' type='number' min='0' max='1' value='"+String(showDate?1:0)+"'></label>";
-    html+="<button type='submit'>Save GGK settings</button></form>";
+    html+="<button type='submit'>Save JJK settings</button></form>";
     html+="<hr><p>Sync clock from this phone:</p><label>Portal PIN<input id='syncPin' type='password'></label><button onclick='syncClock()'>Sync phone time</button><p id='syncResult'></p>";
     html+="<script>async function syncClock(){let data=new URLSearchParams({pin:document.getElementById('syncPin').value,unix:String(Math.floor(Date.now()/1000))});try{let r=await fetch('/sync',{method:'POST',body:data});document.getElementById('syncResult').textContent=await r.text()}catch(e){document.getElementById('syncResult').textContent='Sync failed'}}</script>";
   }
@@ -505,7 +505,7 @@ void renderPortal(){
 }
 bool authorized(){
   return portalReady() && portal.hasArg("pin") &&
-         portal.arg("pin").equals(String(GGK_PORTAL_PIN));
+         portal.arg("pin").equals(String(JJK_PORTAL_PIN));
 }
 void saveViaPortal(){
   if(!authorized()){portal.send(403,"text/plain","PIN required or incorrect");return;}
@@ -521,7 +521,7 @@ void saveViaPortal(){
   if(!validNumber(portal.arg("h"),0,23) || !validNumber(portal.arg("m"),0,59) ||
      !validNumber(portal.arg("d"),0,127) || !validNumber(portal.arg("theme"),0,2) ||
      !validNumber(portal.arg("on"),0,1) || !validNumber(portal.arg("date"),0,1) ||
-     !ggk::validLabel(portal.arg("label").c_str())){
+     !jjk::validLabel(portal.arg("label").c_str())){
     portal.send(422,"text/plain","Invalid settings; no changes saved");return;
   }
   configuredAlarm.hour=(uint8_t)portal.arg("h").toInt();
@@ -552,43 +552,43 @@ void preparePortal(){
   portal.on("/",HTTP_GET,renderPortal);
   portal.on("/save",HTTP_POST,saveViaPortal);
   portal.on("/sync",HTTP_POST,syncViaPortal);
-  portal.onNotFound([]{portal.send(404,"text/plain","Unknown GGK route");});
+  portal.onNotFound([]{portal.send(404,"text/plain","Unknown JJK route");});
   portal.begin();portalStarted=true;
-  MDNS.begin("ggk-alarm");
+  MDNS.begin("jjk-alarm");
 }
 void serviceWifi(){
-  if(strlen(GGK_WIFI_SSID)==0)return;
+  if(strlen(JJK_WIFI_SSID)==0)return;
   if(WiFi.status()==WL_CONNECTED){
     if(!portalStarted)preparePortal();
     if(!ntpStarted){
-      configTzTime(GGK_TIMEZONE,"pool.ntp.org","time.google.com");
+      configTzTime(JJK_TIMEZONE,"pool.ntp.org","time.google.com");
       ntpStarted=true;
     }
     return;
   }
   if(currentMs()-lastWifiAttempt>45000UL){
     lastWifiAttempt=currentMs();WiFi.disconnect();
-    WiFi.begin(GGK_WIFI_SSID,GGK_WIFI_PASSWORD);
+    WiFi.begin(JJK_WIFI_SSID,JJK_WIFI_PASSWORD);
   }
 }
 
 void setup(){
   Serial.begin(115200);
-  digitalWrite(ggkpin::BUZZER,LOW);
-  pinMode(ggkpin::BUZZER,OUTPUT);
+  digitalWrite(jjkpin::BUZZER,LOW);
+  pinMode(jjkpin::BUZZER,OUTPUT);
   setBuzzerOff();
   for(int i=0;i<2;i++)pinMode(ROW[i],INPUT_PULLUP);
   for(int i=0;i<3;i++){digitalWrite(COL[i],LOW);pinMode(COL[i],INPUT);}
-  setenv("TZ",GGK_TIMEZONE,1);tzset();
+  setenv("TZ",JJK_TIMEZONE,1);tzset();
   loadSettings();
   tft.initPanel();
   Serial.println("[BLARE] Rectangular PCB firmware / portrait ST7789");
   Serial.println("[BLARE] J3: CLK21 MOSI20 DC3 CS4 RST=3V3 BL=GND");
   Serial.println("[BLARE] Keys: COL5/6/7 ROW8/9, Q1 buzzer GPIO10");
   Serial.printf("[BLARE] Audio gate: %s\n",soundAllowed()?"verified configuration":"HOLD / OFF");
-  if(strlen(GGK_WIFI_SSID)){
+  if(strlen(JJK_WIFI_SSID)){
     WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(true);
-    WiFi.begin(GGK_WIFI_SSID,GGK_WIFI_PASSWORD);
+    WiFi.begin(JJK_WIFI_SSID,JJK_WIFI_PASSWORD);
     lastWifiAttempt=currentMs();
   }else WiFi.mode(WIFI_OFF);
   paint();

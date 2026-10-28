@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iostream>
 int main(){
-  ggk::Countdown c;
+  jjk::Countdown c;
   assert(c.minutes==5 && c.remainingMs==300000 && !c.running);
   c.chooseMinutes(1);assert(c.minutes==1 && c.left(111)==60000);
   c.pauseOrResume(0xfffff000UL);assert(c.running);
@@ -16,10 +16,10 @@ int main(){
   c.reset();assert(c.left(70000UL)==60000 && !c.finished);
   c.chooseMinutes(0);assert(c.minutes==90);
   c.chooseMinutes(91);assert(c.minutes==1);
-  ggk::Stopwatch w;
+  jjk::Stopwatch w;
   w.pauseOrResume(1000);assert(w.elapsed(9000)==8000);
   w.pauseOrResume(9000);assert(!w.running && w.elapsed(60000)==8000);
   w.pauseOrResume(100000);assert(w.elapsed(101000)==9000);
   w.reset();assert(w.elapsed(101000)==0);
-  std::cout<<"GGK timer and stopwatch rollover/pause tests PASS\n";
+  std::cout<<"JJK timer and stopwatch rollover/pause tests PASS\n";
 }

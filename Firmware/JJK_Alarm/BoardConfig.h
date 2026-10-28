@@ -31,7 +31,7 @@
 // No LiPo installed. USB-C provides 5V via the XIAO; BL is hard-wired
 // on, so deep sleep will not shut down the display backlight.
 #include <stdint.h>
-namespace ggkpin {
+namespace jjkpin {
 constexpr uint8_t TFT_SCK=21, TFT_MOSI=20, TFT_DC=3, TFT_CS=4;
 constexpr uint8_t BUZZER=10;
 constexpr uint8_t ROW0=8, ROW1=9;

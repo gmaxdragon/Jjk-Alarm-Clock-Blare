@@ -5,7 +5,7 @@ Open `JJK_Alarm/JJK_Alarm.ino` in Arduino IDE. The sketch folder and `.ino` base
 1. Install the ESP32 board package by Espressif and select **Seeed XIAO ESP32C3**.
 2. Install **Adafruit GFX Library** and **Adafruit ST7735 and ST7789 Library**, including dependencies.
 3. Copy `JJK_Alarm/secrets.example.h` to `JJK_Alarm/secrets.h`. Enter Wi-Fi credentials locally, or leave the SSID blank for manual clock setting. Use a unique portal PIN of at least six characters to enable phone editing. Never commit `secrets.h`.
-4. Keep `GGK_BUZZER_VERIFIED` and `GGK_HARDWARE_INSPECTED` at **0** for first-power inspection. The committed configuration intentionally makes no buzzer sound. These flags are user attestations, not electrical protection.
+4. Keep `JJK_BUZZER_VERIFIED` and `JJK_HARDWARE_INSPECTED` at **0** for first-power inspection. The committed configuration intentionally makes no buzzer sound. These flags are user attestations, not electrical protection.
 5. Compile and upload through the XIAO USB-C connector. Use Serial Monitor at **115200 baud** for pin-map and key-event diagnostics.
 
 ## Hardware map
@@ -39,7 +39,7 @@ Wi-Fi synchronizes the system clock with NTP. Without Wi-Fi, time/date can be se
 - `JJK_Hands_76x76.h`: image palette and pixel data.
 - `secrets.example.h`: blank credential template and first-power sound settings.
 
-The `GGK_` macro names and NVS namespace are retained for compatibility with earlier development. The product/display name is **JJK Alarm**.
+The canonical project name is **JJK Alarm**, including the configuration macros, local phone hostname (`jjk-alarm.local`), and settings namespace. If you previously flashed older development firmware, re-enter settings previously stored under the old NVS namespace.
 
 Compilation and host tests have passed. No physical alarm, TFT, button, or overnight operation test is claimed by those software results. The timer is visual-only in this build. The backlight is hard-wired on and deep sleep is not implemented.
 
