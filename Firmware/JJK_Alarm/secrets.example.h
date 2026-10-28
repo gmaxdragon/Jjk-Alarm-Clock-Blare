@@ -7,7 +7,7 @@
 #define JJK_PORTAL_PIN ""
 // Pacific time and automatic daylight-saving transitions.
 #define JJK_TIMEZONE "PST8PDT,M3.2.0/2,M11.1.0/2"
-// 0 until physical kit buzzer checked for direct-GPIO-safe passive piezo current.
+// 0 until actual buzzer type/current/polarity and Q1 driver wiring are verified.
 #define JJK_BUZZER_VERIFIED 0
 // Set to 1 only after physical wiring, correct polarity and safe supervised testing.
 // This flag informs readiness UI; it does NOT magically make hardware safe.
