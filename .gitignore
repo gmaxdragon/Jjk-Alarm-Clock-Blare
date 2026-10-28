@@ -1,0 +1,10 @@
+# Local editor/session files
+*.lck
+*.kicad_prl
+*-backups/
+# Credentials and generated local builds
+**/secrets.h
+**/build/
+__pycache__/
+*.pyc
+.DS_Store

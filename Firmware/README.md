@@ -1,52 +1,46 @@
-# GGK Alarm Rev D firmware
+# JJK Alarm firmware
 
-Arduino IDE board: **Seeed XIAO ESP32C3** (ESP32 by Espressif); libraries:
-**Adafruit GFX**, **Adafruit ST7735 and ST7789**. Uses built-in `WiFi`, `WebServer`,
-`ESPmDNS`, and `Preferences` on ESP32 Arduino core.
+Open `JJK_Alarm/JJK_Alarm.ino` in Arduino IDE. The sketch folder and `.ino` basename match.
 
-1. Copy `GGK_Alarm/secrets.example.h` to `GGK_Alarm/secrets.h` locally.
-2. Add a private Wi-Fi SSID/password and unique local PIN (at least six chars).
-3. KEEP `GGK_BUZZER_VERIFIED 0` and `GGK_HARDWARE_INSPECTED 0` until the exact kit buzzer and soldering have been physically checked and tested.
-4. Flash via the XIAO's USB-C port. The board has **no built-in battery**. A stable external USB power bank is an alternative to wall power; not all power banks maintain power overnight.
-5. Visit `http://ggk-alarm.local/` or the device's IP from your phone on the same trusted Wi-Fi network. PIN required to modify settings or sync time.
+1. Install the ESP32 board package by Espressif and select **Seeed XIAO ESP32C3**.
+2. Install **Adafruit GFX Library** and **Adafruit ST7735 and ST7789 Library**, including dependencies.
+3. Copy `JJK_Alarm/secrets.example.h` to `JJK_Alarm/secrets.h`. Enter Wi-Fi credentials locally, or leave the SSID blank for manual clock setting. Use a unique portal PIN of at least six characters to enable phone editing. Never commit `secrets.h`.
+4. Keep `GGK_BUZZER_VERIFIED` and `GGK_HARDWARE_INSPECTED` at **0** for first-power inspection. The committed configuration intentionally makes no buzzer sound. These flags are user attestations, not electrical protection.
+5. Compile and upload through the XIAO USB-C connector. Use Serial Monitor at **115200 baud** for pin-map and key-event diagnostics.
 
-## Physical buttons (single row, left-to-right)
+## Hardware map
 
-| Position | Function |
-| --- | --- |
-| 1 | UP / move selection upward |
-| 2 | DOWN / move selection downward |
-| 3 | TIME SET: clock time/date editor; hold for info/status |
-| 4 | CLOCK SET: set alarm time and weekdays; confirm GGK quiz answer |
-| 5 | SNOOZE: during alarm, wait five minutes; hold to skip/dismiss |
-| 6 | ALARM ON: toggle enabled; hold for UI color theme; toggle alarm weekday when editing |
+| Function | ESP32 GPIO |
+| --- | ---: |
+| TFT SCK | 21 |
+| TFT MOSI | 20 |
+| TFT DC | 3 |
+| TFT CS | 4 |
+| Key columns | 5, 6, 7 |
+| LEFT / RIGHT rows | 8 / 9 |
+| Q1 buzzer driver | 10 |
 
-Time editor steps: hour → minute → month → date → year → save. Use UP/DOWN to change each.
-Clock/alarm editor steps: hour → minute → selected weekdays → save.
-The alarm defaults to **disabled** for safety until the user configures it.
+J3: 1 GND, 2 +3V3, 3 SCK, 4 MOSI, 5 RST/+3V3, 6 DC, 7 CS, 8 BL/GND. The physical display wiring must follow its printed labels. Reset and backlight are not firmware GPIO outputs on this PCB.
 
-## Display
+Display: `init(76,284)`, column offset 82, row offset 18, `invertDisplay(false)`, rotation 0. The supplied 76x76 hand-sign graphic is stored in flash. Hours and minutes appear vertically below it.
 
-The BLARE ST7789 is a **76 x 284 pixel portrait display**, and cannot fit the entire
-large `10:24 AM` string on a single row. Rev D shows hour and minute on separate
-large rows and `AM` or `PM` below. You can customize the caption, date visibility,
-and red/cyan/gold accents from the phone portal. The screen's hardware backlight
-pin is grounded; a software black screen **cannot physically switch it off**.
+## Controls
 
-## Important limitations
+UP/DOWN change menu values. TIME sets time/date and its long press opens status. CLOCK sets alarm/weekdays and its long press opens the countdown. SNOOZE delays a ringing alarm by five minutes; a long press dismisses it. ALARM toggles the alarm and its long press changes the accent. Hold DOWN at home for the stopwatch.
 
-- **Real Arduino ESP32-C3 compilation passes in GitHub Actions**, including the Adafruit libraries; no hardware has been flashed or measured. Pin constants are aligned to KiCad, but actual TFT offsets, the piezo type, boot with pressed keys and physical assembly must still be verified.
-- Kit includes no battery, battery connector, fuel gauge, physical RTC, or protection board. This does **not** run independently once every source of USB power is unplugged.
-- Power loss interrupts the alarm; settings persist but manual time needs resetting unless NTP reconnects. Do not use as the only morning alarm until tested.
-- The 3.3V piezo must NOT be operated until measured for low-current passive-piezo behavior; if active magnetic buzzer, a transistor driver with resistor and protection is needed.
-- `GGK_BUZZER_VERIFIED` and `GGK_HARDWARE_INSPECTED` are user attestations, **not a hardware safety interlock**.
-- Wi-Fi portal uses local plaintext HTTP with PIN; only use on trusted Wi-Fi. Never expose the site to the public Internet or open router port forwarding.
-- Alarm auto-stops after 180 s to limit sustained sound/current. This sacrifices guaranteed wakefulness to limit unattended activation.
+Wi-Fi synchronizes the system clock with NTP. Without Wi-Fi, time/date can be set manually. Settings persist in NVS; an unpowered board cannot keep time or ring. The local phone portal uses HTTP and is for a trusted private network only. Do not port-forward it.
 
-## Added kit-only timer and stopwatch
+## Code structure
 
-No extra parts: **hold CLOCK SET** on the clock face for a 1–90 minute countdown timer, or **hold DOWN** for a stopwatch. Use CLOCK SET to start/pause, SNOOZE to reset, and TIME SET to exit. Countdown completion is **visual only** while the supplied piezo remains electrically unverified. These features need power continuously; no standalone battery/RTC is included.
+- `JJK_Alarm.ino`: display, button scanning, alarm handling, UI, local portal.
+- `BoardConfig.h`: pin map for the current rectangular board.
+- `AlarmLogic.h`: weekday selection, clock helpers, and daily trigger logic.
+- `TimeTools.h`: countdown and stopwatch.
+- `JJK_Hands_76x76.h`: image palette and pixel data.
+- `secrets.example.h`: blank credential template and first-power sound settings.
 
-## Design verification vs use in a bedroom
+The `GGK_` macro names and NVS namespace are retained for compatibility with earlier development. The product/display name is **JJK Alarm**.
 
-GitHub CI produces an **electrical/software prototype design**. No battery protection, overcurrent fuse, independently verified TFT/buzzer or physical safety testing is included. A supervising adult must check soldering and power; do not leave untested DIY hardware on overnight. See `../Docs/SAFETY_FIRST_POWER.md` from the repository root.
+Compilation and host tests have passed. No physical alarm, TFT, button, or overnight operation test is claimed by those software results. The timer is visual-only in this build. The backlight is hard-wired on and deep sleep is not implemented.
+
+This firmware has substantial AI assistance, disclosed in the project README. Program acceptance is a reviewer decision.

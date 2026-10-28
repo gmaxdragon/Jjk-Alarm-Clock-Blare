@@ -1,4 +1,4 @@
-#include "../Firmware/GGK_Alarm/TimeTools.h"
+#include "../Firmware/JJK_Alarm/TimeTools.h"
 #include <cassert>
 #include <iostream>
 int main(){

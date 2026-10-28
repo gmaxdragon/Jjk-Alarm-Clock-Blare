@@ -1,4 +1,4 @@
-#include "../Firmware/GGK_Alarm/AlarmLogic.h"
+#include "../Firmware/JJK_Alarm/AlarmLogic.h"
 #include <cassert>
 #include <cstring>
 #include <iostream>

@@ -1,0 +1,27 @@
+{
+  "file": "Keycaps.step",
+  "bytes": 9101766,
+  "read_status": "IFSelect_ReturnStatus.IFSelect_RetDone",
+  "root_count": 1,
+  "transferred_roots": 1,
+  "shapes": 1,
+  "null": false,
+  "solids": 0,
+  "shells": 8352,
+  "faces": 8352,
+  "bbox": [
+    -432.2000123070313,
+    -222.0000001,
+    -9.999999822364316e-08,
+    -386.9999999,
+    -172.9029997779297,
+    62.351001839501954
+  ],
+  "dimensions_mm": [
+    45.200012407031295,
+    49.0970003220703,
+    62.351001939501955
+  ],
+  "valid": true,
+  "seconds": 4.141750812530518
+}
