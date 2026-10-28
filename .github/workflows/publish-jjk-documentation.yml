@@ -1,0 +1,54 @@
+name: Publish owner-approved JJK Alarm documentation
+on:
+  push:
+    branches: [blare-rectangular-wip-20261026]
+    paths: [.github/workflows/publish-jjk-documentation.yml]
+permissions:
+  contents: write
+jobs:
+  organize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import verified source package
+        env:
+          TRANSFER_URL: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-9954-81f8-939c-efe55553b543/raw?se=2026-10-28T00%3A06%3A07Z&sp=r&sv=2026-02-06&sr=b&scid=5c2cfb34-547c-5d36-afa4-6a1a803a918a&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-27T12%3A04%3A40Z&ske=2026-10-28T12%3A04%3A40Z&sks=b&skv=2026-02-06&sig=38ZxTJSthnQ4UlxVxmcDBFtnYq7s/ET89fCY8KoqwaY%3D'
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,hashlib,zipfile,io,json,shutil
+          from pathlib import Path,PurePosixPath
+          url=os.environ['TRANSFER_URL'];print('::add-mask::'+url)
+          data=urllib.request.urlopen(url,timeout=120).read()
+          assert hashlib.sha256(data).hexdigest()=='95ebed824bac36ddca263e3f9fa1b4659d37a21df19cd0fb69e9b935942f2d0c'
+          old=Path('Archive/Legacy_T_Shaped_RevD/README.md');old.parent.mkdir(parents=True,exist_ok=True)
+          assert not old.exists()
+          shutil.copyfile('README.md',old)
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+              assert z.testzip() is None
+              manifest=json.loads(z.read('Docs/PUBLICATION_MANIFEST.json'))
+              assert len(manifest)==13
+              for item in manifest:
+                  p=PurePosixPath(item['path']);assert not p.is_absolute() and '..' not in p.parts
+                  raw=z.read(str(p));assert hashlib.sha256(raw).hexdigest()==item['sha256']
+                  dest=Path(str(p));dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
+              Path('Docs/PUBLICATION_MANIFEST.json').write_bytes(z.read('Docs/PUBLICATION_MANIFEST.json'))
+          print('Imported owner-approved README, CAD source archive, and submission notes.')
+          PY
+          python3 Tools/organize_submission.py
+          python3 Tools/check_submission.py
+      - name: Commit organized files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm .github/workflows/publish-jjk-documentation.yml
+          git add -A
+          git commit -m 'Publish JJK Alarm owner narrative, original screenshots, BOM, disclosed assistance and honest submission checklist'
+          git pull --rebase
+          git push
+      - name: Make a portable copy of the organized repository
+        run: git archive --format=zip --output=/tmp/JJK_Alarm_Repository.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JJK-Alarm-organized-repository
+          path: /tmp/JJK_Alarm_Repository.zip
