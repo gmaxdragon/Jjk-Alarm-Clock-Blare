@@ -1,4 +1,5 @@
 name: Publish owner-approved JJK Alarm documentation
+# The validation workflow is registered separately before this import.
 on:
   push:
     branches: [blare-rectangular-wip-20261026]
