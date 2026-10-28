@@ -82,11 +82,11 @@ Power is through the XIAO's USB-C connector. There is no internal battery or bac
 
 ## What still needs checking before I call it finished
 
-The digital files are checked, but I have not printed and assembled this compact version yet. The shrine STL is still **339 × 339 × 287 mm**, so I need a printer that fits it or a proper split design before printing it on a smaller machine.
+The digital files are checked, but I have not printed and assembled this compact version yet. The shrine STL is still **339 × 339 × 287 mm**, and I have confirmed my printer can fit it. A split design is not needed for my printer.
 
 I also still need to check the actual display, buzzer, sockets, USB plug, screw access, wiring space and full button travel against the case. The display model uses reference dimensions. The saved collision checks cover the PCB/components against the carrier and front panel; they do not prove cable routing, moving-part travel or every interface in the complete assembled clock.
 
-The PCB matrix connections match the firmware: GPIO5/6/7 select the three columns and GPIO8/9 read the two rows. The diode cathodes face the switches. No static matrix mismatch was found, but I still need to test all six buttons, debounce, simultaneous presses and boot/reset behavior on the real board. The alarm/timer tests do not test the physical matrix.
+The PCB matrix connections match the firmware: GPIO5/6/7 select the three columns and GPIO8/9 read the two rows. The diode cathodes face the switches. An independent directed-connectivity model now passes all 64 combinations of pressed switches, with no ghost keys or key-order mismatch. I still need to test all six buttons, debounce, simultaneous presses and boot/reset behavior on the real board. The alarm/timer tests do not test the physical matrix.
 
 The buzzer stays disabled with the supplied settings. I need to verify its type, current and polarity, Q1 pinout, sound and the display wiring/offsets before enabling it. The clock also needs a supervised alarm/snooze test and a power-loss/restart test. The original shrine and artwork source links/licenses still need completing in the attribution file. So this is a design-review package, and I am **not claiming full submission readiness or a tested working build**.
 
