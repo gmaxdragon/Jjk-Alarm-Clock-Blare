@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 Tools/check_submission.py
+      - run: python3 Tests/matrix_circuit_test.py
   firmware:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
