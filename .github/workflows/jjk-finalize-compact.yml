@@ -13,14 +13,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Import checked compact package and preserve original
         env:
-          SOURCE_URL: 'https://sdmntprsoutheastus3.oaiusercontent.com/files/00000000-176c-820c-a738-db36b351633b/raw?se=2026-10-28T04%3A02%3A37Z&sp=r&sv=2026-02-06&sr=b&scid=a7a28e2b-8fe7-5362-b2a5-0e7cc1bd0965&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-27T23%3A44%3A31Z&ske=2026-10-28T23%3A44%3A31Z&sks=b&skv=2026-02-06&sig=hH0dApeU9srsL%2BUVqngof4woPvtjLJtZv0cGodshQrI%3D'
+          SOURCE_URL: 'https://sdmntprwestus.oaiusercontent.com/files/00000000-aee0-8230-8bc0-9c577e2e1bfb/raw?se=2026-10-28T04%3A11%3A38Z&sp=r&sv=2026-02-06&sr=b&scid=b6d8d5c7-6ef1-5d80-a06b-9558b17b1903&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-28T01%3A59%3A46Z&ske=2026-10-29T01%3A59%3A46Z&sks=b&skv=2026-02-06&sig=KZeVMjTwbEq8v3x%2BJIs9zAnVDcublMBIzq2vkKWOq5E%3D'
         run: |
           set -euo pipefail
           curl --fail --silent --show-error --location "$SOURCE_URL" -o /tmp/jjk-final-patch.zip
-          echo 'f6d98ad234301f25787becc5cc84d8a226e5494a1ee66125d5f103c14fe629c7  /tmp/jjk-final-patch.zip' | sha256sum -c -
+          echo '7857dc4de392245f405a1c65b1a81acd16fec1b5fa14d15a4fe047e8c17a26ed  /tmp/jjk-final-patch.zip' | sha256sum -c -
           mkdir -p /tmp/jjk-final-patch
           python3 -m zipfile -e /tmp/jjk-final-patch.zip /tmp/jjk-final-patch
           python3 /tmp/jjk-final-patch/Tools/apply_compact_package.py --root . --patch /tmp/jjk-final-patch
+          git diff --exit-code -- .github/workflows
           python3 Tools/check_submission.py
       - name: Install KiCad and renderer
         run: |
@@ -59,9 +60,9 @@ jobs:
           set -euo pipefail
           URL=https://espressif.github.io/arduino-esp32/package_esp32_index.json
           arduino-cli core update-index --additional-urls "$URL"
-          arduino-cli core install esp32:esp32 --additional-urls "$URL"
-          arduino-cli lib install 'Adafruit GFX Library'
-          arduino-cli lib install 'Adafruit ST7735 and ST7789 Library'
+          arduino-cli core install esp32:esp32@3.3.12 --additional-urls "$URL"
+          arduino-cli lib install 'Adafruit GFX Library@1.13.0'
+          arduino-cli lib install 'Adafruit ST7735 and ST7789 Library@1.12.0'
           trap 'rm -f Firmware/JJK_Alarm/secrets.h' EXIT
           cp Firmware/JJK_Alarm/secrets.example.h Firmware/JJK_Alarm/secrets.h
           arduino-cli compile --fqbn esp32:esp32:XIAO_ESP32C3 --warnings all Firmware/JJK_Alarm 2>&1 | tee Production/Checks/Firmware_Compile.txt
@@ -72,7 +73,7 @@ jobs:
           /tmp/jjk-time | tee Production/Checks/Timer_Tests.txt
           arduino-cli core list > Production/Checks/Arduino_Core.txt
           arduino-cli lib list > Production/Checks/Arduino_Libraries.txt
-      - name: Final integrity, complete archive and source commit
+      - name: Final integrity and complete archive
         run: |
           set -euo pipefail
           python3 Tools/check_submission.py
@@ -81,36 +82,48 @@ jobs:
           import hashlib,json,zipfile
           root=Path('.')
           old=json.loads((root/'Docs/Compact_Package_SHA256.json').read_text())
-          changed=[]
           for row in old:
             p=root/row['path']
             if p.exists():row['bytes']=p.stat().st_size;row['sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
           (root/'Docs/Compact_Package_SHA256.json').write_text(json.dumps(old,indent=2)+'\n')
           derived=[]
           for p in sorted((root/'Docs/Images/Compact').glob('*')):
-            if p.is_file():derived.append({'path':p.as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'source':'Actual CAD geometry or native KiCad plot; not a physical photograph'})
+            if p.is_file() and p.name!='manifest.json':derived.append({'path':p.as_posix(),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'source':'Actual CAD geometry or native KiCad plot; not a physical photograph'})
           (root/'Docs/Images/Compact/manifest.json').write_text(json.dumps(derived,indent=2)+'\n')
-          # The temporary importer is no longer needed; the permanent validation workflow remains.
-          (root/'.github/workflows/jjk-finalize-compact.yml').unlink()
           selected=['README.md','.gitignore','CAD','PCB','Firmware','Production','Docs','Tools','Tests','Archive/Original_125x110','.github/workflows/jjk-validation.yml']
           files=[]
           for rel in selected:
             p=root/rel
             files.extend([p] if p.is_file() else [q for q in p.rglob('*') if q.is_file()])
           files=sorted(set(p for p in files if '__pycache__' not in p.parts and p.name!='secrets.h'))
+          manifest=root/'Docs/PUBLICATION_MANIFEST.json'
+          manifest.write_text(json.dumps([{'path':p.as_posix(),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in files if p!=manifest],indent=2)+'\n')
           dest=Path('/tmp/JJK_Alarm_Compact_Submission.zip')
           with zipfile.ZipFile(dest,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
             for p in files:z.write(p,p.as_posix())
           with zipfile.ZipFile(dest) as z:assert z.testzip() is None
           print('Complete current package:',len(files),'files;',dest.stat().st_size,'bytes')
           PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'Publish validated 95mm JJK Alarm package, full placed STEP and print files; preserve original 125mm design'
-          git push
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: JJK-Alarm-Compact-Submission
           path: /tmp/JJK_Alarm_Compact_Submission.zip
-          if-no-files-found: error
+          if-no-files-found: warn
+      - name: Publish validated assets without workflow mutations
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- .github/workflows
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish checked 95mm JJK Alarm PCB, full STEP and print parts; retain original 125mm version'
+            git push
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: JJK-Compact-Final-Check-Reports
+          path: Production/Checks/
+          if-no-files-found: warn
