@@ -1,0 +1,9 @@
+{
+  "checked_uploads": [
+    {"name":"JJK Alarm Clock.stl","bytes":417684,"sha256":"4e1cc684b7942b0a698795074dae7c3e3494bdab6671b9434f836aa0e2cd634a","triangles":8352,"dimensions_mm":[45.20001220703125,49.09700012207031,62.351001739501946],"contains":"Four keycap outer shells and four inner cavity shells; no enclosure"},
+    {"name":"Keycaps.stl","bytes":417684,"sha256":"b00f7ba279341ef997d3ee2c4ee2b0e1e8378dfc9c24763bcb997a78b23cc261","triangles":8352,"dimensions_mm":[45.20001220703125,49.09700012207031,62.351001739501946],"contains":"Four keycap outer shells and four inner cavity shells; no enclosure"}
+  ],
+  "normalized_vertex_set_max_distance_mm":1.7763568394002505e-15,
+  "finding":"The two latest uploads contain the same keycap geometry, translated in space. The file named JJK Alarm Clock.stl is not the shrine enclosure.",
+  "action":"Preserve the existing enclosure source separately; generate a six-cap set without rescaling the cap geometry or pretending either upload contains the complete case."
+}
