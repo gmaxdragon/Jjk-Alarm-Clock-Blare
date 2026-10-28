@@ -1,0 +1,67 @@
+[
+  {
+    "path": ".github/workflows/jjk-validation.yml",
+    "bytes": 2912,
+    "sha256": "a3810dbebfb3c20f64b73a96b722045d1ca059e6458e0c46fbf7dc6efbea56f5"
+  },
+  {
+    "path": ".gitignore",
+    "bytes": 151,
+    "sha256": "22bb9fbad03d4f89b110ccddcb5f2d8d63fa39ba166344390170e1fe5d65f2bc"
+  },
+  {
+    "path": "CAD/Checks/Alarm_Clock_Enclosure_Step_audit.json",
+    "bytes": 220,
+    "sha256": "fe4c3a42f4c5fbf5536acb2267a59a5b0f0c6a4dd7ea8aaf0012e523ea5c6832"
+  },
+  {
+    "path": "CAD/Checks/Keycaps_audit.json",
+    "bytes": 530,
+    "sha256": "88f9e39433ba3aeaac45df6355ffc544dc2345c264fb44e4002018d44d13e769"
+  },
+  {
+    "path": "CAD/Original_STEP_Exports.zip",
+    "bytes": 31153705,
+    "sha256": "89fe7399fb2c908c660ff792f1d2a0aec5e20ccd911b53760bc1ab2bec6d6ba6"
+  },
+  {
+    "path": "CAD/README.md",
+    "bytes": 1580,
+    "sha256": "6334e043b5b08128b5acd0c916487796ea74c6b215c52ba2dde1c9048ee212cc"
+  },
+  {
+    "path": "Docs/ATTRIBUTION.md",
+    "bytes": 1356,
+    "sha256": "9503558e8b80f91ec04cca923c168cdd5a2e4de037686eb94b646f2e3a668706"
+  },
+  {
+    "path": "Docs/SUBMISSION_CHECK.md",
+    "bytes": 3851,
+    "sha256": "4b5ff0c838d7744484398151f0d6b356aa2b87f4c91174c8ba0b451d784497e0"
+  },
+  {
+    "path": "Firmware/README.md",
+    "bytes": 3024,
+    "sha256": "8d94cb1b30a6438420d8839934e9e1d9896e12b17d650dd381084f80caf561f5"
+  },
+  {
+    "path": "Production/README.md",
+    "bytes": 1293,
+    "sha256": "2f928608c63b60249c9bc899c910206fb94c1f29dbbf6f0e73dd0de8d468ef87"
+  },
+  {
+    "path": "README.md",
+    "bytes": 13011,
+    "sha256": "c94ee1f4436c6bb83720af4c573d252456bcfe5efc10ab01aa466da8a1fcb46e"
+  },
+  {
+    "path": "Tools/check_submission.py",
+    "bytes": 2121,
+    "sha256": "f8425f87e81563a4257af41d4d728cfeb43b7cb530bbf22fbb15eefa343eccfc"
+  },
+  {
+    "path": "Tools/organize_submission.py",
+    "bytes": 3892,
+    "sha256": "765f60980c537bb5d404a01cf3219f5d22e0a75eef480ece5da2b3f6cea69ecd"
+  }
+]

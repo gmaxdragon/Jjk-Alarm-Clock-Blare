@@ -1,0 +1,156 @@
+{
+  "original_enclosure_sha256": "23a17beaa6acadb4580a75d12cda379c8155e766c273abd609ceaf97611d7952",
+  "original_preserved": true,
+  "new_revision": true,
+  "original_translation_mm": [
+    -718.9990234375,
+    -229.9998321533203,
+    0
+  ],
+  "new_PCB_size_mm": [
+    95,
+    95,
+    1.6
+  ],
+  "PCB_front_y_mm": 103,
+  "PCB_bounds_XZ_mm": [
+    125.5,
+    220.5,
+    46,
+    141
+  ],
+  "keycap_row_aperture_mm": [
+    57.0,
+    20.2
+  ],
+  "minimum_web_between_rows_mm": 1.8,
+  "kit_keycap_reference_mm": [
+    18.1,
+    18.1,
+    8.5
+  ],
+  "horizontal_switch_pitch_mm": 19.05,
+  "vertical_switch_pitch_mm": 22,
+  "TFT_module_reference_mm": [
+    21.08,
+    73.15,
+    3.7
+  ],
+  "display_size_is_reference_not_measurement": true,
+  "display_rear_shim_gap_mm": 0.5,
+  "PCB_nuts_have_side_entry_slots": true,
+  "M3_nut_pocket_across_flats_mm": 5.975575286112627,
+  "back_cable_passage_mm": [
+    18,
+    12
+  ],
+  "clearance_hardware_physical_tested": false,
+  "source_STL_repaired_topology": true,
+  "ornament_voxel_pitch_mm": 1.0,
+  "additional_ornament_simplification_tolerance_mm": 0.0,
+  "functional_geometry_built_after_remeshing": true,
+  "decorative_body_triangles": 359526,
+  "zero_area_mesh_repair": {
+    "degenerate_operations": 0,
+    "exact_welds": 0,
+    "collinear_edge_refinements": 0,
+    "watertight": true
+  },
+  "decorative_body_topological_watertight": true,
+  "analytic_parts": {
+    "Electronics_Carrier": {
+      "valid_brep": true,
+      "solid_count": 1,
+      "mesh_watertight": true,
+      "dims_mm": [
+        106.0,
+        27.0,
+        177.5
+      ],
+      "bounds_mm": [
+        [
+          120.0,
+          87.0,
+          40.5
+        ],
+        [
+          226.0,
+          114.0,
+          218.0
+        ]
+      ],
+      "production_part": true
+    },
+    "Front_Panel": {
+      "valid_brep": true,
+      "solid_count": 1,
+      "mesh_watertight": true,
+      "dims_mm": [
+        106.0,
+        10.0,
+        180.0
+      ],
+      "bounds_mm": [
+        [
+          120.0,
+          84.0,
+          40.0
+        ],
+        [
+          226.0,
+          94.0,
+          220.0
+        ]
+      ],
+      "production_part": true
+    },
+    "Display_Retainer": {
+      "valid_brep": true,
+      "solid_count": 1,
+      "mesh_watertight": true,
+      "dims_mm": [
+        44.0,
+        6.8000030517578125,
+        11.0
+      ],
+      "bounds_mm": [
+        [
+          151.0,
+          91.19999694824219,
+          203.5
+        ],
+        [
+          195.0,
+          98.0,
+          214.5
+        ]
+      ],
+      "production_part": true
+    },
+    "PCB_Finished_Envelope": {
+      "valid_brep": true,
+      "solid_count": 1,
+      "mesh_watertight": true,
+      "dims_mm": [
+        95.0,
+        1.5999984741210938,
+        95.0
+      ],
+      "bounds_mm": [
+        [
+          125.5,
+          103.0,
+          46.0
+        ],
+        [
+          220.5,
+          104.5999984741211,
+          141.0
+        ]
+      ],
+      "production_part": false
+    }
+  },
+  "component_carrier_collision_checks": [],
+  "old_extended_keycaps_preserved_but_not_used_on_compact_revision": true
+}

@@ -1,35 +1,61 @@
-# JJK Alarm CAD
+# JJK Alarm compact CAD
 
-## Corrected exports
+## The complete assembly
 
-`JJK_Alarm_Corrected_Parts.zip` collects the checked mechanical references and six keycap parts. Individual files are also committed.
+`JJK_Alarm_Assembly.step` contains the complete placed compact design, including all three case parts, the drilled 95 × 95 mm board, component reference envelopes and fastener references. It is a genuine AP214 faceted BREP in millimeters, not a renamed STL. Reimport recovered **50 valid solids**. Coplanar triangles were consolidated into polygonal planar faces without scaling the geometry.
 
-| File | Contents |
+The sculptural source was nonmanifold. The revised decorative body was solidified using a 1 mm voxel grid and a 3-cell closing operation, then functional mounting geometry was added. Small decorative details and tips can change. The exact owner upload is preserved in `Owner_Originals/JJK_Alarm_Clock_Enclosure.stl`; it is not replaced by the repaired version. The original rectangular design and tall keycaps are preserved in `../Archive/Original_125x110`.
+
+## Current files
+
+- `JJK_Alarm_Assembly.step`: complete placed model.
+- `Reference/PCB_Substrate.step`: native KiCad substrate export. Its 1.51 mm dielectric thickness excludes copper/mask.
+- `Reference/PCB_Finished_Envelope.step`: same XY and drill positions, expanded only through thickness to the nominal 1.6 mm finished-board envelope.
+- `Reference/Body_Mesh.npz`: indexed source of the checked revised faceted body.
+- `Checks/Assembly_STEP_Validation.json`: STEP reimport, part counts and solid validity.
+- `Checks/Print_Mesh_Validation.json`: actual print STL reimport checks and placement transforms.
+- `Checks/Mechanical_Report.json`: design dimensions and component-versus-carrier/panel intersection checks.
+
+The exact analytic front-panel and retainer STEP files are also in `../Production/Case_Parts`. The shrine print file is STL. The BLARE instructions supplied by the owner allow STL for individual production parts.
+
+## Dimensions and coordinate system
+
+All values below are design dimensions, not measurements of received hardware.
+
+| Item | Dimension / location |
 | --- | --- |
-| `Current_References/PCB_Drilled_Body.step` | Native KiCad export of the current 125 x 110 mm drilled substrate, approximately 1.51 mm thick without copper/mask |
-| `Current_References/PCB_Finished_Size_Envelope.step` and `.stl` | Nominal 125 x 110 x 1.6 mm finished-board reference with the same XY and holes; Z-only envelope expansion is documented |
-| `Current_References/Six_Keycaps.step` | Six reimport-tested closed solids; caps 5 and 6 repeat original bodies 1 and 2 |
-| `../Production/Case_Parts/Keycap_01.step` through `Keycap_06.step` | One valid solid per file |
-| `../Production/Case_Parts/Keycap_01.stl` through `Keycap_06.stl` | Six watertight, consistently wound meshes; geometry not rescaled |
-| `Current_References/Component_Positions_mm.csv` | Component origins, not necessarily body centers |
-| `Current_References/Drill_Positions_mm.csv` | Actual drill centers and diameters, including mounting holes and vias |
-| `Checks/Native_PCB_Dimensions.json` | Native measurement evidence |
-| `Checks/Current_Mechanical_Exports.json` | STEP reimport, dimensions, keycap counts and STL checks |
+| PCB | 95 × 95 × 1.6 mm finished envelope |
+| PCB mounting-hole centers, from board top-left | (5,5), (90,5), (5,90), (90,90) mm |
+| PCB mounting-hole diameter | 3.2 mm |
+| Switch centers, top row from board top-left | (28.45,60), (47.5,60), (66.55,60) mm |
+| Switch centers, bottom row | (28.45,82), (47.5,82), (66.55,82) mm |
+| Horizontal / vertical pitch | 19.05 / 22 mm |
+| Front-panel body | 106 × 180 mm face, 3 mm base thickness; rear features increase overall depth |
+| Each key-row aperture | 57 × 20.2 mm; 1.8 mm rib between rows |
+| Modelled normal keycaps | 18.1 × 18.1 × 8.5 mm envelopes |
+| TFT module reference | 21.08 × 73.15 × 3.7 mm |
+| TFT viewing window | 18 × 62 mm |
+| Display pocket side clearance | 0.5 mm per side against the reference module |
+| Retainer rear gap / shim allowance | 0.5 mm |
+| Printed M3 clearance holes | 3.4 mm |
+| Nut pockets | Approximately 5.976 mm across flats for nominal 5.5 mm M3 nuts |
+| USB-cable exit passage | 18 × 12 mm |
+| Buzzer vents | Nine 1.7 mm holes on a 3 mm grid |
+| Sculptural body | Approximately 339 × 339 × 287 mm; no uniform scale reduction |
 
-The keycap pack is arranged 3 by 2 only for export handling. The PCB still has one row of six switches at 19.05 mm pitch. The printed caps are approximately 18.10 x 18.097 x 62.351 mm each. Copies do not change the switch-stem design. Physical fit remains distinct from file validity.
+Assembly coordinates use X across the clock, negative Y toward the front, and Z upward. The PCB front is at Y=103 mm, with board bounds X=125.5..220.5 and Z=46..141 mm. The TFT is above the PCB. The two-row key layout is UP/TIME/SNOOZE above DOWN/CLOCK/ALARM.
 
-## Latest STL upload finding
+The TFT and other electronics are clearance models, not exact supplier CAD. The parts must be checked when received. Clearance models and software intersection tests do not establish switch travel forces, solder-joint height or cable bend radius.
 
-`Checks/Latest_STL_Uploads.json` records the two latest uploads, `JJK Alarm Clock.stl` and `Keycaps.stl`. Both are 417,684-byte files with 8,352 triangles and the same four-keycap geometry at different positions. Neither includes the shrine enclosure. The combined keycap set is approximately 45.20 x 49.097 x 62.351 mm. A filename alone does not establish that an enclosure was exported.
+## Assembly order
 
-## Original sources and enclosure
+1. Inspect/finish the three printed parts and clear the cable passage and nut pockets. The shrine requires a large enough printer; the included file is not pre-split for a smaller build volume.
+2. Insert four M3 nuts through the side-entry slots in the PCB support posts. Their openings are accessible from the electronics cavity before fitting the board.
+3. Route the USB cable through the back passage. Fit a nylon zip tie through the integral saddle for strain relief without crushing the cable.
+4. Attach the populated board to its four posts using four M3 × 8 mm screws. Keep the screw heads inside the board's copper keepout regions. Do not let solder tails touch the case or fasteners.
+5. Wire the TFT by its printed pin labels. Seat it in the front-panel pocket. Place a soft nonconductive shim in the retainer gap, fit the retainer, and use two M3 × 16 mm screws and nuts. Do not clamp the LCD glass hard.
+6. Fit the front panel using four more M3 × 16 mm screws and captive nuts. Ensure all wiring remains inside and is not pinched.
+7. Fit the six normal kit keycaps. Check free travel, including at full depression. The original tall cap extensions are not intended for this panel.
+8. Perform supervised electrical first-power and firmware tests before relying on the alarm. The audio remains disabled in the first-power firmware configuration.
 
-`Original_STEP_Exports.zip` preserves the owner's earlier `Alarm Clock Enclosure Step.step` and `Keycaps.step` unchanged. The original keycap source was sewn into four valid solids with its inner cavity shells preserved; it remains in `Recovered/Keycaps_Recovered.step`. Earlier four-part STL exports are archived in `Recovered/Original_Keycap_STL` after the new six-part set is generated.
-
-`Recovered/Enclosure_REFERENCE_ONLY.stl` recovers all 222,961 source planar faces as 264,900 triangles. It measures 340 x 340 x 289.838 mm in the original coordinate system. It still has 14,489 open boundary edges and 33 nonmanifold edges under the prior analysis. It is not a closed printable solid. No arbitrary hole filling, dimensional scaling, smoothing or invented case split is claimed.
-
-The owner reports verifying fit in Tinkercad. The remaining issue is the exported data: neither the new keycap-only STLs nor the recovered open enclosure includes the PCB/display placed in a complete assembly. A valid whole-enclosure export and assembled-clock STEP are still needed. Do not rename a keycap file or open reference as the complete clock.
-
-## PCB size
-
-The correct finished board size is **125 x 110 x 1.6 mm**. The native drawing bounding box is slightly larger because it includes the Edge.Cuts pen width; the actual routed size uses the line center. The component and drill tables use that actual outline. The BLARE tutorial's under-100-mm guidance is not met by this layout. Uniformly shrinking it would alter connector pitch, switch spacing and holes. No compact PCB redesign or organizer exception is claimed.
+`Print_Mesh_Validation.json` records rigid transforms used to orient the print STLs. The full STEP retains assembly coordinates. The body has its base at Z=0 in the print STL; the panel and retainer are placed flat. Use appropriate supports and material/process settings for the sculptural overhangs. Watertightness is a geometry check, not a guarantee of print success.

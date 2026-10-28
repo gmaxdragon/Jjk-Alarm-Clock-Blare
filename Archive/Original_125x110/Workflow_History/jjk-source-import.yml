@@ -1,0 +1,34 @@
+name: JJK compact source preparation
+on:
+  push:
+    branches: [jjk-compact-revision]
+    paths: [.github/workflows/jjk-source-import.yml]
+permissions:
+  contents: write
+jobs:
+  preserve-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preserve exact owner source
+        env:
+          SOURCE_URL: 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-61a4-81f8-a6ff-f7d8b48218fa/raw?se=2026-10-28T02%3A47%3A42Z&sp=r&sv=2026-02-06&sr=b&scid=f8aebc9c-eda4-54fc-82e5-c0fd1b3c0d40&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-27T11%3A55%3A38Z&ske=2026-10-28T11%3A55%3A38Z&sks=b&skv=2026-02-06&sig=NVGiGCrmCzNCZwsBefIcWd13c7k41pmK3UMjGYgfoxM%3D'
+        run: |
+          mkdir -p CAD/Owner_Originals
+          curl --fail --silent --show-error --location "$SOURCE_URL" -o CAD/Owner_Originals/JJK_Alarm_Clock_Enclosure.stl
+          echo '23a17beaa6acadb4580a75d12cda379c8155e766c273abd609ceaf97611d7952  CAD/Owner_Originals/JJK_Alarm_Clock_Enclosure.stl' | sha256sum -c -
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add CAD/Owner_Originals/JJK_Alarm_Clock_Enclosure.stl
+          git commit -m 'Preserve exact new owner shrine enclosure STL without geometry changes'
+          git push
+      - name: Prepare mesh tooling for repeatable local inspection
+        run: |
+          mkdir -p /tmp/jjk-wheels
+          python3 -m pip download --only-binary=:all: --no-deps --python-version 313 --implementation cp --abi cp313 --platform manylinux_2_27_x86_64 --platform manylinux_2_28_x86_64 --platform manylinux2014_x86_64 -d /tmp/jjk-wheels manifold3d pymeshfix sexpdata
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jjk-mesh-inspection-wheels
+          path: /tmp/jjk-wheels/
+          if-no-files-found: error

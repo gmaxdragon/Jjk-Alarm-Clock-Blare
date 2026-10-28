@@ -1,5 +1,5 @@
 /*
- JJK ALARM rectangular board -- XIAO ESP32-C3 + portrait ST7789 76x284.
+ JJK ALARM compact 95 mm board -- XIAO ESP32-C3 + portrait ST7789 76x284.
  Editable phone settings, direct six-key control, persistent weekday alarm,
  manual time/date setting, NTP, optional 5-minute snooze and quiz.
 
@@ -582,7 +582,7 @@ void setup(){
   setenv("TZ",JJK_TIMEZONE,1);tzset();
   loadSettings();
   tft.initPanel();
-  Serial.println("[BLARE] Rectangular PCB firmware / portrait ST7789");
+  Serial.println("[BLARE] Compact 95 mm PCB firmware / portrait ST7789");
   Serial.println("[BLARE] J3: CLK21 MOSI20 DC3 CS4 RST=3V3 BL=GND");
   Serial.println("[BLARE] Keys: COL5/6/7 ROW8/9, Q1 buzzer GPIO10");
   Serial.printf("[BLARE] Audio gate: %s\n",soundAllowed()?"verified configuration":"HOLD / OFF");

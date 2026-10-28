@@ -1,0 +1,317 @@
+[
+  {
+    "path": "CAD/Checks/Alarm_Clock_Enclosure_Step_audit.json",
+    "bytes": 220,
+    "sha256": "fe4c3a42f4c5fbf5536acb2267a59a5b0f0c6a4dd7ea8aaf0012e523ea5c6832"
+  },
+  {
+    "path": "CAD/Checks/Current_Mechanical_Exports.json",
+    "bytes": 4206,
+    "sha256": "d279e2cfb2f8484fca7e77a372a20c27a45dbeccf23d7f61e2efe1b414b304fe"
+  },
+  {
+    "path": "CAD/Checks/DRC_After_Export.rpt",
+    "bytes": 508,
+    "sha256": "63c5a819cb28a4b4d6e015ffc5e4aa89069f6519f7313bf126ef243a1cb7d1cd"
+  },
+  {
+    "path": "CAD/Checks/ERC_After_Export.rpt",
+    "bytes": 357,
+    "sha256": "ca22d92d83a80b8b6955cc8ba7da5d198aa253e7bc87c5e9edad928956ae2b20"
+  },
+  {
+    "path": "CAD/Checks/Export_Recovery.json",
+    "bytes": 3948,
+    "sha256": "354994b378be484a136e2675c3c6cf02882a1c1b40eca13947452b97058acaf6"
+  },
+  {
+    "path": "CAD/Checks/Keycaps_audit.json",
+    "bytes": 530,
+    "sha256": "88f9e39433ba3aeaac45df6355ffc544dc2345c264fb44e4002018d44d13e769"
+  },
+  {
+    "path": "CAD/Checks/Latest_STL_Uploads.json",
+    "bytes": 1020,
+    "sha256": "1c133f70866e86e1ebd32d597b81abf792cdb7cabae68699f8d7919038d27550"
+  },
+  {
+    "path": "CAD/Checks/Native_PCB_Dimensions.json",
+    "bytes": 700,
+    "sha256": "3ebf3fb66f20ade9cd3c92ecee9ab5296b6667a658920e06233b2f499a500fd7"
+  },
+  {
+    "path": "CAD/Current_References/Component_Positions_mm.csv",
+    "bytes": 1501,
+    "sha256": "821036d435846d76664bcf1650e9dc2c67a59bc156b9890512e3c1e621ba7cad"
+  },
+  {
+    "path": "CAD/Current_References/Drill_Positions_mm.csv",
+    "bytes": 3266,
+    "sha256": "29346e8c7e34d9e75f0c87732d85db1484a9a1aa76bb1be5693b65342c3ca03e"
+  },
+  {
+    "path": "CAD/Current_References/PCB_Drilled_Body.step",
+    "bytes": 147221,
+    "sha256": "9bfc8a58da82f727f050251dd8b4ae2fbaa69412e2c24dcedb4795390d0a2287"
+  },
+  {
+    "path": "CAD/Current_References/PCB_Finished_Size_Envelope.step",
+    "bytes": 758117,
+    "sha256": "ed8703cf27ef0c9861f002eee2ac169561d34e53359f6164aa2f045d87b414be"
+  },
+  {
+    "path": "CAD/Current_References/PCB_Finished_Size_Envelope.stl",
+    "bytes": 2869484,
+    "sha256": "7a18f2a0b39011290a310da647c7911a920ee0d9806942caebbd5881d7b39a2d"
+  },
+  {
+    "path": "CAD/Current_References/README.md",
+    "bytes": 1507,
+    "sha256": "195dde9ee949776a3a56c7f927a70743d7904095a5d7e9edb2d832a34ebb2d6f"
+  },
+  {
+    "path": "CAD/Current_References/Six_Keycaps.step",
+    "bytes": 29715192,
+    "sha256": "f8235203c96d88774d6d54bb34b0b57f2816d4f8fd940dcbfd5b26fb8af149fc"
+  },
+  {
+    "path": "CAD/JJK_Alarm_Corrected_Parts.zip",
+    "bytes": 12817525,
+    "sha256": "2e609415e152332aa6d40eb786d1ebdcbc7c183e82fb2b8dcb4744b718cdeb45"
+  },
+  {
+    "path": "CAD/Original_STEP_Exports.zip",
+    "bytes": 31153705,
+    "sha256": "89fe7399fb2c908c660ff792f1d2a0aec5e20ccd911b53760bc1ab2bec6d6ba6"
+  },
+  {
+    "path": "CAD/README.md",
+    "bytes": 3672,
+    "sha256": "3856c19b64bee21f24edb2e55fa48da45d00aa643b7890216e37ef61c818fdb8"
+  },
+  {
+    "path": "CAD/Recovered/Enclosure_REFERENCE_ONLY.stl",
+    "bytes": 13245084,
+    "sha256": "a167d0180a4857b999a0761f87333913a941efbf849761a967b0f9d63113fd1b"
+  },
+  {
+    "path": "CAD/Recovered/Keycaps_Recovered.step",
+    "bytes": 20209150,
+    "sha256": "8e94f7d9cd3cf07e9477ef0150b0faa1b0b74d798d181915c36ba86b6a787982"
+  },
+  {
+    "path": "CAD/Recovered/Original_Keycap_STL/Extended_Keycap_01.stl",
+    "bytes": 104484,
+    "sha256": "ad6509b040509afc2d11de9241fc0c8d277e8ea8b3bba94de3fe166c63461a72"
+  },
+  {
+    "path": "CAD/Recovered/Original_Keycap_STL/Extended_Keycap_02.stl",
+    "bytes": 104484,
+    "sha256": "30e2cf75226e8aa8e958f620b7ef75485d01eb992068fcef3b62b341a71be20e"
+  },
+  {
+    "path": "CAD/Recovered/Original_Keycap_STL/Extended_Keycap_03.stl",
+    "bytes": 104484,
+    "sha256": "62f554cfa41cb50bec49c64c46d33f6ea1ed47585f9aec815c6c9a3e613e4fb1"
+  },
+  {
+    "path": "CAD/Recovered/Original_Keycap_STL/Extended_Keycap_04.stl",
+    "bytes": 104484,
+    "sha256": "d3aab6fac30e386ad53e4d85b1f10486f1f1d946c9d9a1341818a0d11788afd1"
+  },
+  {
+    "path": "Docs/PUBLICATION_MANIFEST.json",
+    "bytes": 1938,
+    "sha256": "0efc26fe8063b95fa0c402282981fdebc6d1f511778718e14392f0e883ea4b6a"
+  },
+  {
+    "path": "Docs/REVIEW_REQUEST.md",
+    "bytes": 2779,
+    "sha256": "3d43329e3ac6fde8310f4f03b51980b228b687d0cba67d87547eaf6b75e173a3"
+  },
+  {
+    "path": "Docs/SUBMISSION_CHECK.md",
+    "bytes": 4093,
+    "sha256": "9a97e6f00046ace3af3c256aabcea968c4e3707127e2df37df603a14b6a01113"
+  },
+  {
+    "path": "Firmware/.gitignore",
+    "bytes": 38,
+    "sha256": "ef328034ef2a7ffb2f87ee126d34a0f86c5fb2318816c72a376e7502d709c3da"
+  },
+  {
+    "path": "Firmware/JJK_Alarm/AlarmLogic.h",
+    "bytes": 1852,
+    "sha256": "ad3a44101347860efc1f2e4445dcfb56cb03cd1fb310dacb97402180ad2a389b"
+  },
+  {
+    "path": "Firmware/JJK_Alarm/BoardConfig.h",
+    "bytes": 1802,
+    "sha256": "04d4a207568b9cb685a8f9fedfc1e14536cc0127c7c496a802a35eeef7651e6c"
+  },
+  {
+    "path": "Firmware/JJK_Alarm/JJK_Alarm.ino",
+    "bytes": 25213,
+    "sha256": "4554657be7552e801e6ec16f613fe9a30d82481cb79c86338d5a59b84cd0f2c5"
+  },
+  {
+    "path": "Firmware/JJK_Alarm/JJK_Hands_76x76.h",
+    "bytes": 35852,
+    "sha256": "e2406e61d34b6b54da2650ac3a3077e85401e75d57f5bff43b884ca98a4b481e"
+  },
+  {
+    "path": "Firmware/JJK_Alarm/TimeTools.h",
+    "bytes": 1533,
+    "sha256": "07378f13b85a965bd5ebd394b21c492f43a4fdf76aa343de245b953fe5f69f83"
+  },
+  {
+    "path": "Firmware/JJK_Alarm/secrets.example.h",
+    "bytes": 830,
+    "sha256": "f8fe1ba7ac30bef18b49ba2813dd1dbdbe769791a2c1054bd080b376ff3c1f27"
+  },
+  {
+    "path": "Firmware/README.md",
+    "bytes": 3149,
+    "sha256": "1fbd0dfc0335907cf548a1408062a8f11d49280c50fc7601067deacf7eceb711"
+  },
+  {
+    "path": "Firmware/assets/JJK_Hands_76x76_indexed.png",
+    "bytes": 1442,
+    "sha256": "ccf309f511236a99e7487315ea88c313ff267f78d29c763872a87433d241456f"
+  },
+  {
+    "path": "PCB/jjkspeakerpcb.kicad_pcb",
+    "bytes": 312249,
+    "sha256": "c0d9b165417da454bace324ce1e8fe6fc57b2e5cef56c227b5746f985636b894"
+  },
+  {
+    "path": "PCB/jjkspeakerpcb.kicad_pro",
+    "bytes": 16837,
+    "sha256": "e944af3f67683e3aad997ff544a47ecb0c8add64db5981f3fb3e43e5594de514"
+  },
+  {
+    "path": "PCB/jjkspeakerpcb.kicad_sch",
+    "bytes": 115099,
+    "sha256": "008274ca6f9fd04afbe113440f2c59a1d214cc7bbc156e63f58ca96b5151e7d7"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_01.step",
+    "bytes": 4779327,
+    "sha256": "8d37f1d24ff9e55a65c654903d8d977dedbe1b19c15f45339ba1306ae8d302c4"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_01.stl",
+    "bytes": 104484,
+    "sha256": "8a4efa9ca23c45e958a728f31ae89a8e2fc7e4527a495c4348ce0aa907f1d8ea"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_02.step",
+    "bytes": 4764057,
+    "sha256": "5d1861597a55bd9ce407939359b793d94bfab42e3b96eb06592c52de5972f3cc"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_02.stl",
+    "bytes": 104484,
+    "sha256": "3819990223e5cb75b88a2e602494bc522ea8c306e1f5f5accdb8b2de830519d4"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_03.step",
+    "bytes": 4764342,
+    "sha256": "d639bfa7c908fd329d85bd25089ccf12a571754dca296074e05cdc77925ca1ab"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_03.stl",
+    "bytes": 104484,
+    "sha256": "e2b4094233e66fa6b1cc077a08fe4f2e5bfffb4edf159f2df03944b565ca7f9d"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_04.step",
+    "bytes": 4761407,
+    "sha256": "35211464d599b25ec44be80297f3b0e1d809254c50cc283ce66b7077547c03d5"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_04.stl",
+    "bytes": 104484,
+    "sha256": "583cc0c2ffe954d2eb13871149dee055e3a33f8ee67d72b68c2cd6a8c54efb63"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_05.step",
+    "bytes": 4779327,
+    "sha256": "43fdce3da026f8457bf39431ad213a76a841d33277db197e0863a4846e3f680e"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_05.stl",
+    "bytes": 104484,
+    "sha256": "8a4efa9ca23c45e958a728f31ae89a8e2fc7e4527a495c4348ce0aa907f1d8ea"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_06.step",
+    "bytes": 4764057,
+    "sha256": "0f566dd93d00cb722891e76ac10fe1cb413047297be2d530b4c092220ac8a214"
+  },
+  {
+    "path": "Production/Case_Parts/Keycap_06.stl",
+    "bytes": 104484,
+    "sha256": "3819990223e5cb75b88a2e602494bc522ea8c306e1f5f5accdb8b2de830519d4"
+  },
+  {
+    "path": "Production/README.md",
+    "bytes": 2010,
+    "sha256": "f2e458553279408250130ad7dfe3214b44d9c22ccf02ecfaa969f915d1b73d8f"
+  },
+  {
+    "path": "Production/Reports/drill_report.rpt",
+    "bytes": 891,
+    "sha256": "119a0468d39683c8091d916cc0b14f6bff831b8da099ef91e8c2deb7be281531"
+  },
+  {
+    "path": "Production/Reports/native_drc.rpt",
+    "bytes": 508,
+    "sha256": "64f7271181efdbc52a5d3aff1f0e4b52962fffdef420a47fec1216ebc2530d9b"
+  },
+  {
+    "path": "Production/Reports/native_erc.rpt",
+    "bytes": 357,
+    "sha256": "f676767db53264a2f0e4a2f41324effb57bfcb7bbe9fdd38f145642574b044f4"
+  },
+  {
+    "path": "Production/gerbers.zip",
+    "bytes": 45182,
+    "sha256": "3de1414dac9114211a75e276b6e16a795254771db8d5cdd50373eebc6246e095"
+  },
+  {
+    "path": "README_before_compact.md",
+    "bytes": 14106,
+    "sha256": "e6f46cb549ff6bde2124d291630e86a6b855f7ffaf750e849bd34974bc620568"
+  },
+  {
+    "path": "Tools/check_submission.py",
+    "bytes": 2121,
+    "sha256": "f8425f87e81563a4257af41d4d728cfeb43b7cb530bbf22fbb15eefa343eccfc"
+  },
+  {
+    "path": "Tools/compact/build_compact.py",
+    "bytes": 11434,
+    "sha256": "9fb2cd105a62a1a6f3361263aa15f95c7ac24b4646118df47974b850a345f1e0"
+  },
+  {
+    "path": "Tools/compact/sexpr.py",
+    "bytes": 989,
+    "sha256": "7c6c13c137fffbef198ce136713de5c8099b6de7d98464c30d3c418ef3bca466"
+  },
+  {
+    "path": "Tools/export_mechanical_dimensions.py",
+    "bytes": 2501,
+    "sha256": "ad7e6828cbc7b8adf86210f7783ac9721ac336723b430d8177ff345f2dccbddd"
+  },
+  {
+    "path": "Tools/finalize_mechanical_exports.py",
+    "bytes": 5138,
+    "sha256": "53570f0bd5f4eec4ffc6c6210b51ae3dd878cea76f0ffb3968dd66e03f5fd510"
+  },
+  {
+    "path": "Tools/recover_cad_exports.py",
+    "bytes": 8879,
+    "sha256": "becd1da67e35fb3036ad9912f275a3ebdad1a0877ab9c24627129089460a90f1"
+  }
+]

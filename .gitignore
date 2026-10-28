@@ -8,3 +8,6 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+Build/
+Firmware/JJK_Alarm/secrets.h

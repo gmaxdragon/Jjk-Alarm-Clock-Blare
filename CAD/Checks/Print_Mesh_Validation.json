@@ -1,0 +1,158 @@
+[
+  {
+    "part": "Shrine_Body",
+    "triangles": 359526,
+    "watertight_after_STL_reload": true,
+    "consistent_winding": true,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "dimensions_mm": [
+      339.0,
+      339.0,
+      287.0
+    ],
+    "assembly_bounds_mm": [
+      [
+        0.5,
+        0.5,
+        0.5
+      ],
+      [
+        339.5,
+        339.5,
+        287.5
+      ]
+    ],
+    "assembly_to_print_transform": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -0.5
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        -0.5
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        -0.5
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "sha256": "96b2eecb359a2a8aac255aaed57a61719980c08d02ac838348fb2b7c31e5fcf4"
+  },
+  {
+    "part": "Front_Panel",
+    "triangles": 5260,
+    "watertight_after_STL_reload": true,
+    "consistent_winding": true,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "dimensions_mm": [
+      106.0,
+      180.0,
+      10.0
+    ],
+    "assembly_bounds_mm": [
+      [
+        120.0,
+        84.0,
+        40.0
+      ],
+      [
+        226.0,
+        94.0,
+        220.0
+      ]
+    ],
+    "assembly_to_print_transform": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -120.0
+      ],
+      [
+        0.0,
+        6.123233995736766e-17,
+        -1.0,
+        220.0
+      ],
+      [
+        0.0,
+        1.0,
+        6.123233995736766e-17,
+        -84.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "sha256": "f4c4459d37c11258f1ebf53488780d894184a5bc4af75a99f4bb6f13536a6ba0"
+  },
+  {
+    "part": "Display_Retainer",
+    "triangles": 756,
+    "watertight_after_STL_reload": true,
+    "consistent_winding": true,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "dimensions_mm": [
+      44.0,
+      11.0,
+      6.8000030517578125
+    ],
+    "assembly_bounds_mm": [
+      [
+        151.0,
+        91.19999694824219,
+        203.5
+      ],
+      [
+        195.0,
+        98.0,
+        214.5
+      ]
+    ],
+    "assembly_to_print_transform": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        -151.0
+      ],
+      [
+        0.0,
+        6.123233995736766e-17,
+        1.0,
+        -203.5
+      ],
+      [
+        0.0,
+        -1.0,
+        6.123233995736766e-17,
+        97.99999999999999
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "sha256": "42aa037658cd1e1304d1553088120c7868332254b4d508287fa7c6c746e177bc"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "path": "Docs/Images/Compact/Assembly.png",
+    "sha256": "930c554a4be4d8a14abde52d9f15b7a3d07719ed5d3847c0589e46f4658507a9",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/Electronics.png",
+    "sha256": "88c9c6d5bb2348ee7edc89d457449d6f84e923b8e5310fe15b97157f91a12a38",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/Exploded.png",
+    "sha256": "3b4adbc8d866322c6385fcd9334ec942bf8521438064b817dbeccc70b8612d60",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/PCB_Back.png",
+    "sha256": "d2735de9648e49d3a3bbbb1cc433acd84adcc6cb1a0776f610aa705e26487a57",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/PCB_Back.svg",
+    "sha256": "bc37b01fb7ba353d092562095dbf8b520abc0f9fd64e33e1d2bcfc04d82ee48e",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/PCB_Front.png",
+    "sha256": "8d7da11e51bdd866991edd501ba819a4e48324a84491d62476f53bfb233ddf53",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/PCB_Front.svg",
+    "sha256": "34f76907654dddc5add5c93d630ad056be08a03f7400fff1e71b893e0c9cfdf6",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  },
+  {
+    "path": "Docs/Images/Compact/PCB_Layout.png",
+    "sha256": "b200a2f38bb6c34c4c6c06c11229a80471c751a1ff56caba0730e47659bbb2be",
+    "source": "Actual CAD geometry or native KiCad plot; not a physical photograph"
+  }
+]

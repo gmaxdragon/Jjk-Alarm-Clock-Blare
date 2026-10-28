@@ -1,178 +1,159 @@
 # JJK Alarm
 
-*A Jujutsu Kaisen-inspired alarm clock made for [Hack Club BLARE](https://blare.hackclub.com/), by Vivaan Goel.*
+*A Jujutsu Kaisen-inspired alarm clock made for Hack Club BLARE, by Vivaan Goel.*
 
 ## What I made and why
 
-JJK Alarm is an alarm clock to help me wake up in the morning, with a screen that shows the time and looks cool. My old alarm clock was really old, looked outdated, and had partly broken. I wanted a replacement that actually matched what I liked instead of another plain alarm clock.
+My old alarm clock was really old, looked outdated, and had partly broken. I wanted to replace it with something that actually matched what I liked instead of another plain alarm clock. I looked around online, but I could not find one that looked the way I wanted, so I decided to make my own.
 
-My main inspiration was **Ryomen Sukuna's Malevolent Shrine** from *Jujutsu Kaisen*. It is his Domain Expansion, which I think looks really cool. I wanted to turn that shrine style into something I could actually use every day.
+My main inspiration was **Sukuna's Malevolent Shrine** from *Jujutsu Kaisen*. I think it is one of the coolest abilities in the series, and I wanted to turn that shrine style into something I could use every day. The screen shows a hand-sign image with the time underneath it.
 
-### My overall design
+## Why there are two PCB versions
 
-![My JJK Alarm enclosure in CAD](Docs/Images/CAD_Enclosure.png)
+The original PCB was too big, so I changed the layout later with AI's help and made this smaller **95 × 95 mm** version. I moved the six buttons into two rows of three, but it still does the same things overall. I kept the original PCB and CAD files too, so you can see what changed.
 
-This is my actual CAD screenshot, not a photo of a finished physical clock.
+I also changed the PCB a bit later but forgot to update some of the earlier screenshots. The intended function is the same overall, though. The files in **`PCB/`, `CAD/`, `Firmware/`, and `Production/` are the current compact revision**. The older **125 × 110 mm** version is preserved in [Archive/Original_125x110](Archive/Original_125x110/README.md). The old images are history, not the manufacturing reference.
 
-![My project overview: PCB layout, 3D PCB, schematic, and enclosure](Docs/Images/Project_Overview.png)
+## The current clock
+
+![Current compact JJK Alarm CAD assembly](Docs/Images/Compact/Assembly.png)
+
+This is a render of the actual revised CAD geometry, not a photo of a built clock. The electronics are labelled dimensional reference models, not manufacturer-certified component CAD.
+
+![Exploded view showing how the case, screen and compact PCB fit](Docs/Images/Compact/Exploded.png)
 
 ## PCB and schematic
 
-I kept the XIAO ESP32-C3 toward the top of the PCB so it would be easier to reach for power and uploading new code. I put all six switches along the bottom to make them easy to press. The buzzer is off to the side so it does not get in the way of the TFT screen. I also tried to leave the middle of the board open for the display and its wiring.
+![Current 95 mm PCB, plotted directly from the checked KiCad file](Docs/Images/Compact/PCB_Layout.png)
 
-The current board is a **125 × 110 mm rectangular, two-layer PCB**, with a nominal finished thickness of **1.6 mm**. The six switches have **19.05 mm center-to-center spacing**. This is the rectangular version, not the older T-shaped version from earlier in the project.
+![My schematic screenshot; the compact revision keeps these electrical connections](Docs/Images/Schematic.png)
 
-### Note about later PCB changes
+The board has two copper layers, a **95 × 95 mm** outline, and **1.6 mm nominal finished thickness**. Nothing was uniformly shrunk. The switches, sockets, pin spacing and drill sizes remain full size. The components were moved and the tracks were routed again.
 
-I changed the PCB a bit later also but forgot to update it. It works the same overall, though.
+The XIAO ESP32-C3 reads the six buttons through a three-column, two-row matrix. Each switch has a diode. It updates the TFT over SPI and switches the buzzer through Q1, a 2N3904 transistor. R1 pulls GPIO8 high, R2 limits transistor base current, R3 keeps the buzzer driver off at startup, and the capacitors filter the 3.3 V rail.
 
-Some earlier screenshots show an earlier revision. Use the current files in `PCB/` and `Production/gerbers.zip` for the actual design. The intended function is unchanged; this note is not a claim of completed physical testing.
+The compact board uses the **same component-to-net connections and GPIO assignments** as the original rectangular circuit. Native KiCad ERC, DRC, schematic/PCB matching, and unconnected-pad checks pass under the saved check settings. See [the reports](Production/Checks/).
 
-![My KiCad PCB layout](Docs/Images/PCB_Layout.png)
+### Button layout, looking at the front
 
-![My KiCad schematic](Docs/Images/Schematic.png)
+| Left | Middle | Right |
+| --- | --- | --- |
+| UP (SW1) | TIME SET (SW3) | SNOOZE (SW5) |
+| DOWN (SW2) | CLOCK SET (SW4) | ALARM ON (SW6) |
 
-![My PCB in KiCad's 3D viewer](Docs/Images/PCB_3D.png)
+Horizontal switch pitch is **19.05 mm**. The two rows are **22 mm** apart. The compact version uses six normal kit keycaps. My earlier tall printed cap extensions are preserved with the original version, but are not used on this one.
 
-The 3D viewer does not show every part, including the fitted XIAO, TFT, switches, and keycaps. It is a view of the PCB design, not a fully assembled clock.
+## CAD and assembly
 
-### How the circuit works
+I did my original case work in **Tinkercad**, using a shrine model from **MakerWorld**, my own changes, and ideas from friends. I am not claiming I modeled the original shrine from scratch. Later, AI helped repair the exported geometry and add a new electronics mount and removable front panel for the smaller PCB.
 
-The ESP32 reads the six buttons through a switch matrix. The diodes help keep the button readings separate when more than one button is pressed. The ESP32 then updates the TFT over SPI and handles the clock and alarm settings. The buzzer is controlled through a transistor rather than being powered straight from an ESP32 pin. The resistors help with the transistor drive and boot-pin pull-up, and the capacitors are connected across the 3.3 V supply.
+The current complete model is [CAD/JJK_Alarm_Assembly.step](CAD/JJK_Alarm_Assembly.step). It includes the shrine body and integrated carrier, removable front panel, display retainer, drilled PCB, component reference models and fastener references, all placed together. It reopened as **50 valid solids**. The sculptural part is a faceted solid, not a reconstructed editable Tinkercad history.
 
-The clock uses USB-C power through the XIAO. It does not have an internal battery.
+The separate print files are in [Production/Case_Parts](Production/Case_Parts/). There are **three case parts**: the shrine body with its integrated electronics carrier, the front panel, and the display retainer. Do not print the reference electronics or the old tall keycaps for this revision.
 
-## CAD and how it fits together
+![Reference electronics and mounts inside the new panel](Docs/Images/Compact/Electronics.png)
 
-I used **Tinkercad**, a shrine model from **MakerWorld**, and input from friends. I did the case modifications myself. I am not claiming that I modeled the original shrine from scratch.
+The PCB screws into four supports. The display sits in a pocket behind the front panel and has a removable retaining bar. The back has a USB-cable passage and a zip-tie saddle for strain relief. The front has holes for the buzzer sound. This version does not depend on an unspecified USB-C panel-mount extension.
 
-I added rectangular sections to make room for the electronics, cut out the top, and added openings for the TFT screen, switches, and buzzer sound. I also extended the keycaps so the buttons could reach through the case.
+The decorative shrine remains approximately **339 × 339 × 287 mm**, so it needs a sufficiently large printer or a separately planned print split. Making the PCB smaller did not automatically make the shrine smaller. The decorative skin was remeshed on a 1 mm grid to remove touching/nonmanifold surfaces, which slightly softens fine details. The precise mounting features were added afterward. The untouched owner upload is preserved in [CAD/Owner_Originals](CAD/Owner_Originals/).
 
-My intended assembly slides in from the top. The case parts fit together using friction, with the buttons fitted through their openings. I checked the fit in CAD. That is a CAD check, not a claim that the physical clock has already been printed, assembled, and tested. I also considered a short USB-C extension so the power connection can reach the outside of the case.
-
-The enclosure screenshot above shows my intended case. The original CAD exports are preserved in [CAD](CAD/README.md). The corrected mechanical package contains the native drilled PCB substrate, a 1.6 mm finished-board size reference, six keycap STEP solids, and six separate STL parts. The fifth and sixth caps are copies of two supplied cap bodies, not newly modeled designs. The keycaps have been centered for export without changing their size.
-
-The two latest STL uploads turned out to contain the same four-keycap set, even the one named `JJK Alarm Clock.stl`. They do not contain the enclosure. The older enclosure export is kept as a surface reference rather than being mislabeled as a finished printable assembly. Exact file findings are in [CAD/Checks/Latest_STL_Uploads.json](CAD/Checks/Latest_STL_Uploads.json).
-
-## Challenges
-
-Making the whole thing was pretty frustrating at times. I had to remake parts of the CAD several times, and I do not think all of those changes were recorded. At one point, I remember the PCB having around 52 errors in DRC.
-
-I worked through the problems by asking AI for explanations, trying fixes myself, and getting ideas from friends. My friend and I worked on the PCB and schematic, and I spent a lot of time arranging components, fixing connections, and getting the design checks to pass. I also did the Tinkercad modifications, cutouts, fit checks, and keycap changes myself.
+The CAD clearance checks use reference dimensions, including a **21.08 × 73.15 × 3.7 mm TFT envelope**. They are not measurements of a received display. Physical assembly, connector fit, tolerances and alarm loudness still require testing. Detailed dimensions and assembly order are in [CAD/README.md](CAD/README.md).
 
 ## Firmware
 
-The firmware is written for the **Seeed XIAO ESP32-C3** using Arduino and the Adafruit GFX/ST7789 libraries. The screen stays vertical at **76 × 284 pixels**. The hand-sign image is at the top, with the hours and minutes stacked underneath it.
+The code is in [Firmware/JJK_Alarm](Firmware/JJK_Alarm/), for the **Seeed XIAO ESP32-C3** using Arduino and Adafruit GFX/ST7789. The portrait screen is **76 × 284 pixels**. The image is stored in the firmware and appears above the stacked hours and minutes.
 
-![The image I supplied for the screen](Docs/Images/Hand_Sign_Artwork.png)
+![The artwork I supplied for the screen](Docs/Images/Hand_Sign_Artwork.png)
 
-The ESP32 can use Wi-Fi to synchronize the time. The image itself is stored in the firmware, so it is not downloaded from the internet every time the screen updates. The main loop checks buttons, updates the display, checks the alarm, and handles the local settings page.
+The code includes Wi-Fi time synchronization, manual clock/date setting, selectable alarm weekdays, five-minute snooze, dismissal, a countdown timer, stopwatch, themes, and a local phone settings page. These are implemented features, not a claim that the assembled clock has been hardware-tested.
 
-The code includes a clock and date display, selectable alarm weekdays, five-minute snooze, alarm dismissal, a countdown timer, a stopwatch, themes, and a local phone settings page. These are implemented software features, not a claim that every feature has been tested on the assembled device.
-
-| Button | What it does |
+| Button | Function |
 | --- | --- |
 | UP | Increase a value or move through choices |
-| DOWN | Decrease a value; hold on the home screen for the stopwatch |
-| TIME SET | Set the time and date; hold for the status screen |
-| CLOCK SET | Set the alarm and weekdays; hold for the countdown timer |
-| SNOOZE | Snooze an alarm for five minutes; hold to dismiss it |
-| ALARM ON | Toggle the alarm; hold to change the display theme |
+| DOWN | Decrease a value; hold at home for the stopwatch |
+| TIME SET | Edit the clock/date; hold for status |
+| CLOCK SET | Edit the alarm and weekdays; hold for the countdown |
+| SNOOZE | Snooze for five minutes; hold to dismiss |
+| ALARM ON | Toggle the alarm; hold to change the theme |
 
-The source is in [Firmware/JJK_Alarm](Firmware/JJK_Alarm). Setup and first-power instructions are in [Firmware/README.md](Firmware/README.md).
+The current firmware compiles for ESP32-C3 and passes the host-side alarm/timer tests. **The committed first-power configuration keeps the buzzer silent until its wiring and electrical behavior have been checked.** Do not mistake a successful compile for a sound test.
 
-**The committed first-power configuration keeps the buzzer silent until its wiring and electrical behavior have been checked.** The firmware has compiled for the real ESP32-C3 target, but compilation is not a physical sound test. It also cannot keep an alarm running through a complete power loss, and the current PCB does not provide firmware control of the TFT backlight.
+Power is through the XIAO's USB-C connector. There is no internal battery or backup RTC, so a total power loss stops the clock. The PCB also keeps the TFT backlight on rather than switching it in firmware. Setup and first-power instructions are in [Firmware/README.md](Firmware/README.md).
 
-## Parts I used in the design
+## Parts for one clock
 
-This is the current design BOM, not a claim that every part has already been bought or soldered. Quantities are for one clock, not the number of spare parts in the BLARE kit.
+This BOM describes the compact design. It is not a list of parts already purchased or fitted.
 
-| Part | Quantity | What I use it for |
+| Part | Quantity | Purpose |
 | --- | ---: | --- |
-| Custom rectangular PCB, 125 × 110 × 1.6 mm | 1 | Holds and connects the electronics |
-| Seeed Studio XIAO ESP32-C3 | 1 | Runs the clock and display |
-| 1×7, 2.54 mm female socket strips | 2 | J1 and J2, for mounting the XIAO |
-| Compatible 1×7 male header strips | 2 | Fit the XIAO into the sockets |
-| 2.25-inch ST7789 TFT, 76 × 284 pixels | 1 | Displays the image, time, and menus |
-| 1×8, 2.54 mm male header | 1 | J3, the display connection |
-| Female-to-female jumper wires | 8 | Connect the TFT to J3 |
-| MX-compatible mechanical switches | 6 | The six buttons |
-| Compatible keycaps / printed cap extensions | 6 positions | Make the buttons accessible through the case |
-| 1N4148 through-hole diodes | 6 | D1-D6, for the button matrix |
-| 1N4148 diode provision | 1 optional | D7; only fit if appropriate for the verified buzzer |
-| 3.3 V buzzer | 1 | BZ1, for alarm tones; not a speech/music speaker |
-| 2N3904 NPN transistor | 1 | Q1, switches the buzzer |
-| 10 kΩ resistor | 1 | R1, GPIO8 pull-up |
-| 1 kΩ resistor | 1 | R2, transistor base current limiting |
-| 100 kΩ resistor | 1 | R3, transistor base pull-down |
-| 10 µF electrolytic capacitor | 1 | C1, power filtering |
-| 100 nF ceramic capacitor | 1 | C2, power filtering |
-| Printed enclosure and keycap parts | 1 set | Shrine-style case and controls |
-| M3 hardware / nonconductive supports | As needed | Four PCB mounting-hole positions; final hardware depends on the case fit |
-| Suitable 5 V USB adapter and USB-C cable | 1 set | External power |
-| Short USB-C panel-mount extension | 1 planned | Bring the XIAO connection to the case wall |
+| Custom 95 × 95 mm, two-layer PCB, 1.6 mm finished | 1 | Current compact board |
+| Seeed XIAO ESP32-C3 | 1 | Microcontroller and USB-C power |
+| 1×7, 2.54 mm female socket strips | 2 | J1/J2 |
+| Compatible 1×7 male header strips | 2 | Mount the XIAO in the sockets |
+| 2.25-inch ST7789 TFT, 76 × 284 pixels | 1 | Display |
+| 1×8, 2.54 mm male header | 1 | J3 |
+| Female-to-female jumper wires | 8 | Display wiring |
+| MX-compatible switches | 6 | SW1-SW6 |
+| Normal compatible 1U DSA keycaps | 6 | The compact version's buttons |
+| 1N4148 diodes | 6 | D1-D6 |
+| 1N4148 diode | 1 optional | D7, only when appropriate for the actual buzzer |
+| 3.3 V buzzer | 1 | BZ1; 12 mm/7.6 mm lead-pitch footprint provision |
+| 2N3904 transistor | 1 | Q1 |
+| 10 kΩ resistor | 1 | R1 |
+| 1 kΩ resistor | 1 | R2 |
+| 100 kΩ resistor | 1 | R3 |
+| 10 µF electrolytic capacitor | 1 | C1 |
+| 100 nF ceramic capacitor | 1 | C2 |
+| Printed shrine body, front panel and display retainer | 1 each | Three production case parts |
+| M3 × 8 mm screws | 4 | PCB supports |
+| M3 × 16 mm screws | 6 | Four front-panel and two display-retainer fasteners |
+| M3 hex nuts, nominal 5.5 mm across flats | 10 | Captured fasteners |
+| Nonconductive soft shim, about 0.5 mm | 1 | Display retention without hard pressure on glass |
+| Nylon zip tie, about 2.5 mm wide | 1 | USB-cable strain relief |
+| Reputable 5 V USB adapter and suitable USB-C cable | 1 set | External power |
 
-The socket strips, transistor, resistors, capacitors, power supply, and USB extension should not be assumed to be included in the basic BLARE kit. Exact supplier SKUs and a priced shopping list are not finalized here. The buzzer PCB footprint is `Buzzer_Beeper:Buzzer_12x9.5RM7.6`; that describes the designed package, not a measurement of a received part.
+Some items are extra to the basic kit, including sockets, the transistor/passives, nuts, two additional M3 × 16 mm screws, the shim and power accessories. Exact purchased-part dimensions and prices are not being claimed. The buzzer footprint describes the design, not a measurement of the shipped buzzer.
 
-## AI assistance
+## Challenges and AI assistance
 
-Just giving you a heads up, AI was used in this project. AI was used in order to add everything and document everything to GitHub, and it is completely AI-assisted. I did the hands-on work, like making the PCB and schematics. However, AI helped me design it by giving me some ideas on how to make it, and mainly my friend and I worked on the PCB and schematics themselves.
+I spent a lot of time making the PCB and schematic with my friend, arranging parts, fixing errors, and changing the CAD. It got pretty frustrating at times, but I wanted to get it working rather than stop halfway through.
 
-The CAD work was my own work, using some models from MakerWorld, because modeling the whole shrine from scratch was too hard to make. Since I cannot code, I worked with AI to make the code through some back and forth. Please accept this, and I understand if you return it. However, this is the best I can do right now. I cannot build a PCB from scratch or write code completely by myself. Thank you so much in advance.
+Just giving you a heads up, **AI was used in this project**. My friend and I did the hands-on work on the original PCB and schematic, and AI helped explain things and give me ideas. I did the original Tinkercad modifications using some MakerWorld models because modeling the whole shrine myself was too hard.
 
-The story in this README comes from my voice-typed explanation. AI helped organize it, format the document, and check the technical descriptions. The screenshots are the ones I supplied from my work. The imported MakerWorld models and supplied artwork are not being claimed as original creations by me.
+Since I cannot code by myself yet, I worked with AI to make the firmware through some back and forth. AI also helped document and upload the project to GitHub, rearrange and route the smaller PCB, repair the exports, and create the new compact mounting parts. I am not claiming those later changes were all hand-designed by me.
 
-## Note about Stardance recordings
+The story in this README comes from my voice typing. AI helped organize and format it and check the technical descriptions. I understand if the organizers ask for changes or return it. This is the best I can do right now, and I have learned a lot from working through it. Thank you so much in advance.
+
+## Stardance recording note
 
 By the way, I forgot to click **Publish to Stardance** when recording the timelapses of the PCB and schematic. I clicked **Public**, though, so I am not sure whether they will be attached. So sorry about that! Thank you!
 
-## What I would improve next
-
-I might improve the case and simplify some of it into rectangular parts so it is easier to put together. I would also like a bigger TFT screen because this one feels a little underwhelming. Another upgrade would be an actual speaker and audio playback hardware so it could play voices, intros, or other audio instead of just buzzer tones. Those are future upgrades, not features of the current PCB.
-
-## Files and checks
+## Project files
 
 | Folder | Contents |
 | --- | --- |
-| [CAD](CAD/README.md) | Original CAD, corrected six-cap STEP/STL exports, PCB references, and dimension reports |
-| [PCB](PCB/) | Matching `.kicad_pro`, `.kicad_sch`, and `.kicad_pcb` source files |
-| [Firmware](Firmware/README.md) | Arduino sketch, image data, configuration template, and setup notes |
-| [Production](Production/) | `gerbers.zip`, native check reports, and case-output status |
-| [Docs/Images](Docs/Images/) | My original screenshots and artwork, plus an original-byte checksum manifest |
-| [Docs/SUBMISSION_CHECK.md](Docs/SUBMISSION_CHECK.md) | Exact remaining submission items and validation evidence |
-| [Archive](Archive/) | Superseded T-shaped-board documentation and incomplete exports, not current fabrication files |
+| [CAD](CAD/README.md) | Complete placed assembly STEP, checks, reference geometry and original source |
+| [PCB](PCB/) | Current matching KiCad project, schematic and compact PCB |
+| [Firmware](Firmware/README.md) | Arduino source, artwork and setup instructions |
+| [Production](Production/README.md) | Current `gerbers.zip`, drill reports and three case-part exports |
+| [Docs](Docs/SUBMISSION_CHECK.md) | Submission inventory, images and test evidence |
+| [Archive/Original_125x110](Archive/Original_125x110/README.md) | Preserved original rectangular design, CAD and manufacturing files |
 
-Native KiCad reports record **0 ERC errors, 0 ERC warnings, 0 DRC violations, and 0 unconnected pads** under the saved check configuration. The firmware has also passed the ESP32-C3 compilation and host-side alarm/timer tests. Physical assembly, alarm loudness, and long-term operation are separate tests, not things those reports prove.
+Use the current folders together. Do not mix the original Gerbers, compact PCB and old case openings. The submission files are prepared for technical review; successful file checks do not prove physical safety or guarantee Hack Club acceptance.
 
-**Submission note:** I checked the CAD fit myself. The latest uploaded STLs contain keycaps only, so a clean export of the enclosure and complete assembly is still missing. The PCB remains 125 × 110 mm. The one-row key layout occupies about 113.35 mm including the supplied 18.10 mm wide caps, so reducing all dimensions would break the physical part spacing. Meeting the tutorial's under-100 mm guidance requires a changed layout and matching case, or an organizer-approved size exception. Neither approval nor a compact redesign is claimed here.
+## Credits and future ideas
 
-## Credits
+Thanks to Hack Club BLARE for the project and kit, to my friend for working on the PCB and schematic with me, and to the friends who gave me suggestions. The shrine uses a MakerWorld model and the screen uses artwork I supplied. The exact original model/artist links and license details have not yet been established, so I have not invented a creator credit. See [Docs/ATTRIBUTION.md](Docs/ATTRIBUTION.md).
 
-Thanks to Hack Club BLARE for the project and kit, to my friend for working on the PCB and schematic with me, and to the friends who gave me suggestions. The shrine is based on a model from MakerWorld. The exact model URL, creator, and license still need to be recorded in [the attribution notes](Docs/ATTRIBUTION.md).
+Later, I would like to try a bigger screen and real audio playback hardware. The current buzzer is for tones, not voices or music.
 
 <details>
-<summary>More of my supplied screenshots and the references I used</summary>
+<summary>My original screenshots before the compact revision</summary>
 
-### Earlier PCB screenshot
-![Earlier PCB screenshot supplied on October 26](Docs/Images/History/PCB_2026-10-26.png)
+![My original Tinkercad enclosure](Docs/Images/CAD_Enclosure.png)
+![My original rectangular PCB](Docs/Images/PCB_Layout.png)
+![My original PCB 3D viewer](Docs/Images/PCB_3D.png)
+![Original project overview](Docs/Images/Project_Overview.png)
 
-### Earlier schematic screenshot
-![Earlier schematic screenshot supplied on October 26](Docs/Images/History/Schematic_2026-10-26.png)
-
-### PCB while I was working on it
-![PCB during the design process](Docs/Images/History/PCB_Earlier.png)
-
-### Schematic while I was fixing errors
-![Schematic during the design process](Docs/Images/History/Schematic_Earlier.png)
-
-### Second copy of the final schematic upload
-![Second supplied schematic screenshot](Docs/Images/History/Schematic_Duplicate_Upload.png)
-
-### Hack Club reference images
-These next three images are references from Hack Club that I supplied during the build. They are not photos of my assembled clock or my own example PCB.
-
-![BLARE kit reference photo](Docs/Images/Reference/BLARE_Kit.png)
-![BLARE kit parts-list reference](Docs/Images/Reference/BLARE_Parts_List.png)
-![BLARE tutorial PCB reference](Docs/Images/Reference/BLARE_Example_PCB.png)
-
+These remain unmodified history images. The current compact PCB and CAD are shown above.
 </details>

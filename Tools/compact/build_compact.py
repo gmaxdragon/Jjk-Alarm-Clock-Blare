@@ -8,7 +8,7 @@ import copy,heapq,itertools,json,math,os,re,sys,time,uuid
 import numpy as np
 from sexpr import loads,dumps,Q,child,children,get
 ROOT=Path(os.environ.get('JJK_ROOT',Path(__file__).resolve().parents[2]))
-SOURCE=ROOT/'PCB/jjkspeakerpcb.kicad_pcb'
+SOURCE=ROOT/'Archive/Original_125x110/PCB/jjkspeakerpcb.kicad_pcb'
 OUT=ROOT/'Revisions/Compact_95/PCB';OUT.mkdir(parents=True,exist_ok=True)
 SIZE=95.0;GRID=.25;N=int(SIZE/GRID)+1
 board=loads(SOURCE.read_text())
@@ -35,6 +35,7 @@ for f0 in children(board,'footprint'):
    # Use a readable reference above every body; no misleading footprint values.
    if str(ref).startswith('SW'):child(prop,'at')[:]=['at','-2.54','-4','0']
    elif ref=='BZ1':child(prop,'at')[:]=['at','3.8','-7.5','0']
+   elif ref in ('D2','D4','D6'):child(prop,'at')[:]=['at','-3','0','0']
    else:
     at=child(prop,'at')
     if at and len(at)>3:at[3]='0'

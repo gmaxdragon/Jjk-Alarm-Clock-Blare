@@ -1,0 +1,32 @@
+{
+  "method": "Voxel solidification of decorative sculpture only; exact functional geometry added afterward",
+  "voxel_pitch_mm": 1.0,
+  "grid_shape": [
+    345,
+    345,
+    295
+  ],
+  "morphological_closing_grid_cells": 3,
+  "morphological_opening_grid_cells": 0,
+  "surface_simplification_tolerance_mm": 0.25,
+  "boundary_edges": 0,
+  "nonmanifold_edges": 0,
+  "watertight_after_STL_reimport": true,
+  "winding_consistent": true,
+  "triangles": 381300,
+  "bounds_mm": [
+    [
+      0.5,
+      0.5,
+      0.5
+    ],
+    [
+      339.5,
+      339.5,
+      287.5
+    ]
+  ],
+  "source_preserved": true,
+  "mechanical_parts_remeshed": false,
+  "geometry_is_modified_revision": true
+}

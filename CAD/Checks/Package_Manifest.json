@@ -1,0 +1,17 @@
+{
+  "pcb_size_mm": [
+    95,
+    95,
+    1.6
+  ],
+  "same_circuit_and_GPIO_map": true,
+  "original_preservation_archive": "Archive/Original_125x110",
+  "production_parts": [
+    "Shrine_Body",
+    "Front_Panel",
+    "Display_Retainer"
+  ],
+  "primary_assembly": "CAD/JJK_Alarm_Assembly.step",
+  "assembly_sha256": "a6dbda7b760aaadaff1b994e1ece7733eb177c7e9bc346446cea3755b27f4ead",
+  "physical_hardware_tests_performed": false
+}

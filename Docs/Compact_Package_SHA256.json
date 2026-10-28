@@ -1,0 +1,237 @@
+[
+  {
+    "path": ".github/workflows/jjk-validation.yml",
+    "bytes": 2984,
+    "sha256": "5763d4464cdfedb805dd06c8a312d7e4a6bcf669dc1ab134b33570c112650264"
+  },
+  {
+    "path": "CAD/Checks/Assembly_STEP_Validation.json",
+    "bytes": 19691,
+    "sha256": "15500f714d072d7b92437ac91786d5bc1623063f9b1242c37815bce96223d8c7"
+  },
+  {
+    "path": "CAD/Checks/Compact_Routing.json",
+    "bytes": 61817,
+    "sha256": "a94aa6170a236500787d27c25c7c62a91d1469e28e33c6ee4d32fec1e45fba23"
+  },
+  {
+    "path": "CAD/Checks/Mechanical_Report.json",
+    "bytes": 3118,
+    "sha256": "2911a0842f3e0999c3cb81665d407dba99b08281659bd59dc8d5194399c4e75b"
+  },
+  {
+    "path": "CAD/Checks/Package_Manifest.json",
+    "bytes": 429,
+    "sha256": "9db01d740eb0fd82148f79496b3fa819e0d4fbc6c09c585b10d190ed3e82624b"
+  },
+  {
+    "path": "CAD/Checks/Print_Mesh_Validation.json",
+    "bytes": 2540,
+    "sha256": "ba80897c305b9fe0e48edec0aa26f046c0e094c78f6867459c6f52228b187a17"
+  },
+  {
+    "path": "CAD/Checks/Software_Versions.json",
+    "bytes": 192,
+    "sha256": "9202c27339ecb6ba3a6103f4b4cf97a9e6b139cc4ef8ebfee027a5630fbe3295"
+  },
+  {
+    "path": "CAD/Checks/ornament_remesh_report.json",
+    "bytes": 681,
+    "sha256": "03b980035abe83f33848d40fade5816ddaa519576383fdc052f564d2e040ea5c"
+  },
+  {
+    "path": "CAD/JJK_Alarm_Assembly.step",
+    "bytes": 33354248,
+    "sha256": "a6dbda7b760aaadaff1b994e1ece7733eb177c7e9bc346446cea3755b27f4ead"
+  },
+  {
+    "path": "CAD/README.md",
+    "bytes": 5387,
+    "sha256": "bb2d3fef3ae9fa5e360167b1191a7fae2c591d2369b44e4c046d513097fd9f85"
+  },
+  {
+    "path": "CAD/Reference/Body_Mesh.npz",
+    "bytes": 2022011,
+    "sha256": "201e682eb4bcbb2fee899dd2d9492b1717ba39eb9565e12f8f1c5645e969e051"
+  },
+  {
+    "path": "CAD/Reference/Ornament_Topology_Source.npz",
+    "bytes": 2833808,
+    "sha256": "f31ee5fa164e4eb504b1165322bc60e270ebd64ef5778d720a8fed185208db14"
+  },
+  {
+    "path": "CAD/Reference/PCB_Finished_Envelope.step",
+    "bytes": 767503,
+    "sha256": "412ca02ee4f823c1fc09fb43719f1b6ed2dbcb37676a6dbfc29dfc7159e0cf53"
+  },
+  {
+    "path": "CAD/Reference/PCB_Substrate.step",
+    "bytes": 147595,
+    "sha256": "5ebaa42888c0331881bc7b08477ca7e15bbb84deb800150f14bd9547daad2e64"
+  },
+  {
+    "path": "Docs/COMPACT_REVISION.md",
+    "bytes": 1368,
+    "sha256": "2a67f6f997b929aca313d661275d2f53d70c72bc10aa17bb3937bcda8619f55c"
+  },
+  {
+    "path": "Docs/Images/Compact/Assembly.png",
+    "bytes": 277011,
+    "sha256": "930c554a4be4d8a14abde52d9f15b7a3d07719ed5d3847c0589e46f4658507a9"
+  },
+  {
+    "path": "Docs/Images/Compact/Electronics.png",
+    "bytes": 43572,
+    "sha256": "88c9c6d5bb2348ee7edc89d457449d6f84e923b8e5310fe15b97157f91a12a38"
+  },
+  {
+    "path": "Docs/Images/Compact/Exploded.png",
+    "bytes": 245742,
+    "sha256": "3b4adbc8d866322c6385fcd9334ec942bf8521438064b817dbeccc70b8612d60"
+  },
+  {
+    "path": "Docs/Images/Compact/PCB_Layout.png",
+    "bytes": 179796,
+    "sha256": "b200a2f38bb6c34c4c6c06c11229a80471c751a1ff56caba0730e47659bbb2be"
+  },
+  {
+    "path": "Docs/REVIEW_REQUEST.md",
+    "bytes": 2424,
+    "sha256": "30fd72328106543466dffa4471b2bfd20e2900346d4204ccb98b531a240d29d2"
+  },
+  {
+    "path": "Docs/SUBMISSION_CHECK.md",
+    "bytes": 3550,
+    "sha256": "2efa732d491c8c42c103725d7bdc985577421a03e917ba27afae436a269dc6b7"
+  },
+  {
+    "path": "PCB/jjkspeakerpcb.kicad_pcb",
+    "bytes": 322033,
+    "sha256": "e2db86fb6f805059ece9e532458c659033e950b1533b9e2637524e375acf4f50"
+  },
+  {
+    "path": "PCB/jjkspeakerpcb.kicad_pro",
+    "bytes": 16837,
+    "sha256": "e944af3f67683e3aad997ff544a47ecb0c8add64db5981f3fb3e43e5594de514"
+  },
+  {
+    "path": "PCB/jjkspeakerpcb.kicad_sch",
+    "bytes": 115099,
+    "sha256": "008274ca6f9fd04afbe113440f2c59a1d214cc7bbc156e63f58ca96b5151e7d7"
+  },
+  {
+    "path": "Production/Case_Parts/Display_Retainer.step",
+    "bytes": 84281,
+    "sha256": "747a09a793f8166e81a21254174a5526fae60f46d16ac1d061cd56866a2451ac"
+  },
+  {
+    "path": "Production/Case_Parts/Display_Retainer.stl",
+    "bytes": 37884,
+    "sha256": "42aa037658cd1e1304d1553088120c7868332254b4d508287fa7c6c746e177bc"
+  },
+  {
+    "path": "Production/Case_Parts/Front_Panel.step",
+    "bytes": 204997,
+    "sha256": "095c2e14a72fd9f087e75fbf606f764900add7c9b25cfca20250dfd12d470d59"
+  },
+  {
+    "path": "Production/Case_Parts/Front_Panel.stl",
+    "bytes": 263084,
+    "sha256": "f4c4459d37c11258f1ebf53488780d894184a5bc4af75a99f4bb6f13536a6ba0"
+  },
+  {
+    "path": "Production/Case_Parts/Shrine_Body.stl",
+    "bytes": 17976384,
+    "sha256": "96b2eecb359a2a8aac255aaed57a61719980c08d02ac838348fb2b7c31e5fcf4"
+  },
+  {
+    "path": "Production/Checks/DRC.rpt",
+    "bytes": 508,
+    "sha256": "25169de124207955f441fb48bf85d24050b0bde044b5dd9a18f60fa548999064"
+  },
+  {
+    "path": "Production/Checks/Drill.rpt",
+    "bytes": 891,
+    "sha256": "fadd6fc7f21b09578609d29150ac6cc7a80371992d1191a21d8a3effd65eda4f"
+  },
+  {
+    "path": "Production/Checks/ERC.rpt",
+    "bytes": 357,
+    "sha256": "41ecbbebbe6ed77c6cde834859142a6d8878ba9065404eb85914be7fe48174c2"
+  },
+  {
+    "path": "Production/README.md",
+    "bytes": 2057,
+    "sha256": "c39f96445b87c82876d04c4eb4707431978a137ed9fc0cb9275b00d8caa9956b"
+  },
+  {
+    "path": "Production/gerbers.zip",
+    "bytes": 50324,
+    "sha256": "3e6f4866a19db30711703e039b231520995b781866de03777db211f86b4fe972"
+  },
+  {
+    "path": "README.md",
+    "bytes": 12435,
+    "sha256": "0967e03f1414c96148cccf56b9fa35647c1dea0a1f2d620cd70539c5e058e83a"
+  },
+  {
+    "path": "Tools/apply_compact_package.py",
+    "bytes": 4242,
+    "sha256": "66cbcfa5a614fe8a8a08a14a47098adb04b4d1fea32da571c5cfae1966977b3d"
+  },
+  {
+    "path": "Tools/check_submission.py",
+    "bytes": 4654,
+    "sha256": "a736a2bc919ab4c30a5f90738e00ee5ad3346b3a5939565e3b2b96398817ef7e"
+  },
+  {
+    "path": "Tools/compact/README.md",
+    "bytes": 1946,
+    "sha256": "baccc0024781150594643b46c6aad34c15b420f3ff53bf2c887e6decdbd66f73"
+  },
+  {
+    "path": "Tools/compact/build_compact.py",
+    "bytes": 11531,
+    "sha256": "4f6158fb0c96ee1bd89cb84013ef043633bd7550d39341d5539fbff567db9a7c"
+  },
+  {
+    "path": "Tools/compact/build_mechanical.py",
+    "bytes": 11842,
+    "sha256": "5c4af3422165dbfc04ef29ccf41c6749c683951b12a46e99ad01f7c754859120"
+  },
+  {
+    "path": "Tools/compact/export_assembly_final.py",
+    "bytes": 2281,
+    "sha256": "7d31eec2ee5d38c611e0799661f4d8ac460472e35c3d021461b50c91578834f3"
+  },
+  {
+    "path": "Tools/compact/faceted_step.py",
+    "bytes": 3261,
+    "sha256": "d266ad76b96bc641571b87d9f2280c213e4d127b21426505a7104d2c1635dc09"
+  },
+  {
+    "path": "Tools/compact/faceted_step_merged.py",
+    "bytes": 4989,
+    "sha256": "311b5defd9488431744bf07361d8e8745baa3802f8ba3311a781be9af6d41866"
+  },
+  {
+    "path": "Tools/compact/mesh_cleanup.py",
+    "bytes": 1955,
+    "sha256": "cb5fdd159c58f74dae5ee690b57edf7bf5c6446ffbc769d0b5918db513a6e2e5"
+  },
+  {
+    "path": "Tools/compact/prepare_build.py",
+    "bytes": 609,
+    "sha256": "ac242dea6bef785deaaff0e53d497c44d5aeca6bc00e3f2db7ebb802bb7bd6fd"
+  },
+  {
+    "path": "Tools/compact/sexpr.py",
+    "bytes": 989,
+    "sha256": "7c6c13c137fffbef198ce136713de5c8099b6de7d98464c30d3c418ef3bca466"
+  },
+  {
+    "path": "Tools/compact/voxel_ornament.py",
+    "bytes": 3512,
+    "sha256": "8082c003482f8cf72cc26540346148daf972988c04b1c735efd2be95e1daaf21"
+  }
+]

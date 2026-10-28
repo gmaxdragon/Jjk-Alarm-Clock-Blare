@@ -1,0 +1,42 @@
+name: Recover JJK Alarm CAD exports
+on:
+  push:
+    branches: [main]
+    paths: ['Tools/recover_cad_exports.py', '.github/workflows/recover-jjk-cad.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  cad-recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned CAD and mesh readers
+        run: |
+          python3 -m pip install --quiet 'cadquery-ocp==7.9.3.1.1' 'numpy==2.3.5' 'trimesh==4.11.1' 'shapely==2.1.2'
+      - name: Recover and reimport without rescaling or editing the PCB
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: |
+          sha256sum PCB/jjkspeakerpcb.kicad_pcb PCB/jjkspeakerpcb.kicad_sch PCB/jjkspeakerpcb.kicad_pro > /tmp/pcb_before.sha256
+          python3 Tools/recover_cad_exports.py
+          sha256sum -c /tmp/pcb_before.sha256
+          python3 Tools/check_submission.py
+      - name: Commit verified recovery outputs only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add CAD/Recovered CAD/Checks/Export_Recovery.json Production/Case_Parts
+          if ! git diff --cached --quiet; then
+            git commit -m 'Recover four valid keycap solids and preserve enclosure reference mesh with measured limitations'
+            git pull --rebase
+            git push
+          fi
+      - name: Create design-review archive
+        run: |
+          git archive --format=zip --output=/tmp/JJK_Alarm_Design_Review.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JJK-Alarm-Design-Review
+          path: /tmp/JJK_Alarm_Design_Review.zip

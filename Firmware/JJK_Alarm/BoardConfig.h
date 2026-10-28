@@ -1,5 +1,5 @@
 #pragma once
-// BLARE rectangular PCB (125 x 110 mm) / Seeed XIAO ESP32-C3.
+// BLARE compact PCB (95 x 95 mm) / Seeed XIAO ESP32-C3.
 // These numbers are CHIP GPIOs, not D labels.
 //
 // J1/J2 are two 7-way headers/sockets carrying ONE XIAO.
@@ -13,7 +13,7 @@
 // 6=DC(GPIO3) 7=CS(GPIO4) 8=BL(GND, active LOW).
 // The panel is physically PORTRAIT. 284 x 76 is landscape, not this case.
 //
-// Keyboard: 3 columns x 2 rows (SW1..6 arranged as one horizontal strip).
+// Keyboard: 3 columns x 2 rows (physical top row SW1/SW3/SW5; bottom row SW2/SW4/SW6).
 // SW1 UP: COL_TOP+LEFT; SW2 DOWN: COL_TOP+RIGHT.
 // SW3 TIME: COL_MID+LEFT; SW4 CLOCK: COL_MID+RIGHT.
 // SW5 SNOOZE: COL_BOT+LEFT; SW6 ALARM: COL_BOT+RIGHT.

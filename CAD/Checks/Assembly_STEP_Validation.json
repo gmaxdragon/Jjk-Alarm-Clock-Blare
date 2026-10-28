@@ -1,0 +1,1017 @@
+{
+  "STEP_bytes": 33354248,
+  "STEP_sha256": "a6dbda7b760aaadaff1b994e1ece7733eb177c7e9bc346446cea3755b27f4ead",
+  "STEP_reimport_solids": 50,
+  "expected_solids": 50,
+  "solids": [
+    {
+      "index": 0,
+      "valid": true,
+      "volume_mm3": 5799680.617440362,
+      "bounds_mm": [
+        0.5,
+        0.5,
+        0.5,
+        339.5,
+        339.5,
+        287.5
+      ]
+    },
+    {
+      "index": 1,
+      "valid": true,
+      "volume_mm3": 1073.4226418018334,
+      "bounds_mm": [
+        200.5,
+        93.5,
+        120.0,
+        212.5,
+        103.0,
+        132.0
+      ]
+    },
+    {
+      "index": 2,
+      "valid": true,
+      "volume_mm3": 215.78315920536642,
+      "bounds_mm": [
+        168.0,
+        92.0,
+        117.5,
+        173.0,
+        103.0,
+        122.5
+      ]
+    },
+    {
+      "index": 3,
+      "valid": true,
+      "volume_mm3": 49.29980772418668,
+      "bounds_mm": [
+        180.300003052,
+        98.0,
+        118.300003052,
+        183.199996948,
+        103.0,
+        121.699996948
+      ]
+    },
+    {
+      "index": 4,
+      "valid": true,
+      "volume_mm3": 28.559979865144072,
+      "bounds_mm": [
+        152.240005493,
+        100.0,
+        92.599998474,
+        155.63999939,
+        103.0,
+        95.400001526
+      ]
+    },
+    {
+      "index": 5,
+      "valid": true,
+      "volume_mm3": 28.559979865144072,
+      "bounds_mm": [
+        152.240005493,
+        100.0,
+        69.599998474,
+        155.63999939,
+        103.0,
+        72.400001526
+      ]
+    },
+    {
+      "index": 6,
+      "valid": true,
+      "volume_mm3": 28.56010803248369,
+      "bounds_mm": [
+        171.289993286,
+        100.0,
+        92.599998474,
+        174.690002441,
+        103.0,
+        95.400001526
+      ]
+    },
+    {
+      "index": 7,
+      "valid": true,
+      "volume_mm3": 28.56010803248369,
+      "bounds_mm": [
+        171.289993286,
+        100.0,
+        69.599998474,
+        174.690002441,
+        103.0,
+        72.400001526
+      ]
+    },
+    {
+      "index": 8,
+      "valid": true,
+      "volume_mm3": 28.56010803248393,
+      "bounds_mm": [
+        190.339996338,
+        100.0,
+        92.599998474,
+        193.740005493,
+        103.0,
+        95.400001526
+      ]
+    },
+    {
+      "index": 9,
+      "valid": true,
+      "volume_mm3": 28.56010803248393,
+      "bounds_mm": [
+        190.339996338,
+        100.0,
+        69.599998474,
+        193.740005493,
+        103.0,
+        72.400001526
+      ]
+    },
+    {
+      "index": 10,
+      "valid": true,
+      "volume_mm3": 28.559979856744146,
+      "bounds_mm": [
+        204.600006104,
+        100.0,
+        100.599998474,
+        208.0,
+        103.0,
+        103.400001526
+      ]
+    },
+    {
+      "index": 11,
+      "valid": true,
+      "volume_mm3": 1991.0363450462219,
+      "bounds_mm": [
+        151.0,
+        91.199996948,
+        203.5,
+        195.0,
+        98.0,
+        214.5
+      ]
+    },
+    {
+      "index": 12,
+      "valid": true,
+      "volume_mm3": 50944.3198970877,
+      "bounds_mm": [
+        120.0,
+        84.0,
+        40.0,
+        226.0,
+        94.0,
+        220.0
+      ]
+    },
+    {
+      "index": 13,
+      "valid": true,
+      "volume_mm3": 14138.559702313949,
+      "bounds_mm": [
+        125.5,
+        103.0,
+        46.0,
+        220.5,
+        104.599998474,
+        141.0
+      ]
+    },
+    {
+      "index": 14,
+      "valid": true,
+      "volume_mm3": 141.31311174346385,
+      "bounds_mm": [
+        127.500930786,
+        100.0,
+        48.0,
+        133.499069214,
+        111.0,
+        54.0
+      ]
+    },
+    {
+      "index": 15,
+      "valid": true,
+      "volume_mm3": 141.31317025822776,
+      "bounds_mm": [
+        127.500930786,
+        100.0,
+        133.0,
+        133.499069214,
+        111.0,
+        139.0
+      ]
+    },
+    {
+      "index": 16,
+      "valid": true,
+      "volume_mm3": 141.31312469545446,
+      "bounds_mm": [
+        212.500930786,
+        100.0,
+        48.0,
+        218.499069214,
+        111.0,
+        54.0
+      ]
+    },
+    {
+      "index": 17,
+      "valid": true,
+      "volume_mm3": 141.31318320987032,
+      "bounds_mm": [
+        212.500930786,
+        100.0,
+        133.0,
+        218.499069214,
+        111.0,
+        139.0
+      ]
+    },
+    {
+      "index": 18,
+      "valid": true,
+      "volume_mm3": 197.83829742661538,
+      "bounds_mm": [
+        122.000930786,
+        81.0,
+        42.5,
+        127.999069214,
+        100.0,
+        48.5
+      ]
+    },
+    {
+      "index": 19,
+      "valid": true,
+      "volume_mm3": 197.83840697492818,
+      "bounds_mm": [
+        218.000930786,
+        81.0,
+        42.5,
+        223.999069214,
+        100.0,
+        48.5
+      ]
+    },
+    {
+      "index": 20,
+      "valid": true,
+      "volume_mm3": 197.83839450029362,
+      "bounds_mm": [
+        122.000930786,
+        81.0,
+        209.5,
+        127.999069214,
+        100.0,
+        215.5
+      ]
+    },
+    {
+      "index": 21,
+      "valid": true,
+      "volume_mm3": 197.83850404638287,
+      "bounds_mm": [
+        218.000930786,
+        81.0,
+        209.5,
+        223.999069214,
+        100.0,
+        215.5
+      ]
+    },
+    {
+      "index": 22,
+      "valid": true,
+      "volume_mm3": 197.838504046386,
+      "bounds_mm": [
+        153.000930786,
+        81.0,
+        206.0,
+        158.999069214,
+        100.0,
+        212.0
+      ]
+    },
+    {
+      "index": 23,
+      "valid": true,
+      "volume_mm3": 197.83850404638838,
+      "bounds_mm": [
+        187.000930786,
+        81.0,
+        206.0,
+        192.999069214,
+        100.0,
+        212.0
+      ]
+    },
+    {
+      "index": 24,
+      "valid": true,
+      "volume_mm3": 192.5,
+      "bounds_mm": [
+        202.0,
+        96.0,
+        107.5,
+        207.5,
+        103.0,
+        112.5
+      ]
+    },
+    {
+      "index": 25,
+      "valid": true,
+      "volume_mm3": 69.30006409199987,
+      "bounds_mm": [
+        141.0,
+        99.5,
+        104.5,
+        147.600006104,
+        103.0,
+        107.5
+      ]
+    },
+    {
+      "index": 26,
+      "valid": true,
+      "volume_mm3": 69.30006409199987,
+      "bounds_mm": [
+        188.0,
+        99.5,
+        110.5,
+        194.600006104,
+        103.0,
+        113.5
+      ]
+    },
+    {
+      "index": 27,
+      "valid": true,
+      "volume_mm3": 69.30006409199987,
+      "bounds_mm": [
+        188.0,
+        99.5,
+        102.5,
+        194.600006104,
+        103.0,
+        105.5
+      ]
+    },
+    {
+      "index": 28,
+      "valid": true,
+      "volume_mm3": 2784.686878201113,
+      "bounds_mm": [
+        144.899993896,
+        79.5,
+        71.949996948,
+        163.0,
+        88.0,
+        90.050003052
+      ]
+    },
+    {
+      "index": 29,
+      "valid": true,
+      "volume_mm3": 2822.977837792458,
+      "bounds_mm": [
+        146.149993896,
+        91.400001526,
+        73.199996948,
+        161.75,
+        103.0,
+        88.800003052
+      ]
+    },
+    {
+      "index": 30,
+      "valid": true,
+      "volume_mm3": 62.40002441599994,
+      "bounds_mm": [
+        151.949996948,
+        87.5,
+        79.0,
+        155.949996948,
+        91.400001526,
+        83.0
+      ]
+    },
+    {
+      "index": 31,
+      "valid": true,
+      "volume_mm3": 2784.6862912631664,
+      "bounds_mm": [
+        144.899993896,
+        79.5,
+        49.950000763,
+        163.0,
+        88.0,
+        68.050003052
+      ]
+    },
+    {
+      "index": 32,
+      "valid": true,
+      "volume_mm3": 2822.9771474298805,
+      "bounds_mm": [
+        146.149993896,
+        91.400001526,
+        51.200000763,
+        161.75,
+        103.0,
+        66.800003052
+      ]
+    },
+    {
+      "index": 33,
+      "valid": true,
+      "volume_mm3": 62.40002441599994,
+      "bounds_mm": [
+        151.949996948,
+        87.5,
+        57.0,
+        155.949996948,
+        91.400001526,
+        61.0
+      ]
+    },
+    {
+      "index": 34,
+      "valid": true,
+      "volume_mm3": 2784.686878201113,
+      "bounds_mm": [
+        163.949996948,
+        79.5,
+        71.949996948,
+        182.050003052,
+        88.0,
+        90.050003052
+      ]
+    },
+    {
+      "index": 35,
+      "valid": true,
+      "volume_mm3": 2822.9778377924576,
+      "bounds_mm": [
+        165.199996948,
+        91.400001526,
+        73.199996948,
+        180.800003052,
+        103.0,
+        88.800003052
+      ]
+    },
+    {
+      "index": 36,
+      "valid": true,
+      "volume_mm3": 62.40002441599994,
+      "bounds_mm": [
+        171.0,
+        87.5,
+        79.0,
+        175.0,
+        91.400001526,
+        83.0
+      ]
+    },
+    {
+      "index": 37,
+      "valid": true,
+      "volume_mm3": 2784.6862912631664,
+      "bounds_mm": [
+        163.949996948,
+        79.5,
+        49.950000763,
+        182.050003052,
+        88.0,
+        68.050003052
+      ]
+    },
+    {
+      "index": 38,
+      "valid": true,
+      "volume_mm3": 2822.9771474298805,
+      "bounds_mm": [
+        165.199996948,
+        91.400001526,
+        51.200000763,
+        180.800003052,
+        103.0,
+        66.800003052
+      ]
+    },
+    {
+      "index": 39,
+      "valid": true,
+      "volume_mm3": 62.40002441599994,
+      "bounds_mm": [
+        171.0,
+        87.5,
+        57.0,
+        175.0,
+        91.400001526,
+        61.0
+      ]
+    },
+    {
+      "index": 40,
+      "valid": true,
+      "volume_mm3": 2784.686878201113,
+      "bounds_mm": [
+        183.0,
+        79.5,
+        71.949996948,
+        201.100006104,
+        88.0,
+        90.050003052
+      ]
+    },
+    {
+      "index": 41,
+      "valid": true,
+      "volume_mm3": 2822.9778377924576,
+      "bounds_mm": [
+        184.25,
+        91.400001526,
+        73.199996948,
+        199.850006104,
+        103.0,
+        88.800003052
+      ]
+    },
+    {
+      "index": 42,
+      "valid": true,
+      "volume_mm3": 62.40002441599994,
+      "bounds_mm": [
+        190.050003052,
+        87.5,
+        79.0,
+        194.050003052,
+        91.400001526,
+        83.0
+      ]
+    },
+    {
+      "index": 43,
+      "valid": true,
+      "volume_mm3": 2784.6862912631664,
+      "bounds_mm": [
+        183.0,
+        79.5,
+        49.950000763,
+        201.100006104,
+        88.0,
+        68.050003052
+      ]
+    },
+    {
+      "index": 44,
+      "valid": true,
+      "volume_mm3": 2822.9771474298805,
+      "bounds_mm": [
+        184.25,
+        91.400001526,
+        51.200000763,
+        199.850006104,
+        103.0,
+        66.800003052
+      ]
+    },
+    {
+      "index": 45,
+      "valid": true,
+      "volume_mm3": 62.40002441599994,
+      "bounds_mm": [
+        190.050003052,
+        87.5,
+        57.0,
+        194.050003052,
+        91.400001526,
+        61.0
+      ]
+    },
+    {
+      "index": 46,
+      "valid": true,
+      "volume_mm3": 449.07287891896635,
+      "bounds_mm": [
+        166.960006714,
+        94.5,
+        127.699996948,
+        187.279998779,
+        103.0,
+        130.300003052
+      ]
+    },
+    {
+      "index": 47,
+      "valid": true,
+      "volume_mm3": 815.0001525999996,
+      "bounds_mm": [
+        163.0,
+        90.699996948,
+        142.199996948,
+        183.0,
+        107.0,
+        144.699996948
+      ]
+    },
+    {
+      "index": 48,
+      "valid": true,
+      "volume_mm3": 5705.398583370675,
+      "bounds_mm": [
+        162.460006714,
+        87.0,
+        140.925003052,
+        183.539993286,
+        90.699996948,
+        214.074996948
+      ]
+    },
+    {
+      "index": 49,
+      "valid": true,
+      "volume_mm3": 5233.202798390323,
+      "bounds_mm": [
+        136.229995728,
+        89.0,
+        113.099998474,
+        154.029998779,
+        103.0,
+        134.100006104
+      ]
+    }
+  ],
+  "all_solids_valid": true,
+  "export_is_faceted_BREP": true,
+  "coplanar_face_consolidation_preserves_geometry": true,
+  "is_original_parametric_CAD": false,
+  "original_parts_preserved": true,
+  "component_geometry_is_reference_envelopes": true,
+  "hardware_tested": false,
+  "parts_topology": [
+    {
+      "part": "Shrine_Body_With_Integrated_Carrier",
+      "input_triangles": 359526,
+      "planar_faces": 118091,
+      "vertices_used": 178637,
+      "hole_loops": 130
+    },
+    {
+      "part": "BZ1_Reference",
+      "input_triangles": 332,
+      "planar_faces": 86,
+      "vertices_used": 168,
+      "hole_loops": 0
+    },
+    {
+      "part": "C1_Reference",
+      "input_triangles": 332,
+      "planar_faces": 86,
+      "vertices_used": 168,
+      "hole_loops": 0
+    },
+    {
+      "part": "C2_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D1_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D2_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D3_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D4_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D5_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D6_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "D7_Diode_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "Display_Retainer",
+      "input_triangles": 756,
+      "planar_faces": 193,
+      "vertices_used": 376,
+      "hole_loops": 7
+    },
+    {
+      "part": "Front_Panel",
+      "input_triangles": 5260,
+      "planar_faces": 1295,
+      "vertices_used": 2592,
+      "hole_loops": 37
+    },
+    {
+      "part": "PCB_Finished_Envelope",
+      "input_triangles": 34188,
+      "planar_faces": 8461,
+      "vertices_used": 16918,
+      "hole_loops": 178
+    },
+    {
+      "part": "PCB_M3x8_Screw_1",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "PCB_M3x8_Screw_2",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "PCB_M3x8_Screw_3",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "PCB_M3x8_Screw_4",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Panel_M3x16_Screw_1",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Panel_M3x16_Screw_2",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Panel_M3x16_Screw_3",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Panel_M3x16_Screw_4",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Panel_M3x16_Screw_5",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Panel_M3x16_Screw_6",
+      "input_triangles": 1004,
+      "planar_faces": 255,
+      "vertices_used": 504,
+      "hole_loops": 1
+    },
+    {
+      "part": "Q1_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "R1_Resistor_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "R2_Resistor_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "R3_Resistor_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW1_Kit_Keycap_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW1_MX_Body_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW1_MX_Stem_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW2_Kit_Keycap_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW2_MX_Body_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW2_MX_Stem_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW3_Kit_Keycap_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW3_MX_Body_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW3_MX_Stem_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW4_Kit_Keycap_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW4_MX_Body_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW4_MX_Stem_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW5_Kit_Keycap_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW5_MX_Body_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW5_MX_Stem_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW6_Kit_Keycap_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW6_MX_Body_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "SW6_MX_Stem_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "TFT_Header_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "TFT_Jumper_Plugs_Clearance",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "TFT_Module_Reference_21p08x73p15",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    },
+    {
+      "part": "XIAO_and_Sockets_Reference",
+      "input_triangles": 12,
+      "planar_faces": 6,
+      "vertices_used": 8,
+      "hole_loops": 0
+    }
+  ]
+}

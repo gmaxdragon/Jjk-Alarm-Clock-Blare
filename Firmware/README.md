@@ -26,6 +26,8 @@ Display: `init(76,284)`, column offset 82, row offset 18, `invertDisplay(false)`
 
 ## Controls
 
+Physical top row, left to right: **UP, TIME SET, SNOOZE**. Bottom row: **DOWN, CLOCK SET, ALARM ON**. The switch matrix and GPIO map are unchanged from the original rectangular circuit.
+
 UP/DOWN change menu values. TIME sets time/date and its long press opens status. CLOCK sets alarm/weekdays and its long press opens the countdown. SNOOZE delays a ringing alarm by five minutes; a long press dismisses it. ALARM toggles the alarm and its long press changes the accent. Hold DOWN at home for the stopwatch.
 
 Wi-Fi synchronizes the system clock with NTP. Without Wi-Fi, time/date can be set manually. Settings persist in NVS; an unpowered board cannot keep time or ring. The local phone portal uses HTTP and is for a trusted private network only. Do not port-forward it.
@@ -33,7 +35,7 @@ Wi-Fi synchronizes the system clock with NTP. Without Wi-Fi, time/date can be se
 ## Code structure
 
 - `JJK_Alarm.ino`: display, button scanning, alarm handling, UI, local portal.
-- `BoardConfig.h`: pin map for the current rectangular board.
+- `BoardConfig.h`: pin map for the current 95 mm compact board.
 - `AlarmLogic.h`: weekday selection, clock helpers, and daily trigger logic.
 - `TimeTools.h`: countdown and stopwatch.
 - `JJK_Hands_76x76.h`: image palette and pixel data.
