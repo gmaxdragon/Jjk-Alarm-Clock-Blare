@@ -1,45 +1,41 @@
 # JJK Alarm submission check
 
-## Current package
+## Current design
 
-This is the owner's rectangular **125 x 110 mm** JJK Alarm, not the archived T-shaped design. The owner reports verifying CAD fit. No screenshot, CAD inspection, or software build is presented as a physical hardware test.
+This is the owner's rectangular **125 x 110 mm** JJK Alarm. The owner reports checking CAD fit. The latest updates repair file exports and documentation, not the electrical layout. Neither physical testing nor program acceptance is implied.
 
-## Finished
+## Prepared and checked
 
-- Published owner-narrated README, design choices, challenges, circuit/firmware explanation, BOM, AI disclosure, Stardance note and planned upgrades.
-- Original supplied screenshots and artwork, with byte-checksum provenance. No generated project renders were added.
-- Matching KiCad `.kicad_pro`, `.kicad_sch` and `.kicad_pcb` sources.
-- Arduino firmware, portrait image, ESP32-C3 compilation and host alarm/timer tests.
-- Complete `Production/gerbers.zip`, containing seven Gerber layers plus PTH and NPTH drill files.
-- Native ERC/DRC reports, retaining their configured ignored-check lists.
-- **Keycap export repaired:** four closed, valid solids, a successfully reimported combined STEP, and four separate watertight STL part files. Original inner cavity shells, dimensions and coordinates retained.
-- **Enclosure geometry recovered:** all 222,961 supplied planar faces converted into an importable reference STL, with no missing faces, scaling, smoothing or hole filling. The reference is explicitly not a print-ready solid.
-- Reproducible recovery script and machine-readable results in `CAD/Checks/Export_Recovery.json`.
+- Owner-narrated README, personal story, screenshots, BOM, AI disclosure, Stardance note and the requested note about later PCB changes.
+- Original screenshot/artwork files and their byte-checksum manifest. No generated project render is used as a photo or CAD evidence.
+- Matching native KiCad project, schematic and PCB. The actual size is measured from Edge.Cuts centerline coordinates, excluding the drawing's stroke width.
+- Real ESP32-C3 firmware compile and alarm/timer tests, portrait hand-sign image above the stacked time.
+- Complete `Production/gerbers.zip`: seven Gerber layers plus PTH and NPTH drills, unchanged by the CAD repairs.
+- Fresh native KiCad ERC/DRC with schematic parity and ground-zone refill. Reports retain configured ignored-check lists.
+- Native drilled PCB substrate STEP and a separately labeled 125 x 110 x 1.6 mm finished-size envelope. The native substrate is approximately 1.51 mm without copper/mask; the enclosure envelope is not mislabeled as a detailed layer model.
+- Six closed keycap STEP solids, six separate watertight STL parts, successful STEP reimports and exact dimension tables. Two extra caps are copies of two of the four supplied bodies; no shape scaling was applied.
+- Machine-readable checks in `CAD/Checks`; repeatable export scripts in `Tools`.
 
-## Remaining deliverable, not a repeated request to recheck the design
+## Specific unresolved export
 
-**A valid complete-clock assembly export.** The original enclosure's assembly reference does not import normally. Its recovered geometry still has 14,489 open boundary edges and 33 edges shared by more than two faces. The files also do not establish the PCB and TFT placement within the case. Therefore no output is falsely named the fully assembled clock STEP. Individual top/bottom case parts and a genuine assembled-fit screenshot remain absent. The supplied keycap source has four bodies for a six-switch PCB, so the build requires two additional copies after a stem-fit test.
+**The complete clock assembly is not present in the available exports.** Both latest uploads, including the one named `JJK Alarm Clock.stl`, contain the same four-keycap set at different positions. The old enclosure reference remains an open surface, with 14,489 boundary edges and 33 nonmanifold edges in its recovery report. It cannot be honestly relabeled a finished printable enclosure or a full assembly containing the PCB and TFT.
 
-The next useful source is a direct Tinkercad export of the actual whole assembly, including the PCB/display reference objects, or the original design link. Merely renaming an STL to STEP does not satisfy this requirement. This is about file content and export integrity, not a denial of the owner's reported fit check.
+The missing source is an export of the actual whole enclosure/assembly from the owner's CAD document, not another export of the selected keycaps. Separate printable case sections and a genuine assembled-fit view must correspond to that geometry. The owner's CAD fit check is preserved as owner-reported evidence; this is a file-content issue.
 
-## Reviewer decisions and credits
+## Size and organizer decisions
 
-- **Board size:** the supplied BLARE PCB tutorial says both dimensions should be under 100 mm. The earlier assistant selected 125 x 110 mm. Keep the finished design unchanged and request an exception; do not silently shrink the six-key layout.
-- **AI disclosure:** preserve the owner's honest disclosure. A public BLARE organizer review says AI must not be used in the README. The user supplied the spoken story, and AI organized/edited it and wrote substantial firmware. Acceptance must be decided by the organizer, not claimed by this repository.
-- **Source credits:** the exact MakerWorld model URL, creator and license, plus the hand-sign artwork source, remain unconfirmed. Search did not establish a reliable match. No candidate has been presented as proven attribution.
-- **Submission route:** the old linked BLARE design form displays “This form is closed.” The current site directs designs to Stardance and a BLARE mission page exists. The homepage still lists September 30, 2026 as its end date, so ongoing eligibility needs organizer confirmation rather than an assumed deadline extension.
+The PCB remains **125 x 110 mm**, so it does not satisfy the supplied tutorial's under-100-mm board guidance. Its six switch centers span 95.25 mm and the supplied 18.10 mm caps span about 113.35 mm across the row. Uniform scaling would break component pitch and holes. A compact layout, such as two rows of three switches, would also change the case openings. Otherwise an organizer must approve the larger board. No exception is assumed.
 
-A prepared message with the repository link is in `REVIEW_REQUEST.md`. It is a draft, not an email or form submission.
+Keep the honest AI-assistance disclosure. Program staff decide whether the amount of AI assistance is accepted. Do not infer that disclosure guarantees eligibility. The original MakerWorld model URL, creator and license and the source of the supplied artwork still need to be recorded in `ATTRIBUTION.md`; no guessed creator is asserted.
 
-## Evidence and sources
+The old linked submission form was previously observed closed. Current submission route and eligibility are organizer decisions. No submission or message has been sent on the owner's behalf.
 
-- Submission guide supplied by the owner: https://blare.hackclub.com/docs/submitting-your-project
-- PCB tutorial supplied by the owner: https://blare.hackclub.com/docs/pcb-design
-- Main-branch source/build checks: https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40606564625
-- CAD recovery and reimport checks: https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40613420021
-- Organizer's public review: https://stardance.hackclub.com/projects/62645
-- BLARE homepage: https://blare.hackclub.com/
-- Stardance mission: https://stardance.hackclub.com/missions/blare
-- Legacy design form checked: https://forms.hackclub.com/t/gRWUubQat3us
+## Sources and evidence
 
-**Status: organized design-review package prepared; full submission compliance and funding approval are not claimed. No submission has been sent on the owner's behalf.**
+- Owner-supplied requirements: https://blare.hackclub.com/docs/submitting-your-project
+- Owner-supplied PCB tutorial: https://blare.hackclub.com/docs/pcb-design
+- Original CAD recovery run: https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40613420021
+- Fresh source and firmware checks: https://github.com/gmaxdragon/Jjk-Alarm-Clock-Blare/actions/runs/40619542440
+- New mechanical export evidence: `CAD/Checks/Current_Mechanical_Exports.json` and `CAD/Checks/Native_PCB_Dimensions.json`
+
+**Status: organized and tested design-review files; complete-assembly export and full submission compliance are not claimed.**

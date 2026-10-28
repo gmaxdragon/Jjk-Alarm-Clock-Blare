@@ -20,7 +20,13 @@ This is my actual CAD screenshot, not a photo of a finished physical clock.
 
 I kept the XIAO ESP32-C3 toward the top of the PCB so it would be easier to reach for power and uploading new code. I put all six switches along the bottom to make them easy to press. The buzzer is off to the side so it does not get in the way of the TFT screen. I also tried to leave the middle of the board open for the display and its wiring.
 
-The current board is a **125 × 110 mm rectangular, two-layer PCB**, with a nominal thickness of **1.6 mm**. The six switches have **19.05 mm center-to-center spacing**. This is the rectangular version, not the older T-shaped version from earlier in the project.
+The current board is a **125 × 110 mm rectangular, two-layer PCB**, with a nominal finished thickness of **1.6 mm**. The six switches have **19.05 mm center-to-center spacing**. This is the rectangular version, not the older T-shaped version from earlier in the project.
+
+### Note about later PCB changes
+
+I changed the PCB a bit later also but forgot to update it. It works the same overall, though.
+
+Some earlier screenshots show an earlier revision. Use the current files in `PCB/` and `Production/gerbers.zip` for the actual design. The intended function is unchanged; this note is not a claim of completed physical testing.
 
 ![My KiCad PCB layout](Docs/Images/PCB_Layout.png)
 
@@ -44,7 +50,9 @@ I added rectangular sections to make room for the electronics, cut out the top, 
 
 My intended assembly slides in from the top. The case parts fit together using friction, with the buttons fitted through their openings. I checked the fit in CAD. That is a CAD check, not a claim that the physical clock has already been printed, assembled, and tested. I also considered a short USB-C extension so the power connection can reach the outside of the case.
 
-The enclosure screenshot above and the PCB view show the parts used for this layout. The original enclosure and keycap exports are preserved in [CAD](CAD/README.md). The current export and complete-assembly status are recorded there; a screenshot is not a replacement for a complete assembly STEP file.
+The enclosure screenshot above shows my intended case. The original CAD exports are preserved in [CAD](CAD/README.md). The corrected mechanical package contains the native drilled PCB substrate, a 1.6 mm finished-board size reference, six keycap STEP solids, and six separate STL parts. The fifth and sixth caps are copies of two supplied cap bodies, not newly modeled designs. The keycaps have been centered for export without changing their size.
+
+The two latest STL uploads turned out to contain the same four-keycap set, even the one named `JJK Alarm Clock.stl`. They do not contain the enclosure. The older enclosure export is kept as a surface reference rather than being mislabeled as a finished printable assembly. Exact file findings are in [CAD/Checks/Latest_STL_Uploads.json](CAD/Checks/Latest_STL_Uploads.json).
 
 ## Challenges
 
@@ -126,7 +134,7 @@ I might improve the case and simplify some of it into rectangular parts so it is
 
 | Folder | Contents |
 | --- | --- |
-| [CAD](CAD/README.md) | My supplied enclosure/keycap exports and their export-status notes |
+| [CAD](CAD/README.md) | Original CAD, corrected six-cap STEP/STL exports, PCB references, and dimension reports |
 | [PCB](PCB/) | Matching `.kicad_pro`, `.kicad_sch`, and `.kicad_pcb` source files |
 | [Firmware](Firmware/README.md) | Arduino sketch, image data, configuration template, and setup notes |
 | [Production](Production/) | `gerbers.zip`, native check reports, and case-output status |
@@ -136,7 +144,7 @@ I might improve the case and simplify some of it into rectangular parts so it is
 
 Native KiCad reports record **0 ERC errors, 0 ERC warnings, 0 DRC violations, and 0 unconnected pads** under the saved check configuration. The firmware has also passed the ESP32-C3 compilation and host-side alarm/timer tests. Physical assembly, alarm loudness, and long-term operation are separate tests, not things those reports prove.
 
-**Submission note:** I have checked the CAD fit myself, but the uploaded file exports still need to meet the complete-assembly STEP requirement. The board is larger than the under-100 mm guidance in BLARE's PCB tutorial. See the submission checklist for the export issue, size exception, and source-credit details rather than assuming those are already approved.
+**Submission note:** I checked the CAD fit myself. The latest uploaded STLs contain keycaps only, so a clean export of the enclosure and complete assembly is still missing. The PCB remains 125 × 110 mm. The one-row key layout occupies about 113.35 mm including the supplied 18.10 mm wide caps, so reducing all dimensions would break the physical part spacing. Meeting the tutorial's under-100 mm guidance requires a changed layout and matching case, or an organizer-approved size exception. Neither approval nor a compact redesign is claimed here.
 
 ## Credits
 
