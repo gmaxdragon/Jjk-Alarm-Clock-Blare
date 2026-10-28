@@ -80,6 +80,16 @@ The current firmware compiles for ESP32-C3 and passes the host-side alarm/timer 
 
 Power is through the XIAO's USB-C connector. There is no internal battery or backup RTC, so a total power loss stops the clock. The PCB also keeps the TFT backlight on rather than switching it in firmware. Setup and first-power instructions are in [Firmware/README.md](Firmware/README.md).
 
+## What still needs checking before I call it finished
+
+The digital files are checked, but I have not printed and assembled this compact version yet. The shrine STL is still **339 × 339 × 287 mm**, so I need a printer that fits it or a proper split design before printing it on a smaller machine.
+
+I also still need to check the actual display, buzzer, sockets, USB plug, screw access, wiring space and full button travel against the case. The display model uses reference dimensions. The saved collision checks cover the PCB/components against the carrier and front panel; they do not prove cable routing, moving-part travel or every interface in the complete assembled clock.
+
+The PCB matrix connections match the firmware: GPIO5/6/7 select the three columns and GPIO8/9 read the two rows. The diode cathodes face the switches. No static matrix mismatch was found, but I still need to test all six buttons, debounce, simultaneous presses and boot/reset behavior on the real board. The alarm/timer tests do not test the physical matrix.
+
+The buzzer stays disabled with the supplied settings. I need to verify its type, current and polarity, Q1 pinout, sound and the display wiring/offsets before enabling it. The clock also needs a supervised alarm/snooze test and a power-loss/restart test. The original shrine and artwork source links/licenses still need completing in the attribution file. So this is a design-review package, and I am **not claiming full submission readiness or a tested working build**.
+
 ## Parts for one clock
 
 This BOM describes the compact design. It is not a list of parts already purchased or fitted.
