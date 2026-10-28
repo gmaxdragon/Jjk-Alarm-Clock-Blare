@@ -1,0 +1,145 @@
+{
+  "keycaps": {
+    "source_sha256": "eef8282866db7bfc41b547bd4dfeae2b37bf423fb95feb1c7954d26ffce38e79",
+    "method": "sew existing faces at 0.000001 mm; preserve inner cavities",
+    "source_coordinates_preserved": true,
+    "free_edges": 0,
+    "multiple_edges": 0,
+    "step_reimport_valid": true,
+    "step_reimport_solids": 4,
+    "step_sha256": "8e94f7d9cd3cf07e9477ef0150b0faa1b0b74d798d181915c36ba86b6a787982",
+    "parts": [
+      {
+        "file": "Extended_Keycap_01.stl",
+        "valid_closed_solid": true,
+        "internal_cavities": 1,
+        "dimensions_mm": [
+          18.099999999999966,
+          18.09700000000001,
+          62.35099999999999
+        ],
+        "bounds_mm": [
+          [
+            -432.2,
+            -191.0,
+            5.77316e-15
+          ],
+          [
+            -414.1,
+            -172.903,
+            62.351
+          ]
+        ],
+        "triangles": 2088,
+        "sha256": "ad6509b040509afc2d11de9241fc0c8d277e8ea8b3bba94de3fe166c63461a72"
+      },
+      {
+        "file": "Extended_Keycap_02.stl",
+        "valid_closed_solid": true,
+        "internal_cavities": 1,
+        "dimensions_mm": [
+          18.100000000000023,
+          18.09700000000001,
+          62.35099999999999
+        ],
+        "bounds_mm": [
+          [
+            -431.1,
+            -218.0,
+            5.77316e-15
+          ],
+          [
+            -413.0,
+            -199.903,
+            62.351
+          ]
+        ],
+        "triangles": 2088,
+        "sha256": "30e2cf75226e8aa8e958f620b7ef75485d01eb992068fcef3b62b341a71be20e"
+      },
+      {
+        "file": "Extended_Keycap_03.stl",
+        "valid_closed_solid": true,
+        "internal_cavities": 1,
+        "dimensions_mm": [
+          18.100000000000023,
+          18.09700000000001,
+          62.35099999999999
+        ],
+        "bounds_mm": [
+          [
+            -407.1,
+            -194.0,
+            5.77316e-15
+          ],
+          [
+            -389.0,
+            -175.903,
+            62.351
+          ]
+        ],
+        "triangles": 2088,
+        "sha256": "62f554cfa41cb50bec49c64c46d33f6ea1ed47585f9aec815c6c9a3e613e4fb1"
+      },
+      {
+        "file": "Extended_Keycap_04.stl",
+        "valid_closed_solid": true,
+        "internal_cavities": 1,
+        "dimensions_mm": [
+          18.100000000000023,
+          18.09700000000001,
+          62.35099999999999
+        ],
+        "bounds_mm": [
+          [
+            -405.1,
+            -222.0,
+            5.77316e-15
+          ],
+          [
+            -387.0,
+            -203.903,
+            62.351
+          ]
+        ],
+        "triangles": 2088,
+        "sha256": "d3aab6fac30e386ad53e4d85b1f10486f1f1d946c9d9a1341818a0d11788afd1"
+      }
+    ],
+    "fit_status": "Geometric export repair only; switch-stem fit is not hardware-tested",
+    "quantity_note": "The source contains four cap bodies. The PCB requires six caps; use two additional copies after a stem-fit test."
+  },
+  "enclosure": {
+    "source_sha256": "2393d303414c64b47f47c57f1b902fce97162e7fd147620b957a5e5bfdc97215",
+    "source_planar_faces": 222961,
+    "exported_triangles": 264900,
+    "dimensions_mm": [
+      340.0,
+      340.0,
+      289.8380126953124
+    ],
+    "bounds_mm": [
+      [
+        -170.0,
+        -170.0,
+        -144.9190063476562
+      ],
+      [
+        170.0,
+        170.0,
+        144.9190063476562
+      ]
+    ],
+    "watertight": false,
+    "open_boundary_edges": 14489,
+    "nonmanifold_edges": 33,
+    "winding_consistent": false,
+    "coordinate_scaling": 1.0,
+    "holes_filled": false,
+    "source_face_omissions": 0,
+    "output_sha256": "a167d0180a4857b999a0761f87333913a941efbf849761a967b0f9d63113fd1b",
+    "status": "REFERENCE ONLY: opens as a mesh, not a closed printable assembly"
+  },
+  "complete_clock_assembly_proven": false,
+  "reason": "Neither upload supplies a placed PCB/display assembly; no component positions or case splits have been invented."
+}
