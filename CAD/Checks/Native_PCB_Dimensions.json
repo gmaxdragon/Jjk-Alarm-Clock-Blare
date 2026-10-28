@@ -1,0 +1,45 @@
+{
+  "width_mm": 125.0,
+  "height_mm": 110.0,
+  "nominal_thickness_mm": 1.6,
+  "origin_KiCad_mm": [
+    50.0,
+    50.0
+  ],
+  "dimension_method": "Edge.Cuts centerline endpoints; excludes drawing stroke width",
+  "switch_centers_mm": [
+    [
+      "SW1",
+      14.875,
+      91.0
+    ],
+    [
+      "SW2",
+      33.925,
+      91.0
+    ],
+    [
+      "SW3",
+      52.974999999999994,
+      91.0
+    ],
+    [
+      "SW4",
+      72.025,
+      91.0
+    ],
+    [
+      "SW5",
+      91.07499999999999,
+      91.0
+    ],
+    [
+      "SW6",
+      110.125,
+      91.0
+    ]
+  ],
+  "drill_count": 88,
+  "PCB_sha256": "c0d9b165417da454bace324ce1e8fe6fc57b2e5cef56c227b5746f985636b894",
+  "PCB_modified": false
+}

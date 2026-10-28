@@ -1,0 +1,133 @@
+{
+  "PCB_XY_dimensions_mm": [
+    125.0,
+    110.0
+  ],
+  "PCB_native_substrate_thickness_mm": 1.51,
+  "PCB_nominal_finished_thickness_mm": 1.6,
+  "PCB_STEP_reimport_valid": true,
+  "PCB_STEP_bounds_mm": [
+    50.0,
+    -160.0,
+    0.0,
+    175.0,
+    -50.0,
+    1.51
+  ],
+  "finished_size_envelope_dimensions_mm": [
+    125.00000019999999,
+    110.00000019999999,
+    1.6000002000000009
+  ],
+  "finished_size_envelope_reimport_valid": true,
+  "finished_envelope_method": "Native drilled substrate, Z-only expansion to nominal finished thickness; not a copper-layer model",
+  "PCB_XY_rescaled": false,
+  "PCB_layout_changed": false,
+  "keycap_source_sha256": "8e94f7d9cd3cf07e9477ef0150b0faa1b0b74d798d181915c36ba86b6a787982",
+  "six_keycap_STEP_solids": 6,
+  "keycap_parts": [
+    {
+      "position": 1,
+      "source_body": 1,
+      "duplicate_of_position": null,
+      "dimensions_mm": [
+        18.10000610351466,
+        18.097000122069062,
+        62.351001739472274
+      ],
+      "valid_STEP_solid": true,
+      "STL_watertight": true,
+      "internal_cavity_shells": 1,
+      "volume_mm3": 8205.999796976303,
+      "step_sha256": "8d37f1d24ff9e55a65c654903d8d977dedbe1b19c15f45339ba1306ae8d302c4",
+      "stl_sha256": "8a4efa9ca23c45e958a728f31ae89a8e2fc7e4527a495c4348ce0aa907f1d8ea"
+    },
+    {
+      "position": 2,
+      "source_body": 2,
+      "duplicate_of_position": null,
+      "dimensions_mm": [
+        18.100006103506246,
+        18.097000122070312,
+        62.35100173946685
+      ],
+      "valid_STEP_solid": true,
+      "STL_watertight": true,
+      "internal_cavity_shells": 1,
+      "volume_mm3": 8205.997758088823,
+      "step_sha256": "5d1861597a55bd9ce407939359b793d94bfab42e3b96eb06592c52de5972f3cc",
+      "stl_sha256": "3819990223e5cb75b88a2e602494bc522ea8c306e1f5f5accdb8b2de830519d4"
+    },
+    {
+      "position": 3,
+      "source_body": 3,
+      "duplicate_of_position": null,
+      "dimensions_mm": [
+        18.100006103506246,
+        18.097000122070312,
+        62.351001739458844
+      ],
+      "valid_STEP_solid": true,
+      "STL_watertight": true,
+      "internal_cavity_shells": 1,
+      "volume_mm3": 8206.002562713365,
+      "step_sha256": "d639bfa7c908fd329d85bd25089ccf12a571754dca296074e05cdc77925ca1ab",
+      "stl_sha256": "e2b4094233e66fa6b1cc077a08fe4f2e5bfffb4edf159f2df03944b565ca7f9d"
+    },
+    {
+      "position": 4,
+      "source_body": 4,
+      "duplicate_of_position": null,
+      "dimensions_mm": [
+        18.10000610351466,
+        18.097000122070312,
+        62.351001739472274
+      ],
+      "valid_STEP_solid": true,
+      "STL_watertight": true,
+      "internal_cavity_shells": 1,
+      "volume_mm3": 8206.0026387343,
+      "step_sha256": "35211464d599b25ec44be80297f3b0e1d809254c50cc283ce66b7077547c03d5",
+      "stl_sha256": "583cc0c2ffe954d2eb13871149dee055e3a33f8ee67d72b68c2cd6a8c54efb63"
+    },
+    {
+      "position": 5,
+      "source_body": 1,
+      "duplicate_of_position": 1,
+      "dimensions_mm": [
+        18.10000610351466,
+        18.097000122069062,
+        62.351001739472274
+      ],
+      "valid_STEP_solid": true,
+      "STL_watertight": true,
+      "internal_cavity_shells": 1,
+      "volume_mm3": 8205.999796976303,
+      "step_sha256": "43fdce3da026f8457bf39431ad213a76a841d33277db197e0863a4846e3f680e",
+      "stl_sha256": "8a4efa9ca23c45e958a728f31ae89a8e2fc7e4527a495c4348ce0aa907f1d8ea"
+    },
+    {
+      "position": 6,
+      "source_body": 2,
+      "duplicate_of_position": 2,
+      "dimensions_mm": [
+        18.100006103506246,
+        18.097000122070312,
+        62.35100173946685
+      ],
+      "valid_STEP_solid": true,
+      "STL_watertight": true,
+      "internal_cavity_shells": 1,
+      "volume_mm3": 8205.997758088823,
+      "step_sha256": "0f566dd93d00cb722891e76ac10fe1cb413047297be2d530b4c092220ac8a214",
+      "stl_sha256": "3819990223e5cb75b88a2e602494bc522ea8c306e1f5f5accdb8b2de830519d4"
+    }
+  ],
+  "first_to_last_switch_center_mm": 95.25,
+  "switch_pitch_mm": 19.05,
+  "six_keycap_row_width_mm": 113.35000610351466,
+  "keycap_row_depth_mm": 18.097000122070312,
+  "complete_clock_assembly": false,
+  "physical_fit_tested_by_this_script": false,
+  "under_100mm_PCB_requirement_met": false
+}
